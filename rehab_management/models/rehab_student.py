@@ -75,3 +75,19 @@ class RehabStudent(models.Model):
                 })
                 vals['partner_id'] = partner.id
         return super(RehabStudent, self).create(vals_list)
+
+    def action_view_invoices(self):
+        """Open the list of invoices for this student's linked partner."""
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Invoices',
+            'res_model': 'account.move',
+            'view_mode': 'list,form',
+            'domain': [('partner_id', '=', self.partner_id.id), ('move_type', '=', 'out_invoice')],
+            'context': {
+                'default_partner_id': self.partner_id.id,
+                'default_move_type': 'out_invoice',
+            },
+        }
+

@@ -5504,3 +5504,172 @@ odoo.tools.convert.ParseError: while parsing file:/c:/users/yuusuf/.gemini/antig
 2026-03-11 18:08:07,740 25164 INFO rehab_db odoo.modules.loading: 50 modules loaded in 0.65s, 0 queries (+0 extra) 
 2026-03-11 18:08:07,824 25164 INFO rehab_db odoo.modules.loading: Modules loaded. 
 2026-03-11 18:08:07,858 25164 INFO rehab_db odoo.registry: Registry loaded in 0.817s 
+2026-03-11 18:11:35,391 24536 INFO ? odoo: Odoo version 19.0-20260309 
+2026-03-11 18:11:35,391 24536 INFO ? odoo: Using configuration file at c:\users\yuusuf\.gemini\antigravity\scratch\rehab-odoo\odoo_updated_fix.conf 
+2026-03-11 18:11:35,391 24536 INFO ? odoo: addons paths: _NamespacePath(['C:\\Program Files\\Odoo 19.0.20260309\\server\\odoo\\addons', 'C:\\Program Files\\Odoo 19.0.20260309\\server\\odoo\\addons', 'c:\\users\\yuusuf\\appdata\\local\\openerp s.a\\odoo\\addons\\19.0', 'c:\\program files\\odoo 19.0.20260309\\server\\odoo\\addons', 'c:\\users\\yuusuf\\.gemini\\antigravity\\scratch\\rehab-odoo', 'c:\\program files\\odoo 19.0.20260309\\server\\addons']) 
+2026-03-11 18:11:35,391 24536 INFO ? odoo: database: openpg@localhost:5432 
+2026-03-11 18:11:35,421 24536 WARNING ? py.warnings: C:\Program Files\Odoo 19.0.20260309\server\odoo\sql_db.py:694: UserWarning: Postgres version is 120004, lower than minimum required 130000
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\cli\command.py", line 133, in main
+    command().run(args)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\cli\server.py", line 127, in run
+    main(args)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\cli\server.py", line 104, in main
+    db._create_empty_database(db_name)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\service\db.py", line 130, in _create_empty_database
+    with closing(db.cursor()) as cr:
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\sql_db.py", line 763, in cursor
+    return Cursor(self.__pool, self.__dbname, self.__dsn)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\sql_db.py", line 365, in __init__
+    self._cnx: PsycoConnection = pool.borrow(dsn)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\tools\func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\sql_db.py", line 694, in borrow
+    warnings.warn(f"Postgres version is {result.server_version}, lower than minimum required {MIN_PG_VERSION * 10000}")
+ 
+2026-03-11 18:11:35,937 24536 WARNING rehab_db py.warnings: C:\Program Files\Odoo 19.0.20260309\server\odoo\sql_db.py:694: UserWarning: Postgres version is 120004, lower than minimum required 130000
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\cli\command.py", line 133, in main
+    command().run(args)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\cli\server.py", line 127, in run
+    main(args)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\cli\server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\service\server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\service\server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\service\server.py", line 1510, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module, install_modules=config['init'], upgrade_modules=config['update'], reinit_modules=config['reinit'])
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\tools\func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\orm\registry.py", line 164, in new
+    registry.init(db_name)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\orm\registry.py", line 301, in init
+    with closing(self.cursor()) as cr:
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\orm\registry.py", line 1168, in cursor
+    return self._db.cursor()
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\sql_db.py", line 763, in cursor
+    return Cursor(self.__pool, self.__dbname, self.__dsn)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\sql_db.py", line 365, in __init__
+    self._cnx: PsycoConnection = pool.borrow(dsn)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\tools\func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\sql_db.py", line 694, in borrow
+    warnings.warn(f"Postgres version is {result.server_version}, lower than minimum required {MIN_PG_VERSION * 10000}")
+ 
+2026-03-11 18:11:35,962 24536 INFO rehab_db odoo.modules.loading: loading 1 modules... 
+2026-03-11 18:11:35,967 24536 INFO rehab_db odoo.modules.loading: 1 modules loaded in 0.01s, 0 queries (+0 extra) 
+2026-03-11 18:11:35,989 24536 INFO rehab_db odoo.modules.loading: updating modules list 
+2026-03-11 18:11:35,992 24536 INFO rehab_db odoo.addons.base.models.ir_module: ALLOW access to module.update_list on [] to user __system__ #1 via n/a 
+2026-03-11 18:11:36,782 24536 WARNING rehab_db odoo.modules.module: Missing `license` key in manifest for 'rehab_management', defaulting to LGPL-3 
+2026-03-11 18:11:36,783 24536 WARNING rehab_db odoo.modules.module: Missing `license` key in manifest for 'rehab_management', defaulting to LGPL-3 
+2026-03-11 18:11:36,957 24536 INFO rehab_db odoo.addons.base.models.ir_module: ALLOW access to module.button_upgrade on ['Rehab Management'] to user __system__ #1 via n/a 
+2026-03-11 18:11:36,957 24536 INFO rehab_db odoo.addons.base.models.ir_module: ALLOW access to module.update_list on ['Rehab Management'] to user __system__ #1 via n/a 
+2026-03-11 18:11:37,455 24536 WARNING rehab_db odoo.modules.module: Missing `license` key in manifest for 'rehab_management', defaulting to LGPL-3 
+2026-03-11 18:11:37,595 24536 INFO rehab_db odoo.addons.base.models.ir_module: ALLOW access to module.button_install on [] to user __system__ #1 via n/a 
+2026-03-11 18:11:37,637 24536 INFO rehab_db odoo.modules.loading: loading 50 modules... 
+2026-03-11 18:11:38,475 24536 INFO rehab_db odoo.modules.loading: Loading module rehab_management (50/50) 
+2026-03-11 18:11:38,615 24536 INFO rehab_db odoo.registry: module rehab_management: creating or updating database tables 
+2026-03-11 18:11:38,737 24536 INFO rehab_db odoo.modules.loading: loading rehab_management/security/ir.model.access.csv 
+2026-03-11 18:11:38,752 24536 INFO rehab_db odoo.modules.loading: loading rehab_management/wizard/rehab_billing_wizard_views.xml 
+2026-03-11 18:11:38,775 24536 INFO rehab_db odoo.modules.loading: loading rehab_management/views/menus.xml 
+2026-03-11 18:11:38,825 24536 INFO rehab_db odoo.modules.loading: loading rehab_management/views/rehab_student_views.xml 
+2026-03-11 18:11:38,848 24536 INFO rehab_db odoo.modules.loading: loading rehab_management/views/rehab_discipline_views.xml 
+2026-03-11 18:11:38,864 24536 INFO rehab_db odoo.modules.loading: loading rehab_management/views/rehab_dormitory_views.xml 
+2026-03-11 18:11:38,914 24536 INFO rehab_db odoo.modules.loading: Module rehab_management loaded in 0.44s, 358 queries (+358 other) 
+2026-03-11 18:11:38,914 24536 INFO rehab_db odoo.modules.loading: 50 modules loaded in 1.28s, 358 queries (+358 extra) 
+2026-03-11 18:11:39,561 24536 INFO rehab_db odoo.modules.loading: Modules loaded. 
+2026-03-11 18:11:39,578 24536 INFO rehab_db odoo.registry: Registry changed, signaling through the database 
+2026-03-11 18:11:39,578 24536 INFO rehab_db odoo.registry: Registry loaded in 3.667s 
+2026-03-11 18:11:39,578 24536 INFO rehab_db odoo.service.server: Initiating shutdown 
+2026-03-11 18:11:39,578 24536 INFO rehab_db odoo.service.server: Hit CTRL-C again or send a second signal to force the shutdown. 
+2026-03-11 18:11:39,578 24536 INFO rehab_db odoo.sql_db: ConnectionPool(read/write;used=0/count=0/max=64): Closed 1 connections  
+2026-03-11 18:12:48,373 24112 INFO ? odoo: Odoo version 19.0-20260309 
+2026-03-11 18:12:48,374 24112 INFO ? odoo: Using configuration file at c:\users\yuusuf\.gemini\antigravity\scratch\rehab-odoo\odoo_updated_fix.conf 
+2026-03-11 18:12:48,374 24112 INFO ? odoo: addons paths: _NamespacePath(['C:\\Program Files\\Odoo 19.0.20260309\\server\\odoo\\addons', 'C:\\Program Files\\Odoo 19.0.20260309\\server\\odoo\\addons', 'c:\\users\\yuusuf\\appdata\\local\\openerp s.a\\odoo\\addons\\19.0', 'c:\\program files\\odoo 19.0.20260309\\server\\odoo\\addons', 'c:\\users\\yuusuf\\.gemini\\antigravity\\scratch\\rehab-odoo', 'c:\\program files\\odoo 19.0.20260309\\server\\addons']) 
+2026-03-11 18:12:48,374 24112 INFO ? odoo: database: openpg@localhost:5432 
+2026-03-11 18:12:48,406 24112 WARNING ? py.warnings: C:\Program Files\Odoo 19.0.20260309\server\odoo\sql_db.py:694: UserWarning: Postgres version is 120004, lower than minimum required 130000
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\cli\command.py", line 133, in main
+    command().run(args)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\cli\server.py", line 127, in run
+    main(args)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\cli\server.py", line 104, in main
+    db._create_empty_database(db_name)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\service\db.py", line 130, in _create_empty_database
+    with closing(db.cursor()) as cr:
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\sql_db.py", line 763, in cursor
+    return Cursor(self.__pool, self.__dbname, self.__dsn)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\sql_db.py", line 365, in __init__
+    self._cnx: PsycoConnection = pool.borrow(dsn)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\tools\func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\sql_db.py", line 694, in borrow
+    warnings.warn(f"Postgres version is {result.server_version}, lower than minimum required {MIN_PG_VERSION * 10000}")
+ 
+2026-03-11 18:12:48,862 24112 WARNING rehab_db py.warnings: C:\Program Files\Odoo 19.0.20260309\server\odoo\sql_db.py:694: UserWarning: Postgres version is 120004, lower than minimum required 130000
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo-bin", line 6, in <module>
+    odoo.cli.main()
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\cli\command.py", line 133, in main
+    command().run(args)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\cli\server.py", line 127, in run
+    main(args)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\cli\server.py", line 118, in main
+    rc = server.start(preload=config['db_name'], stop=stop)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\service\server.py", line 1596, in start
+    rc = server.run(preload, stop)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\service\server.py", line 668, in run
+    rc = preload_registries(preload)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\service\server.py", line 1510, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module, install_modules=config['init'], upgrade_modules=config['update'], reinit_modules=config['reinit'])
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\tools\func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\orm\registry.py", line 164, in new
+    registry.init(db_name)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\orm\registry.py", line 301, in init
+    with closing(self.cursor()) as cr:
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\orm\registry.py", line 1168, in cursor
+    return self._db.cursor()
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\sql_db.py", line 763, in cursor
+    return Cursor(self.__pool, self.__dbname, self.__dsn)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\sql_db.py", line 365, in __init__
+    self._cnx: PsycoConnection = pool.borrow(dsn)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\tools\func.py", line 88, in locked
+    return func(inst, *args, **kwargs)
+  File "C:\Program Files\Odoo 19.0.20260309\server\odoo\sql_db.py", line 694, in borrow
+    warnings.warn(f"Postgres version is {result.server_version}, lower than minimum required {MIN_PG_VERSION * 10000}")
+ 
+2026-03-11 18:12:48,895 24112 INFO rehab_db odoo.modules.loading: loading 1 modules... 
+2026-03-11 18:12:48,899 24112 INFO rehab_db odoo.modules.loading: 1 modules loaded in 0.00s, 0 queries (+0 extra) 
+2026-03-11 18:12:48,920 24112 INFO rehab_db odoo.modules.loading: updating modules list 
+2026-03-11 18:12:48,923 24112 INFO rehab_db odoo.addons.base.models.ir_module: ALLOW access to module.update_list on [] to user __system__ #1 via n/a 
+2026-03-11 18:12:49,618 24112 WARNING rehab_db odoo.modules.module: Missing `license` key in manifest for 'rehab_management', defaulting to LGPL-3 
+2026-03-11 18:12:49,619 24112 WARNING rehab_db odoo.modules.module: Missing `license` key in manifest for 'rehab_management', defaulting to LGPL-3 
+2026-03-11 18:12:49,791 24112 INFO rehab_db odoo.addons.base.models.ir_module: ALLOW access to module.button_upgrade on ['Rehab Management'] to user __system__ #1 via n/a 
+2026-03-11 18:12:49,792 24112 INFO rehab_db odoo.addons.base.models.ir_module: ALLOW access to module.update_list on ['Rehab Management'] to user __system__ #1 via n/a 
+2026-03-11 18:12:50,309 24112 WARNING rehab_db odoo.modules.module: Missing `license` key in manifest for 'rehab_management', defaulting to LGPL-3 
+2026-03-11 18:12:50,435 24112 INFO rehab_db odoo.addons.base.models.ir_module: ALLOW access to module.button_install on [] to user __system__ #1 via n/a 
+2026-03-11 18:12:50,465 24112 INFO rehab_db odoo.modules.loading: loading 50 modules... 
+2026-03-11 18:12:51,193 24112 INFO rehab_db odoo.modules.loading: Loading module rehab_management (50/50) 
+2026-03-11 18:12:51,283 24112 INFO rehab_db odoo.registry: module rehab_management: creating or updating database tables 
+2026-03-11 18:12:51,356 24112 INFO rehab_db odoo.modules.loading: loading rehab_management/security/ir.model.access.csv 
+2026-03-11 18:12:51,368 24112 INFO rehab_db odoo.modules.loading: loading rehab_management/wizard/rehab_billing_wizard_views.xml 
+2026-03-11 18:12:51,383 24112 INFO rehab_db odoo.modules.loading: loading rehab_management/views/menus.xml 
+2026-03-11 18:12:51,409 24112 INFO rehab_db odoo.modules.loading: loading rehab_management/views/rehab_student_views.xml 
+2026-03-11 18:12:51,431 24112 INFO rehab_db odoo.modules.loading: loading rehab_management/views/rehab_discipline_views.xml 
+2026-03-11 18:12:51,444 24112 INFO rehab_db odoo.modules.loading: loading rehab_management/views/rehab_dormitory_views.xml 
+2026-03-11 18:12:51,483 24112 INFO rehab_db odoo.modules.loading: Module rehab_management loaded in 0.29s, 357 queries (+357 other) 
+2026-03-11 18:12:51,483 24112 INFO rehab_db odoo.modules.loading: 50 modules loaded in 1.02s, 357 queries (+357 extra) 
+2026-03-11 18:12:51,673 24112 INFO rehab_db odoo.addons.base.models.ir_model: Deleting 1068@ir.ui.view (rehab_management.rehab_student_view_tree) 
+2026-03-11 18:12:51,711 24112 INFO rehab_db odoo.models.unlink: User #1 deleted ir.model.data records with IDs: [35776] 
+2026-03-11 18:12:51,714 24112 INFO rehab_db odoo.models.unlink: User #1 deleted ir.ui.view records with IDs: [1068] 
+2026-03-11 18:12:52,020 24112 INFO rehab_db odoo.modules.loading: Modules loaded. 
+2026-03-11 18:12:52,038 24112 INFO rehab_db odoo.registry: Registry changed, signaling through the database 
+2026-03-11 18:12:52,039 24112 INFO rehab_db odoo.registry: Registry loaded in 3.198s 
+2026-03-11 18:12:52,039 24112 INFO rehab_db odoo.service.server: Initiating shutdown 
+2026-03-11 18:12:52,039 24112 INFO rehab_db odoo.service.server: Hit CTRL-C again or send a second signal to force the shutdown. 
+2026-03-11 18:12:52,041 24112 INFO rehab_db odoo.sql_db: ConnectionPool(read/write;used=0/count=0/max=64): Closed 1 connections  

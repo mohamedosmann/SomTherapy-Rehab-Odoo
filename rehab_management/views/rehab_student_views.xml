@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="rehab_student_view_tree" model="ir.ui.view">
+    <record id="rehab_student_view_list" model="ir.ui.view">
         <field name="name">rehab.student.list</field>
         <field name="model">rehab.student</field>
         <field name="arch" type="xml">
@@ -22,67 +22,64 @@
         <field name="model">rehab.student</field>
         <field name="arch" type="xml">
             <form string="Student">
-                <header>
-                    <button name="%(account.action_move_out_invoice_type)d" string="Invoices" type="action" class="oe_highlight" context="{'search_default_partner_id': partner_id, 'default_partner_id': partner_id, 'default_move_type': 'out_invoice'}"/>
-                </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_invoices"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-file-text-o"
+                            string="Invoices"/>
+                    </div>
                     <div class="oe_title">
-                        <h1>
-                            <field name="name" placeholder="Student Name"/>
-                        </h1>
-                        <h3>
-                            <field name="student_id" placeholder="Student ID (e.g. STU-001)"/>
-                        </h3>
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="Student Name"/></h1>
+                        <label for="student_id"/>
+                        <h3><field name="student_id" placeholder="STU-001"/></h3>
                     </div>
                     <group>
-                        <group name="personal_info" string="Personal Information">
-                            <field name="partner_id" context="{'default_name': name, 'default_customer_rank': 1}"/>
+                        <group string="Personal Information">
+                            <field name="partner_id"/>
                             <field name="phone"/>
                             <field name="type"/>
                             <field name="status"/>
                             <field name="department"/>
                         </group>
-                        <group name="financial" string="Financial">
-                            <field name="monthly_fee" widget="monetary"/>
+                        <group string="Financial">
+                            <field name="monthly_fee"/>
                             <field name="last_billing_date"/>
-                            <field name="prepaid_balance" widget="monetary"/>
+                            <field name="prepaid_balance"/>
                         </group>
                     </group>
                     <notebook>
-                        <page name="placement" string="Placement">
+                        <page string="Placement">
                             <group>
                                 <field name="room_id"/>
                                 <field name="class_id"/>
                             </group>
                         </page>
-                        <page name="identity" string="Documents &amp; Identity">
+                        <page string="Documents">
                             <group>
-                                <group>
-                                    <field name="profile_image" widget="image" class="oe_avatar"/>
-                                    <field name="passport_image" widget="image"/>
-                                    <field name="cid_letter" widget="image"/>
-                                </group>
-                                <group>
-                                    <field name="contract_url" widget="url"/>
-                                    <field name="uni_certificates" widget="image"/>
-                                </group>
+                                <field name="profile_image" widget="image" class="oe_avatar"/>
+                                <field name="passport_image" widget="image"/>
+                                <field name="cid_letter" widget="image"/>
+                                <field name="contract_url" widget="url"/>
                             </group>
                         </page>
-                        <page name="kin" string="Kin of Next">
+                        <page string="Next of Kin">
                             <group>
-                                <group string="Kin 1">
+                                <group string="Contact 1">
                                     <field name="kin1_name"/>
                                     <field name="kin1_phone"/>
                                     <field name="kin1_image" widget="image"/>
                                 </group>
-                                <group string="Kin 2">
+                                <group string="Contact 2">
                                     <field name="kin2_name"/>
                                     <field name="kin2_phone"/>
                                     <field name="kin2_image" widget="image"/>
                                 </group>
                             </group>
                         </page>
-                        <page name="cases" string="Discipline Cases">
+                        <page string="Discipline Cases">
                             <field name="case_ids">
                                 <list>
                                     <field name="date_reported"/>

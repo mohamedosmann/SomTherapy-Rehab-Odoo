@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root Menu -->
+    <menuitem id="rehab_root_menu" name="Rehab Management" sequence="10"/>
+
+    <!-- Top Categories -->
+    <menuitem id="rehab_students_menu_cat" name="Students" parent="rehab_root_menu" sequence="10"/>
+    <menuitem id="rehab_discipline_menu_cat" name="Discipline" parent="rehab_root_menu" sequence="20"/>
+    <menuitem id="rehab_dormitory_menu_cat" name="Dormitory" parent="rehab_root_menu" sequence="30"/>
+    <menuitem id="rehab_configuration_cat" name="Configuration" parent="rehab_root_menu" sequence="100"/>
+
+    <!-- Actions -->
+    <record id="action_rehab_student" model="ir.actions.act_window">
+        <field name="name">Students</field>
+        <field name="res_model">rehab.student</field>
+        <field name="view_mode">list,form,kanban</field>
+    </record>
+
+    <record id="action_rehab_discipline_case" model="ir.actions.act_window">
+        <field name="name">Discipline Cases</field>
+        <field name="res_model">rehab.discipline.case</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_rehab_room" model="ir.actions.act_window">
+        <field name="name">Rooms</field>
+        <field name="res_model">rehab.room</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_rehab_teacher" model="ir.actions.act_window">
+        <field name="name">Teachers</field>
+        <field name="res_model">rehab.teacher</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_rehab_class" model="ir.actions.act_window">
+        <field name="name">Classes</field>
+        <field name="res_model">rehab.class</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Submenus -->
+    <menuitem id="menu_rehab_student" name="Students" parent="rehab_students_menu_cat" action="action_rehab_student" sequence="10"/>
+    <menuitem id="menu_rehab_discipline_case" name="Discipline Cases" parent="rehab_discipline_menu_cat" action="action_rehab_discipline_case" sequence="10"/>
+    <menuitem id="menu_rehab_room" name="Rooms" parent="rehab_dormitory_menu_cat" action="action_rehab_room" sequence="10"/>
+    <menuitem id="menu_rehab_teacher" name="Teachers" parent="rehab_dormitory_menu_cat" action="action_rehab_teacher" sequence="20"/>
+    <menuitem id="menu_rehab_class" name="Classes" parent="rehab_dormitory_menu_cat" action="action_rehab_class" sequence="30"/>
+
+    <!-- Financials / Billing -->
+    <menuitem id="menu_rehab_billing" name="Monthly Billing" parent="rehab_configuration_cat" action="action_rehab_billing_wizard" sequence="10"/>
+</odoo>

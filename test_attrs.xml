@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><odoo><record id="a1" model="ir.actions.act_window"><field name="name">Test</field></record><menuitem id="m1" name="root"/><menuitem id="m2" parent="m1" action="a1"/></odoo>

@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><odoo><menuitem id="m1" name="n1"/><record id="r1" model="res.partner"><field name="name">Test</field></record></odoo>

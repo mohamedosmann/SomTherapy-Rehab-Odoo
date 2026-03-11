@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="rehab_discipline_case_view_tree" model="ir.ui.view">
+        <field name="name">rehab.discipline.case.list</field>
+        <field name="model">rehab.discipline.case</field>
+        <field name="arch" type="xml">
+            <list string="Discipline Cases" decoration-danger="priority == 'Critical'" decoration-warning="priority == 'High'">
+                <field name="date_reported"/>
+                <field name="student_id"/>
+                <field name="violation"/>
+                <field name="fine_amount" sum="Total Fines"/>
+                <field name="payment_status" widget="badge"/>
+                <field name="priority"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="rehab_discipline_case_view_form" model="ir.ui.view">
+        <field name="name">rehab.discipline.case.form</field>
+        <field name="model">rehab.discipline.case</field>
+        <field name="arch" type="xml">
+            <form string="Discipline Case">
+                <header>
+                    <button name="action_generate_fine_invoice" string="Generate Invoice" type="object" class="oe_highlight" invisible="invoice_id or fine_amount == 0"/>
+                    <field name="status" widget="statusbar" clickable="1"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(account.action_move_out_invoice_type)d" type="action" class="oe_stat_button" icon="fa-pencil-square-o" context="{'search_default_id': invoice_id}" invisible="not invoice_id">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Invoice</span>
+                            </div>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="student_id"/>
+                            <field name="partner_id" invisible="1"/>
+                            <field name="violation"/>
+                            <field name="priority"/>
+                        </group>
+                        <group name="financial" string="Financial">
+                            <field name="date_reported"/>
+                            <field name="fine_amount"/>
+                            <field name="invoice_id" invisible="not invoice_id"/>
+                            <field name="payment_status" invisible="not invoice_id" widget="badge"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="notes" string="Notes">
+                            <field name="notes"/>
+                        </page>
+                        <page name="sessions" string="Sessions">
+                            <field name="session_ids">
+                                <list editable="bottom">
+                                    <field name="date"/>
+                                    <field name="session_type"/>
+                                    <field name="notes"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="logs" string="Progress Logs">
+                            <field name="log_ids">
+                                <list editable="bottom">
+                                    <field name="date"/>
+                                    <field name="note"/>
+                                    <field name="behavior_score"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+</odoo>

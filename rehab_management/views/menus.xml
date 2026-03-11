@@ -1,74 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Root Menu -->
-    <menuitem id="rehab_root_menu" name="Rehab Management" sequence="10"/>
+    <data>
+        <!-- Root Menu -->
+        <menuitem id="rehab_root_menu" name="Rehab Management" sequence="10"/>
 
-    <!-- Top Categories -->
-    <menuitem id="rehab_students_menu_cat" name="Students" parent="rehab_root_menu" sequence="10"/>
-    <menuitem id="rehab_discipline_menu_cat" name="Discipline" parent="rehab_root_menu" sequence="20"/>
-    <menuitem id="rehab_dormitory_menu_cat" name="Dormitory" parent="rehab_root_menu" sequence="30"/>
-    <menuitem id="rehab_configuration_cat" name="Configuration" parent="rehab_root_menu" sequence="100"/>
+        <!-- Top Categories -->
+        <menuitem id="rehab_students_menu_cat" name="Students" parent="rehab_root_menu" sequence="10"/>
+        <menuitem id="rehab_discipline_menu_cat" name="Discipline" parent="rehab_root_menu" sequence="20"/>
+        <menuitem id="rehab_dormitory_menu_cat" name="Dormitory" parent="rehab_root_menu" sequence="30"/>
+        <menuitem id="rehab_logistics_menu_cat" name="Logistics" parent="rehab_root_menu" sequence="40"/>
+        <menuitem id="rehab_financials_menu_cat" name="Financials" parent="rehab_root_menu" sequence="50"/>
+        <menuitem id="rehab_configuration_cat" name="Configuration" parent="rehab_root_menu" sequence="100"/>
 
-    <!-- Actions -->
-    <record id="action_rehab_student" model="ir.actions.act_window">
-        <field name="name">Students</field>
-        <field name="res_model">rehab.student</field>
-        <field name="view_mode">list,form,kanban</field>
-    </record>
+        <!-- Actions -->
+        <record id="action_rehab_student" model="ir.actions.act_window">
+            <field name="name">Students</field>
+            <field name="res_model">rehab.student</field>
+            <field name="view_mode">list,form,kanban</field>
+        </record>
 
-    <record id="action_rehab_discipline_case" model="ir.actions.act_window">
-        <field name="name">Discipline Cases</field>
-        <field name="res_model">rehab.discipline.case</field>
-        <field name="view_mode">list,form</field>
-    </record>
+        <record id="action_rehab_discipline_case" model="ir.actions.act_window">
+            <field name="name">Discipline Cases</field>
+            <field name="res_model">rehab.discipline.case</field>
+            <field name="view_mode">list,form</field>
+        </record>
 
-    <record id="action_rehab_room" model="ir.actions.act_window">
-        <field name="name">Rooms</field>
-        <field name="res_model">rehab.room</field>
-        <field name="view_mode">list,form</field>
-    </record>
+        <record id="action_rehab_room" model="ir.actions.act_window">
+            <field name="name">Rooms</field>
+            <field name="res_model">rehab.room</field>
+            <field name="view_mode">list,form</field>
+        </record>
 
-    <record id="action_rehab_teacher" model="ir.actions.act_window">
-        <field name="name">Teachers</field>
-        <field name="res_model">rehab.teacher</field>
-        <field name="view_mode">list,form</field>
-    </record>
+        <record id="action_rehab_teacher" model="ir.actions.act_window">
+            <field name="name">Teachers</field>
+            <field name="res_model">rehab.teacher</field>
+            <field name="view_mode">list,form</field>
+        </record>
 
-    <record id="action_rehab_class" model="ir.actions.act_window">
-        <field name="name">Classes</field>
-        <field name="res_model">rehab.class</field>
-        <field name="view_mode">list,form</field>
-    </record>
+        <record id="action_rehab_class" model="ir.actions.act_window">
+            <field name="name">Classes</field>
+            <field name="res_model">rehab.class</field>
+            <field name="view_mode">list,form</field>
+        </record>
 
-    <!-- Submenus -->
-    <menuitem id="menu_rehab_student" name="Students" parent="rehab_students_menu_cat" action="action_rehab_student" sequence="10"/>
-    <menuitem id="menu_rehab_discipline_case" name="Discipline Cases" parent="rehab_discipline_menu_cat" action="action_rehab_discipline_case" sequence="10"/>
-    <menuitem id="menu_rehab_room" name="Rooms" parent="rehab_dormitory_menu_cat" action="action_rehab_room" sequence="10"/>
-    <menuitem id="menu_rehab_teacher" name="Teachers" parent="rehab_dormitory_menu_cat" action="action_rehab_teacher" sequence="20"/>
-    <menuitem id="menu_rehab_class" name="Classes" parent="rehab_dormitory_menu_cat" action="action_rehab_class" sequence="30"/>
+        <!-- Submenus: Students -->
+        <menuitem id="menu_rehab_student" name="Students" parent="rehab_students_menu_cat" action="action_rehab_student" sequence="10"/>
+        
+        <!-- Submenus: Discipline -->
+        <menuitem id="menu_rehab_discipline_case" name="Discipline Cases" parent="rehab_discipline_menu_cat" action="action_rehab_discipline_case" sequence="10"/>
+        
+        <!-- Submenus: Dormitory -->
+        <menuitem id="menu_rehab_room" name="Rooms" parent="rehab_dormitory_menu_cat" action="action_rehab_room" sequence="10"/>
+        <menuitem id="menu_rehab_teacher" name="Teachers" parent="rehab_dormitory_menu_cat" action="action_rehab_teacher" sequence="20"/>
+        <menuitem id="menu_rehab_class" name="Classes" parent="rehab_dormitory_menu_cat" action="action_rehab_class" sequence="30"/>
 
-    <!-- Financials / Billing -->
-    <menuitem id="menu_rehab_invoices"
-        name="Customer Invoices"
-        parent="rehab_configuration_cat"
-        action="account.action_move_out_invoice_type"
-        sequence="5"/>
+        <!-- Submenus: Logistics (Native Odoo) -->
+        <menuitem id="menu_rehab_inventory" name="Inventory Overview" parent="rehab_logistics_menu_cat" action="stock.stock_picking_type_action" sequence="10"/>
+        <menuitem id="menu_rehab_stock_moves" name="Stock Moves" parent="rehab_logistics_menu_cat" action="stock.stock_move_line_action" sequence="20"/>
+        <menuitem id="menu_rehab_stock_levels" name="Current Stock Levels" parent="rehab_logistics_menu_cat" action="stock.stock_quant_action" sequence="30"/>
+        <menuitem id="menu_rehab_purchase_rfq" name="Requests for Quotation" parent="rehab_logistics_menu_cat" action="purchase.purchase_rfq" sequence="40"/>
+        <menuitem id="menu_rehab_purchase_orders" name="Purchase Orders" parent="rehab_logistics_menu_cat" action="purchase.purchase_form_action" sequence="50"/>
 
-    <menuitem id="menu_rehab_billing" name="Monthly Billing" parent="rehab_configuration_cat" action="action_rehab_billing_wizard" sequence="10"/>
+        <!-- Submenus: Financials (Native Odoo + Custom Billing) -->
+        <menuitem id="menu_rehab_billing" name="Generate Monthly Billing" parent="rehab_financials_menu_cat" action="action_rehab_billing_wizard" sequence="5"/>
+        <menuitem id="menu_rehab_customer_invoices" name="Customer Invoices" parent="rehab_financials_menu_cat" action="account.action_move_out_invoice_type" sequence="10"/>
+        <menuitem id="menu_rehab_vendor_bills" name="Vendor Bills" parent="rehab_financials_menu_cat" action="account.action_move_in_invoice_type" sequence="20"/>
+        <menuitem id="menu_rehab_customer_payments" name="Customer Payments" parent="rehab_financials_menu_cat" action="account.action_account_payments" sequence="30"/>
+        <menuitem id="menu_rehab_vendor_payments" name="Vendor Payments" parent="rehab_financials_menu_cat" action="account.action_account_payments_payable" sequence="40"/>
 
-    <!-- Accounting Configuration (links to Odoo native) -->
-    <menuitem id="menu_rehab_accounting_section" name="Accounting Settings" parent="rehab_configuration_cat" sequence="20"/>
+        <!-- Accounting Configuration & Reports -->
+        <menuitem id="menu_rehab_accounting_section" name="Accounting Settings" parent="rehab_configuration_cat" sequence="20"/>
+        <menuitem id="menu_rehab_journals" name="Journals" parent="menu_rehab_accounting_section" action="account.action_account_journal_form" sequence="10"/>
+        <menuitem id="menu_rehab_chart_of_accounts" name="Chart of Accounts" parent="menu_rehab_accounting_section" action="account.action_account_form" sequence="20"/>
 
-    <menuitem id="menu_rehab_journals"
-        name="Journals"
-        parent="menu_rehab_accounting_section"
-        action="account.action_account_journal_form"
-        sequence="10"/>
-
-    <menuitem id="menu_rehab_chart_of_accounts"
-        name="Chart of Accounts"
-        parent="menu_rehab_accounting_section"
-        action="account.action_account_form"
-        sequence="20"/>
-
+        <menuitem id="menu_rehab_reports_section" name="Reports" parent="rehab_configuration_cat" sequence="30"/>
+        <menuitem id="menu_rehab_report_invoice_analysis" name="Invoice Analysis" parent="menu_rehab_reports_section" action="account.action_account_invoice_report_all" sequence="10"/>
+        <menuitem id="menu_rehab_report_journal_items" name="Journal Items (Ledger)" parent="menu_rehab_reports_section" action="account.action_account_moves_all" sequence="20"/>
+    </data>
 </odoo>
+

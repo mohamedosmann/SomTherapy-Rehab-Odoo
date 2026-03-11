@@ -14,7 +14,7 @@
                             <list>
                                 <field name="student_id"/>
                                 <field name="name"/>
-                                <field name="type"/>
+                                <field name="type_id"/>
                                 <field name="monthly_fee"/>
                             </list>
                         </field>

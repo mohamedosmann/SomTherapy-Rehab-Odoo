@@ -1,6 +1,14 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
+class RehabStudentType(models.Model):
+    _name = 'rehab.student.type'
+    _description = 'Student Type'
+
+    name = fields.Char(string='Type Name', required=True)
+    description = fields.Text(string='Description')
+
+
 class RehabStudent(models.Model):
     _name = 'rehab.student'
     _description = 'Rehab Student'
@@ -10,10 +18,7 @@ class RehabStudent(models.Model):
     name = fields.Char(related='partner_id.name', string='Name', store=True, readonly=False)
     student_id = fields.Char(string='Student ID', required=True, copy=False)
     phone = fields.Char(string='Phone')
-    type = fields.Selection([
-        ('Normal', 'Normal'),
-        ('VIP', 'VIP')
-    ], string='Type', default='Normal', tracking=True)
+    type_id = fields.Many2one('rehab.student.type', string='Type', tracking=True)
     status = fields.Selection([
         ('Active', 'Active'),
         ('Inactive', 'Inactive')
@@ -53,11 +58,11 @@ class RehabStudent(models.Model):
         'Student ID must be unique!'
     )
 
-    @api.depends('type', 'room_id.type')
+    @api.depends('type_id', 'room_id.type')
     def _compute_monthly_fee(self):
         for record in self:
             # Basic Logic: VIP gets a base rate, plus room type adjustments
-            base_rate = 500.0 if record.type == 'VIP' else 300.0
+            base_rate = 500.0 if record.type_id and record.type_id.name == 'VIP' else 300.0
             room_extra = 0.0
             if record.room_id:
                 room_extra = 100.0 if record.room_id.type == 'VIP' else 50.0

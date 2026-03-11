@@ -48,5 +48,27 @@
     <menuitem id="menu_rehab_class" name="Classes" parent="rehab_dormitory_menu_cat" action="action_rehab_class" sequence="30"/>
 
     <!-- Financials / Billing -->
+    <menuitem id="menu_rehab_invoices"
+        name="Customer Invoices"
+        parent="rehab_configuration_cat"
+        action="account.action_move_out_invoice_type"
+        sequence="5"/>
+
     <menuitem id="menu_rehab_billing" name="Monthly Billing" parent="rehab_configuration_cat" action="action_rehab_billing_wizard" sequence="10"/>
+
+    <!-- Accounting Configuration (links to Odoo native) -->
+    <menuitem id="menu_rehab_accounting_section" name="Accounting Settings" parent="rehab_configuration_cat" sequence="20"/>
+
+    <menuitem id="menu_rehab_journals"
+        name="Journals"
+        parent="menu_rehab_accounting_section"
+        action="account.action_account_journal_form"
+        sequence="10"/>
+
+    <menuitem id="menu_rehab_chart_of_accounts"
+        name="Chart of Accounts"
+        parent="menu_rehab_accounting_section"
+        action="account.action_account_form"
+        sequence="20"/>
+
 </odoo>

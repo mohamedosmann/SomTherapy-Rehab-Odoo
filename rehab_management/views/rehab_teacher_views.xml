@@ -37,6 +37,7 @@
                             <field name="phone"/>
                             <field name="email"/>
                         </group>
+                        <group>
                             <field name="specialization"/>
                             <field name="department"/>
                             <field name="salary_amount"/>

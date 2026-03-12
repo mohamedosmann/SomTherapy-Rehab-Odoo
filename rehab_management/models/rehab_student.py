@@ -77,6 +77,7 @@ class RehabStudent(models.Model):
                     'name': vals.get('name'),
                     'customer_rank': 1,
                     'is_company': False,
+                    'property_account_receivable_id': self.env.ref('rehab_management.account_students_receivable').id,
                 })
                 vals['partner_id'] = partner.id
         return super(RehabStudent, self).create(vals_list)

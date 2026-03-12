@@ -13,8 +13,6 @@ class RehabRoom(models.Model):
     is_archived = fields.Boolean(string='Archived', default=False)
     student_ids = fields.One2many('rehab.student', 'room_id', string='Students')
 
-    class_ids = fields.One2many('rehab.class', 'teacher_id', string='Classes')
-
 class RehabClass(models.Model):
     _name = 'rehab.class'
     _description = 'Class'

@@ -42,68 +42,6 @@
         </field>
     </record>
 
-    <!-- Teacher Views -->
-    <record id="rehab_teacher_view_tree" model="ir.ui.view">
-        <field name="name">rehab.teacher.list</field>
-        <field name="model">rehab.teacher</field>
-        <field name="arch" type="xml">
-            <list string="Teachers">
-                <field name="name"/>
-                <field name="role"/>
-                <field name="subject"/>
-                <field name="email"/>
-            </list>
-        </field>
-    </record>
-
-    <record id="rehab_teacher_view_form" model="ir.ui.view">
-        <field name="name">rehab.teacher.form</field>
-        <field name="model">rehab.teacher</field>
-        <field name="arch" type="xml">
-            <form string="Teacher">
-                <sheet>
-                    <div class="oe_title">
-                        <h1>
-                            <field name="name" placeholder="Teacher Name"/>
-                        </h1>
-                    </div>
-                    <group>
-                        <group>
-                            <field name="role"/>
-                            <field name="subject"/>
-                            <field name="email"/>
-                            <field name="phone"/>
-                        </group>
-                        <group>
-                            <field name="salary"/>
-                            <field name="hire_date"/>
-                            <field name="is_archived"/>
-                        </group>
-                    </group>
-                    <notebook>
-                        <page name="identity" string="Documents">
-                            <group>
-                                <field name="profile_image" widget="image" class="oe_avatar"/>
-                                <field name="passport_image" widget="image"/>
-                                <field name="cid_letter" widget="image"/>
-                                <field name="contract_url" widget="url"/>
-                                <field name="uni_certificates" widget="image"/>
-                            </group>
-                        </page>
-                        <page name="classes" string="Classes">
-                            <field name="class_ids" readonly="1">
-                                <list>
-                                    <field name="name"/>
-                                    <field name="schedule"/>
-                                </list>
-                            </field>
-                        </page>
-                    </notebook>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
     <!-- Class Views -->
     <record id="rehab_class_view_tree" model="ir.ui.view">
         <field name="name">rehab.class.list</field>

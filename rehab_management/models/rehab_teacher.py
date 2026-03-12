@@ -18,10 +18,13 @@ class RehabTeacher(models.Model):
     ], string='Status', default='active', tracking=True)
     
     image = fields.Binary(string='Image')
+    class_ids = fields.One2many('rehab.class', 'teacher_id', string='Classes')
     
-    _sql_constraints = [
-        ('teacher_id_unique', 'UNIQUE(teacher_id)', 'Teacher ID must be unique!')
-    ]
+    salary_amount = fields.Float(string='Monthly Salary', default=0.0)
+    
+    # _sql_constraints = [
+    #     ('teacher_id_unique', 'UNIQUE(teacher_id)', 'Teacher ID must be unique!')
+    # ]
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -31,6 +34,7 @@ class RehabTeacher(models.Model):
                     'name': vals.get('name'),
                     'is_company': False,
                     'supplier_rank': 1, # They are providers of service
+                    'property_account_payable_id': self.env.ref('rehab_management.account_staff_payable').id,
                 })
                 vals['partner_id'] = partner.id
         return super(RehabTeacher, self).create(vals_list)

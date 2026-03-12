@@ -10,8 +10,8 @@ class RehabStudentType(models.Model):
 
 
 class RehabStudent(models.Model):
-    _name = 'rehab.student'
-    _description = 'Rehab Student'
+    _name = "rehab.student"
+    _description = "Rehab Student"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     partner_id = fields.Many2one('res.partner', string='Financial Account', ondelete='restrict')

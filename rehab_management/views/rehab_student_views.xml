@@ -4,7 +4,7 @@
         <field name="name">rehab.student.list</field>
         <field name="model">rehab.student</field>
         <field name="arch" type="xml">
-            <list string="Students">
+            <tree string="Students">
                 <field name="student_id"/>
                 <field name="name"/>
                 <field name="phone"/>
@@ -13,7 +13,7 @@
                 <field name="monthly_fee" sum="Total Fees"/>
                 <field name="room_id"/>
                 <field name="class_id"/>
-            </list>
+            </tree>
         </field>
     </record>
 
@@ -23,12 +23,31 @@
         <field name="arch" type="xml">
             <form string="Student">
                 <sheet>
+                    <field name="currency_id" invisible="1"/>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_invoices"
                             type="object"
                             class="oe_stat_button"
-                            icon="fa-file-text-o"
-                            string="Invoices"/>
+                            icon="fa-pencil-square-o">
+                            <div class="o_form_field o_stat_info">
+                                <span class="o_stat_value"><field name="total_invoiced" widget="monetary"/></span>
+                                <span class="o_stat_text">Invoiced</span>
+                            </div>
+                        </button>
+                        <button name="action_view_payments"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-money">
+                            <div class="o_form_field o_stat_info">
+                                <span class="o_stat_value"><field name="total_paid" widget="monetary"/></span>
+                                <span class="o_stat_text">Paid</span>
+                            </div>
+                        </button>
+                        <button name="action_register_advanced_payment"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-plus-circle"
+                            string="Pay Advance"/>
                     </div>
                     <div class="oe_title">
                         <label for="name"/>
@@ -44,10 +63,11 @@
                             <field name="status"/>
                             <field name="department"/>
                         </group>
-                        <group string="Financial">
+                        <group string="Financial Summary">
                             <field name="monthly_fee"/>
                             <field name="last_billing_date"/>
-                            <field name="prepaid_balance"/>
+                            <field name="prepaid_balance" widget="monetary" decoration-bf="1" decoration-success="prepaid_balance &gt; 0"/>
+                            <field name="total_due" widget="monetary" decoration-danger="total_due &gt; 0"/>
                         </group>
                     </group>
                     <notebook>
@@ -81,13 +101,13 @@
                         </page>
                         <page string="Discipline Cases">
                             <field name="case_ids">
-                                <list>
+                                <tree>
                                     <field name="date_reported"/>
                                     <field name="violation"/>
                                     <field name="priority"/>
                                     <field name="status"/>
                                     <field name="fine_amount" sum="Total Fines"/>
-                                </list>
+                                </tree>
                             </field>
                         </page>
                     </notebook>
@@ -132,19 +152,21 @@
                 <field name="type_id"/>
                 <field name="status"/>
                 <templates>
-                    <t t-name="card">
-                        <div class="o_kanban_record_top">
-                            <div class="o_kanban_record_headings">
-                                <strong class="o_kanban_record_title"><field name="name"/></strong>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_record_top">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title"><field name="name"/></strong>
+                                </div>
                             </div>
-                        </div>
-                        <div class="o_kanban_record_body">
-                            <field name="student_id"/>
-                            <div><field name="type_id"/></div>
-                        </div>
-                        <div class="o_kanban_record_bottom">
-                            <div class="oe_kanban_bottom_left">
-                                <field name="status" widget="label_selection" options="{'classes': {'Active': 'success', 'Inactive': 'warning'}}"/>
+                            <div class="o_kanban_record_body">
+                                <field name="student_id"/>
+                                <div><field name="type_id"/></div>
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                <div class="oe_kanban_bottom_left">
+                                    <field name="status" widget="label_selection" options="{'classes': {'Active': 'success', 'Inactive': 'warning'}}"/>
+                                </div>
                             </div>
                         </div>
                     </t>

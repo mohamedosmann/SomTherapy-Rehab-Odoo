@@ -4,7 +4,7 @@
         <field name="name">rehab.discipline.case.list</field>
         <field name="model">rehab.discipline.case</field>
         <field name="arch" type="xml">
-            <list string="Discipline Cases" decoration-danger="priority == 'Critical'" decoration-warning="priority == 'High'">
+            <tree string="Discipline Cases" decoration-danger="priority == 'Critical'" decoration-warning="priority == 'High'">
                 <field name="date_reported"/>
                 <field name="student_id"/>
                 <field name="violation"/>
@@ -12,7 +12,7 @@
                 <field name="payment_status" widget="badge"/>
                 <field name="priority"/>
                 <field name="status"/>
-            </list>
+            </tree>
         </field>
     </record>
 
@@ -53,20 +53,20 @@
                         </page>
                         <page name="sessions" string="Sessions">
                             <field name="session_ids">
-                                <list editable="bottom">
+                                <tree editable="bottom">
                                     <field name="date"/>
                                     <field name="session_type"/>
                                     <field name="notes"/>
-                                </list>
+                                </tree>
                             </field>
                         </page>
                         <page name="logs" string="Progress Logs">
                             <field name="log_ids">
-                                <list editable="bottom">
+                                <tree editable="bottom">
                                     <field name="date"/>
                                     <field name="note"/>
                                     <field name="behavior_score"/>
-                                </list>
+                                </tree>
                             </field>
                         </page>
                     </notebook>

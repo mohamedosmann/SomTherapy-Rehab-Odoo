@@ -43,6 +43,12 @@
             <field name="view_mode">list,form</field>
         </record>
 
+        <record id="action_rehab_student_type" model="ir.actions.act_window">
+            <field name="name">Student Types</field>
+            <field name="res_model">rehab.student.type</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
         <!-- Submenus: Students -->
         <menuitem id="menu_rehab_student" name="Students" parent="rehab_students_menu_cat" action="action_rehab_student" sequence="10"/>
         
@@ -72,6 +78,8 @@
         <menuitem id="menu_rehab_accounting_section" name="Accounting Settings" parent="rehab_configuration_cat" sequence="20"/>
         <menuitem id="menu_rehab_journals" name="Journals" parent="menu_rehab_accounting_section" action="account.action_account_journal_form" sequence="10"/>
         <menuitem id="menu_rehab_chart_of_accounts" name="Chart of Accounts" parent="menu_rehab_accounting_section" action="account.action_account_form" sequence="20"/>
+
+        <menuitem id="menu_rehab_student_type" name="Student Types" parent="rehab_configuration_cat" action="action_rehab_student_type" sequence="5"/>
 
         <menuitem id="menu_rehab_reports_section" name="Reports" parent="rehab_configuration_cat" sequence="30"/>
         <menuitem id="menu_rehab_report_invoice_analysis" name="Invoice Analysis" parent="menu_rehab_reports_section" action="account.action_account_invoice_report_all" sequence="10"/>

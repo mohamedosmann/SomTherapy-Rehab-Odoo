@@ -16,6 +16,8 @@
         'views/rehab_student_views.xml',
         'views/rehab_discipline_views.xml',
         'views/rehab_dormitory_views.xml',
+        'views/rehab_teacher_views.xml',
+        'views/account_move_views.xml',
     ],
     'installable': True,
     'application': True,

@@ -1,5 +1,4 @@
 from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError
 
 class RehabStudentType(models.Model):
     _name = 'rehab.student.type'
@@ -14,7 +13,7 @@ class RehabStudent(models.Model):
     _description = 'Rehab Student'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    partner_id = fields.Many2one('res.partner', string='Financial Account', ondelete='restrict', help="Link to Odoo's native partner for accounting.")
+    partner_id = fields.Many2one('res.partner', string='Financial Account', ondelete='restrict')
     name = fields.Char(related='partner_id.name', string='Name', store=True, readonly=False)
     student_id = fields.Char(string='Student ID', required=True, copy=False)
     phone = fields.Char(string='Phone')
@@ -25,6 +24,10 @@ class RehabStudent(models.Model):
     ], string='Status', default='Active', tracking=True)
     department = fields.Char(string='Department')
     is_archived = fields.Boolean(string='Archived', default=False)
+
+    # Re-adding missing fields that are in the XML view to prevent installation errors
+    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
+    currency_id = fields.Many2one('res.currency', related='company_id.currency_id')
 
     # Documents & Identity
     profile_image = fields.Binary(string='Profile Image')
@@ -47,21 +50,19 @@ class RehabStudent(models.Model):
     # Financial Fields
     monthly_fee = fields.Float(string='Monthly Fee', compute='_compute_monthly_fee', store=True)
     last_billing_date = fields.Date(string='Last Billing Date')
-    prepaid_balance = fields.Float(string='Prepaid Balance', default=0.0)
+    prepaid_balance = fields.Monetary(string='Prepaid Balance', compute='_compute_prepaid_balance')
     opening_balance = fields.Float(string='Opening Balance', default=0.0)
     opening_balance_date = fields.Date(string='Opening Balance Date')
+    
+    total_invoiced = fields.Monetary(string='Total Invoiced', compute='_compute_financial_totals')
+    total_paid = fields.Monetary(string='Total Paid', compute='_compute_financial_totals')
+    total_due = fields.Monetary(string='Total Due', compute='_compute_financial_totals')
 
     case_ids = fields.One2many('rehab.discipline.case', 'student_id', string='Discipline Cases')
-
-    _student_id_unique = models.Constraint(
-        'UNIQUE(student_id)',
-        'Student ID must be unique!'
-    )
 
     @api.depends('type_id', 'room_id.type')
     def _compute_monthly_fee(self):
         for record in self:
-            # Basic Logic: VIP gets a base rate, plus room type adjustments
             base_rate = 500.0 if record.type_id and record.type_id.name == 'VIP' else 300.0
             room_extra = 0.0
             if record.room_id:
@@ -72,7 +73,6 @@ class RehabStudent(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             if not vals.get('partner_id') and vals.get('name'):
-                # Automatically create a partner if not provided
                 partner = self.env['res.partner'].create({
                     'name': vals.get('name'),
                     'customer_rank': 1,
@@ -81,8 +81,37 @@ class RehabStudent(models.Model):
                 vals['partner_id'] = partner.id
         return super(RehabStudent, self).create(vals_list)
 
+    @api.depends('partner_id')
+    def _compute_prepaid_balance(self):
+        for record in self:
+            if not record.partner_id:
+                record.prepaid_balance = 0.0
+                continue
+            payments = self.env['account.payment'].search([
+                ('partner_id', '=', record.partner_id.id),
+                ('state', '=', 'posted'),
+                ('is_reconciled', '=', False)
+            ])
+            record.prepaid_balance = sum(payments.mapped('amount'))
+
+    @api.depends('partner_id')
+    def _compute_financial_totals(self):
+        for record in self:
+            if not record.partner_id:
+                record.total_invoiced = 0.0
+                record.total_paid = 0.0
+                record.total_due = 0.0
+                continue
+            invoices = self.env['account.move'].search([
+                ('partner_id', '=', record.partner_id.id),
+                ('move_type', '=', 'out_invoice'),
+                ('state', '=', 'posted')
+            ])
+            record.total_invoiced = sum(invoices.mapped('amount_total'))
+            record.total_due = sum(invoices.mapped('amount_residual'))
+            record.total_paid = record.total_invoiced - record.total_due
+
     def action_view_invoices(self):
-        """Open the list of invoices for this student's linked partner."""
         self.ensure_one()
         return {
             'type': 'ir.actions.act_window',
@@ -90,9 +119,31 @@ class RehabStudent(models.Model):
             'res_model': 'account.move',
             'view_mode': 'list,form',
             'domain': [('partner_id', '=', self.partner_id.id), ('move_type', '=', 'out_invoice')],
-            'context': {
-                'default_partner_id': self.partner_id.id,
-                'default_move_type': 'out_invoice',
-            },
+            'context': {'default_partner_id': self.partner_id.id, 'default_move_type': 'out_invoice'},
         }
 
+    def action_view_payments(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Payments',
+            'res_model': 'account.payment',
+            'view_mode': 'list,form',
+            'domain': [('partner_id', '=', self.partner_id.id)],
+            'context': {'default_partner_id': self.partner_id.id, 'default_payment_type': 'inbound'},
+        }
+
+    def action_register_advanced_payment(self):
+        self.ensure_one()
+        return {
+            'name': 'Register Advanced Payment',
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.payment',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_partner_id': self.partner_id.id,
+                'default_payment_type': 'inbound',
+                'default_partner_type': 'customer',
+            },
+        }

@@ -1,0 +1,341 @@
+﻿python.exe : 2026-03-12 
+14:31:31,289 5364 WARNING 
+? odoo.tools.config: 
+missing --http-interface/h
+ttp_interface, using 
+0.0.0.0 by default, will 
+change to 127.0.0.1 in 
+20.0 
+At line:1 char:1
++ & "C:\Program 
+Files\Odoo 19.0.20260308\p
+ython\python.exe" 
+"C:\Program ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (2  
+  026-03-12 14:3....0.0   
+ .1 in 20.0 :String) [    
+], RemoteException
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+2026-03-12 14:31:31,289 
+5364 INFO ? odoo: Odoo 
+version 19.0-20260308 
+2026-03-12 14:31:31,289 
+5364 INFO ? odoo: Using 
+configuration file at c:\u
+sers\pc\.gemini\antigravit
+y\scratch\som-rehab-odoo\m
+y_odoo.conf 
+2026-03-12 14:31:31,289 
+5364 INFO ? odoo: addons 
+paths: _NamespacePath(['C:
+\\Program Files\\Odoo 19.0
+.20260308\\server\\odoo\\a
+ddons', 'C:\\Users\\PC\\Ap
+pData\\Local\\OpenERP S.A.
+\\Odoo\\addons\\19.0', 
+'c:\\program files\\odoo 1
+9.0.20260308\\server\\odoo
+\\addons', 'c:\\users\\pc\
+\.gemini\\antigravity\\scr
+atch\\som-rehab-odoo', 
+'c:\\program files\\odoo 1
+9.0.20260308\\server\\addo
+ns']) 
+2026-03-12 14:31:31,289 
+5364 INFO ? odoo: 
+database: 
+openpg@localhost:5432 
+2026-03-12 14:31:31,368 
+5364 WARNING ? 
+py.warnings: C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\sql_db.py:694: 
+UserWarning: Postgres 
+version is 120004, lower 
+than minimum required 
+130000
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo-bin", line 6, 
+in <module>
+    odoo.cli.main()
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\cli\command.py"
+, line 133, in main
+    command().run(args)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\cli\server.py",
+ line 127, in run
+    main(args)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\cli\server.py",
+ line 104, in main
+    db._create_empty_datab
+ase(db_name)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\service\db.py",
+ line 130, in 
+_create_empty_database
+    with 
+closing(db.cursor()) as 
+cr:
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\sql_db.py", 
+line 763, in cursor
+    return 
+Cursor(self.__pool, 
+self.__dbname, self.__dsn)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\sql_db.py", 
+line 365, in __init__
+    self._cnx: 
+PsycoConnection = 
+pool.borrow(dsn)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\tools\func.py",
+ line 88, in locked
+    return func(inst, 
+*args, **kwargs)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\sql_db.py", 
+line 694, in borrow
+    
+warnings.warn(f"Postgres 
+version is 
+{result.server_version}, 
+lower than minimum 
+required {MIN_PG_VERSION 
+* 10000}")
+ 
+2026-03-12 14:31:32,981 
+5364 INFO ? 
+odoo.service.server: HTTP 
+service (werkzeug) 
+running on 
+DESKTOP-Q6SROHI:8069 
+2026-03-12 14:31:33,066 
+5364 WARNING rehab-db 
+py.warnings: C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\sql_db.py:694: 
+UserWarning: Postgres 
+version is 120004, lower 
+than minimum required 
+130000
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo-bin", line 6, 
+in <module>
+    odoo.cli.main()
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\cli\command.py"
+, line 133, in main
+    command().run(args)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\cli\server.py",
+ line 127, in run
+    main(args)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\cli\server.py",
+ line 118, in main
+    rc = server.start(prel
+oad=config['db_name'], 
+stop=stop)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\service\server.
+py", line 1596, in start
+    rc = 
+server.run(preload, stop)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\service\server.
+py", line 668, in run
+    rc = preload_registrie
+s(preload)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\service\server.
+py", line 1510, in 
+preload_registries
+    registry = 
+Registry.new(dbname, updat
+e_module=update_module, in
+stall_modules=config['init
+'], upgrade_modules=config
+['update'], reinit_modules
+=config['reinit'])
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\tools\func.py",
+ line 88, in locked
+    return func(inst, 
+*args, **kwargs)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\orm\registry.py
+", line 164, in new
+    registry.init(db_name)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\orm\registry.py
+", line 301, in init
+    with 
+closing(self.cursor()) as 
+cr:
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\orm\registry.py
+", line 1168, in cursor
+    return 
+self._db.cursor()
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\sql_db.py", 
+line 763, in cursor
+    return 
+Cursor(self.__pool, 
+self.__dbname, self.__dsn)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\sql_db.py", 
+line 365, in __init__
+    self._cnx: 
+PsycoConnection = 
+pool.borrow(dsn)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\tools\func.py",
+ line 88, in locked
+    return func(inst, 
+*args, **kwargs)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\sql_db.py", 
+line 694, in borrow
+    
+warnings.warn(f"Postgres 
+version is 
+{result.server_version}, 
+lower than minimum 
+required {MIN_PG_VERSION 
+* 10000}")
+ 
+2026-03-12 14:31:33,119 
+5364 INFO rehab-db 
+odoo.modules.loading: 
+loading 1 modules... 
+2026-03-12 14:31:33,127 
+5364 INFO rehab-db 
+odoo.modules.loading: 1 
+modules loaded in 0.01s, 
+0 queries (+0 extra) 
+2026-03-12 14:31:33,138 
+5364 WARNING rehab-db 
+odoo.modules.module: 
+Missing `license` key in 
+manifest for 
+'rehab_management', 
+defaulting to LGPL-3 
+2026-03-12 14:31:33,168 
+5364 INFO rehab-db 
+odoo.modules.loading: 
+loading 57 modules... 
+2026-03-12 14:31:36,164 
+5364 INFO rehab-db 
+odoo.modules.loading: 57 
+modules loaded in 3.00s, 
+0 queries (+0 extra) 
+2026-03-12 14:31:36,475 
+5364 INFO rehab-db 
+odoo.modules.loading: 
+Modules loaded. 
+2026-03-12 14:31:36,557 
+5364 INFO rehab-db 
+odoo.registry: Registry 
+loaded in 3.574s 
+2026-03-12 14:31:36,627 
+5364 WARNING ? 
+py.warnings: C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\sql_db.py:694: 
+UserWarning: Postgres 
+version is 120004, lower 
+than minimum required 
+130000
+  File "C:\Program 
+Files\Odoo 19.0.20260308\p
+ython\Lib\threading.py", 
+line 1030, in _bootstrap
+    
+self._bootstrap_inner()
+  File "C:\Program 
+Files\Odoo 19.0.20260308\p
+ython\Lib\threading.py", 
+line 1073, in 
+_bootstrap_inner
+    self.run()
+  File "C:\Program 
+Files\Odoo 19.0.20260308\p
+ython\Lib\threading.py", 
+line 1010, in run
+    
+self._target(*self._args, 
+**self._kwargs)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\service\server.
+py", line 569, in 
+cron_thread
+    with contextlib.closin
+g(conn.cursor()) as cr:
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\sql_db.py", 
+line 763, in cursor
+    return 
+Cursor(self.__pool, 
+self.__dbname, self.__dsn)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\sql_db.py", 
+line 365, in __init__
+    self._cnx: 
+PsycoConnection = 
+pool.borrow(dsn)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\tools\func.py",
+ line 88, in locked
+    return func(inst, 
+*args, **kwargs)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\sql_db.py", 
+line 694, in borrow
+    
+warnings.warn(f"Postgres 
+version is 
+{result.server_version}, 
+lower than minimum 
+required {MIN_PG_VERSION 
+* 10000}")
+ 

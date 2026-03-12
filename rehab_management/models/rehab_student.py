@@ -88,6 +88,7 @@ class RehabStudent(models.Model):
             if not record.partner_id:
                 record.prepaid_balance = 0.0
                 continue
+            # Odoo 19 robust payment search
             payments = self.env['account.payment'].search([
                 ('partner_id', '=', record.partner_id.id),
                 ('state', '=', 'posted'),
@@ -103,6 +104,7 @@ class RehabStudent(models.Model):
                 record.total_paid = 0.0
                 record.total_due = 0.0
                 continue
+            # Search for posted customer invoices
             invoices = self.env['account.move'].search([
                 ('partner_id', '=', record.partner_id.id),
                 ('move_type', '=', 'out_invoice'),

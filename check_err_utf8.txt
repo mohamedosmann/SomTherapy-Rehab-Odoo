@@ -1,0 +1,54 @@
+﻿python.exe : 2026-03-12 
+17:34:15,581 12596 
+WARNING ? 
+odoo.tools.config: 
+missing --http-interface/h
+ttp_interface, using 
+0.0.0.0 by default, will 
+change to 127.0.0.1 in 
+20.0 
+At line:1 char:1
++ & "C:\Program 
+Files\Odoo 19.0.20260308\p
+ython\python.exe" 
+check_statu ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (2  
+  026-03-12 17:3....0.0   
+ .1 in 20.0 :String) [    
+], RemoteException
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+Traceback (most recent 
+call last):
+  File "C:\Users\PC\.gemin
+i\antigravity\scratch\som-
+rehab-odoo\check_status.py
+", line 11, in <module>
+    registry = Registry(co
+nfig['db_name'])
+               ^^^^^^^^^^^
+^^^^^^^^^^^^^^^^
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\orm\registry.py
+", line 118, in __new__
+    return 
+cls.registries[db_name]
+           
+~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\tools\lru.py", 
+line 57, in __getitem__
+    val = 
+self._values[key]
+          
+~~~~~~~~~~~~^^^^^
+TypeError: unhashable 
+type: 'list'

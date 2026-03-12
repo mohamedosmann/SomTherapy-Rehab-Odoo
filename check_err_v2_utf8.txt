@@ -1,0 +1,141 @@
+﻿python.exe : 2026-03-12 
+17:35:02,162 1668 WARNING 
+? odoo.tools.config: 
+missing --http-interface/h
+ttp_interface, using 
+0.0.0.0 by default, will 
+change to 127.0.0.1 in 
+20.0 
+At line:1 char:1
++ & "C:\Program 
+Files\Odoo 19.0.20260308\p
+ython\python.exe" 
+check_statu ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (2  
+  026-03-12 17:3....0.0   
+ .1 in 20.0 :String) [    
+], RemoteException
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+2026-03-12 17:35:02,257 
+1668 WARNING ? 
+py.warnings: C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\sql_db.py:694: 
+UserWarning: Postgres 
+version is 120004, lower 
+than minimum required 
+130000
+  File "C:\Users\PC\.gemin
+i\antigravity\scratch\som-
+rehab-odoo\check_status.py
+", line 14, in <module>
+    registry = 
+Registry(db_name)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\orm\registry.py
+", line 120, in __new__
+    return 
+cls.new(db_name)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\tools\func.py",
+ line 88, in locked
+    return func(inst, 
+*args, **kwargs)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\orm\registry.py
+", line 164, in new
+    registry.init(db_name)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\orm\registry.py
+", line 301, in init
+    with 
+closing(self.cursor()) as 
+cr:
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\orm\registry.py
+", line 1168, in cursor
+    return 
+self._db.cursor()
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\sql_db.py", 
+line 763, in cursor
+    return 
+Cursor(self.__pool, 
+self.__dbname, self.__dsn)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\sql_db.py", 
+line 365, in __init__
+    self._cnx: 
+PsycoConnection = 
+pool.borrow(dsn)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\tools\func.py",
+ line 88, in locked
+    return func(inst, 
+*args, **kwargs)
+  File "C:\Program 
+Files\Odoo 19.0.20260308\s
+erver\odoo\sql_db.py", 
+line 694, in borrow
+    
+warnings.warn(f"Postgres 
+version is 
+{result.server_version}, 
+lower than minimum 
+required {MIN_PG_VERSION 
+* 10000}")
+ 
+2026-03-12 17:35:02,340 
+1668 INFO ? 
+odoo.modules.loading: 
+loading 1 modules... 
+2026-03-12 17:35:05,383 
+1668 INFO ? 
+odoo.modules.loading: 1 
+modules loaded in 3.04s, 
+0 queries (+0 extra) 
+2026-03-12 17:35:05,396 
+1668 WARNING ? 
+odoo.modules.module: 
+Missing `license` key in 
+manifest for 
+'rehab_management', 
+defaulting to LGPL-3 
+2026-03-12 17:35:05,433 
+1668 INFO ? 
+odoo.modules.loading: 
+loading 57 modules... 
+2026-03-12 17:35:09,919 
+1668 INFO ? 
+odoo.modules.loading: 57 
+modules loaded in 4.49s, 
+0 queries (+0 extra) 
+2026-03-12 17:35:10,239 
+1668 INFO ? 
+odoo.modules.loading: 
+Modules loaded. 
+2026-03-12 17:35:10,386 
+1668 INFO ? 
+odoo.registry: Registry 
+loaded in 8.218s 
+CHECK_START
+Database: ['rehab-db']
+Model rehab.student found: True
+Module rehab_management state: installed
+Available Databases: ['rehab-db']
+CHECK_END

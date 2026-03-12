@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="rehab_student_view_list" model="ir.ui.view">
-        <field name="name">rehab.student.list</field>
+    <record id="rehab_student_view_tree" model="ir.ui.view">
+        <field name="name">rehab.student.tree</field>
         <field name="model">rehab.student</field>
         <field name="arch" type="xml">
             <list string="Students">
@@ -17,7 +17,7 @@
         </field>
     </record>
 
-        <record id="rehab_student_view_form" model="ir.ui.view">
+    <record id="rehab_student_view_form" model="ir.ui.view">
         <field name="name">rehab.student.form</field>
         <field name="model">rehab.student</field>
         <field name="arch" type="xml">
@@ -71,13 +71,13 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Placement">
+                        <page string="Placement" name="placement">
                             <group>
                                 <field name="room_id"/>
                                 <field name="class_id"/>
                             </group>
                         </page>
-                        <page string="Documents">
+                        <page string="Documents" name="documents">
                             <group>
                                 <field name="profile_image" widget="image" class="oe_avatar"/>
                                 <field name="passport_image" widget="image"/>
@@ -85,7 +85,7 @@
                                 <field name="contract_url" widget="url"/>
                             </group>
                         </page>
-                        <page string="Next of Kin">
+                        <page string="Next of Kin" name="kin">
                             <group>
                                 <group string="Contact 1">
                                     <field name="kin1_name"/>
@@ -99,7 +99,7 @@
                                 </group>
                             </group>
                         </page>
-                        <page string="Discipline Cases">
+                        <page string="Discipline Cases" name="discipline">
                             <field name="case_ids">
                                 <list>
                                     <field name="date_reported"/>
@@ -112,10 +112,10 @@
                         </page>
                     </notebook>
                 </sheet>
-
             </form>
         </field>
     </record>
+
     <record id="rehab_student_view_search" model="ir.ui.view">
         <field name="name">rehab.student.search</field>
         <field name="model">rehab.student</field>

@@ -2,7 +2,7 @@
 <odoo>
     <!-- Room Views -->
     <record id="rehab_room_view_tree" model="ir.ui.view">
-        <field name="name">rehab.room.list</field>
+        <field name="name">rehab.room.tree</field>
         <field name="model">rehab.room</field>
         <field name="arch" type="xml">
             <list string="Rooms">
@@ -44,7 +44,7 @@
 
     <!-- Class Views -->
     <record id="rehab_class_view_tree" model="ir.ui.view">
-        <field name="name">rehab.class.list</field>
+        <field name="name">rehab.class.tree</field>
         <field name="model">rehab.class</field>
         <field name="arch" type="xml">
             <list string="Classes">

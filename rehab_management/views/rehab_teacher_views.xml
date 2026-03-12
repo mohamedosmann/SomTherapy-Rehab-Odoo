@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_rehab_teacher_list" model="ir.ui.view">
-        <field name="name">rehab.teacher.list</field>
+    <record id="view_rehab_teacher_tree" model="ir.ui.view">
+        <field name="name">rehab.teacher.tree</field>
         <field name="model">rehab.teacher</field>
         <field name="arch" type="xml">
             <list string="Teachers">
@@ -44,7 +44,6 @@
                         </group>
                     </group>
                 </sheet>
-
             </form>
         </field>
     </record>

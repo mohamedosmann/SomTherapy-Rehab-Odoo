@@ -38,28 +38,33 @@ class RehabDisciplineCase(models.Model):
             raise UserError(_("Please set a fine amount before generating an invoice."))
         if self.invoice_id:
             raise UserError(_("An invoice already exists for this case."))
+        if not self.student_id.partner_id:
+            raise UserError(_("Student has no financial account (partner). Please create one first."))
             
-        # Standard Odoo 19 Invoice Creation
-        invoice_vals = {
-            'move_type': 'out_invoice',
-            'partner_id': self.student_id.partner_id.id,
-            'invoice_origin': f"Discipline Case: {self.violation}",
-            'invoice_line_ids': [(0, 0, {
-                'name': _("Disciplinary Fine: %s") % self.violation,
-                'quantity': 1.0,
-                'price_unit': self.fine_amount,
-            })],
-        }
-        invoice = self.env['account.move'].create(invoice_vals)
-        self.invoice_id = invoice.id
-        self.status = 'Payment Pending'
-        return {
-            'name': _('Invoice'),
-            'view_mode': 'form',
-            'res_model': 'account.move',
-            'res_id': invoice.id,
-            'type': 'ir.actions.act_window',
-        }
+        try:
+            # Standard Odoo 19 Invoice Creation
+            invoice_vals = {
+                'move_type': 'out_invoice',
+                'partner_id': self.student_id.partner_id.id,
+                'invoice_origin': f"Discipline Case: {self.violation}",
+                'invoice_line_ids': [(0, 0, {
+                    'name': _("Disciplinary Fine: %s") % self.violation,
+                    'quantity': 1.0,
+                    'price_unit': self.fine_amount,
+                })],
+            }
+            invoice = self.env['account.move'].create(invoice_vals)
+            self.invoice_id = invoice.id
+            self.status = 'Payment Pending'
+            return {
+                'name': _('Invoice'),
+                'view_mode': 'form',
+                'res_model': 'account.move',
+                'res_id': invoice.id,
+                'type': 'ir.actions.act_window',
+            }
+        except Exception as e:
+            raise UserError(_("Failed to generate invoice: %s") % str(e))
 
 class RehabSession(models.Model):
     _name = 'rehab.session'

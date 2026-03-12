@@ -86,4 +86,3 @@
         <menuitem id="menu_rehab_report_journal_items" name="Journal Items (Ledger)" parent="menu_rehab_reports_section" action="account.action_account_moves_all" sequence="20"/>
     </data>
 </odoo>
-

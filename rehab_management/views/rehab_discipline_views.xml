@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="rehab_discipline_case_view_tree" model="ir.ui.view">
-        <field name="name">rehab.discipline.case.list</field>
+        <field name="name">rehab.discipline.case.tree</field>
         <field name="model">rehab.discipline.case</field>
         <field name="arch" type="xml">
             <list string="Discipline Cases" decoration-danger="priority == 'Critical'" decoration-warning="priority == 'High'">
@@ -71,7 +71,6 @@
                         </page>
                     </notebook>
                 </sheet>
-
             </form>
         </field>
     </record>

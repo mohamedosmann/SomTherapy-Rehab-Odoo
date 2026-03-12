@@ -44,4 +44,6 @@
         <field name="view_mode">form</field>
         <field name="context">{'module' : 'rehab_management', 'bin_size': False}</field>
     </record>
+    
+    <menuitem id="menu_rehab_config_settings" name="General Settings" parent="rehab_configuration_cat" action="rehab_config_settings_action" sequence="0"/>
 </odoo>

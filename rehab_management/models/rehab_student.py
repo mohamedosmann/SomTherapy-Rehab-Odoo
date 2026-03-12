@@ -1,4 +1,5 @@
 from odoo import models, fields, api, _
+from odoo.exceptions import UserError, ValidationError
 
 class RehabStudentType(models.Model):
     _name = 'rehab.student.type'
@@ -73,14 +74,27 @@ class RehabStudent(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             if not vals.get('partner_id') and vals.get('name'):
-                partner = self.env['res.partner'].create({
-                    'name': vals.get('name'),
-                    'customer_rank': 1,
-                    'is_company': False,
-                    'property_account_receivable_id': self.env.ref('rehab_management.account_students_receivable').id,
-                })
-                vals['partner_id'] = partner.id
-        return super(RehabStudent, self).create(vals_list)
+                try:
+                    # Safely get the receivable account
+                    receivable_account = self.env.ref('rehab_management.account_students_receivable', raise_if_not_found=False)
+                    account_id = receivable_account.id if receivable_account else False
+                    
+                    partner_vals = {
+                        'name': vals.get('name'),
+                        'customer_rank': 1,
+                        'is_company': False,
+                    }
+                    if account_id:
+                        partner_vals['property_account_receivable_id'] = account_id
+                        
+                    partner = self.env['res.partner'].create(partner_vals)
+                    vals['partner_id'] = partner.id
+                except Exception as e:
+                    # Log the error but allow student creation if partner creation fails? 
+                    # Actually, for a student, partner is usually required for billing.
+                    # We'll re-raise as UserError to provide a clean message to the UI.
+                    raise UserError(_("Could not create financial account for student: %s") % str(e))
+        return super().create(vals_list)
 
     @api.depends('partner_id')
     def _compute_prepaid_balance(self):

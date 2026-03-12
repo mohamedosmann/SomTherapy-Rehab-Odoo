@@ -5,12 +5,12 @@
         <field name="name">rehab.room.list</field>
         <field name="model">rehab.room</field>
         <field name="arch" type="xml">
-            <tree string="Rooms">
+            <list string="Rooms">
                 <field name="name"/>
                 <field name="capacity"/>
                 <field name="type"/>
                 <field name="is_archived"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -29,11 +29,11 @@
                     <notebook>
                         <page name="students" string="Students">
                             <field name="student_ids" readonly="1">
-                                <tree>
+                                <list>
                                     <field name="student_id"/>
                                     <field name="name"/>
                                     <field name="status"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                     </notebook>
@@ -47,12 +47,12 @@
         <field name="name">rehab.teacher.list</field>
         <field name="model">rehab.teacher</field>
         <field name="arch" type="xml">
-            <tree string="Teachers">
+            <list string="Teachers">
                 <field name="name"/>
                 <field name="role"/>
                 <field name="subject"/>
                 <field name="email"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -92,10 +92,10 @@
                         </page>
                         <page name="classes" string="Classes">
                             <field name="class_ids" readonly="1">
-                                <tree>
+                                <list>
                                     <field name="name"/>
                                     <field name="schedule"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                     </notebook>
@@ -109,11 +109,11 @@
         <field name="name">rehab.class.list</field>
         <field name="model">rehab.class</field>
         <field name="arch" type="xml">
-            <tree string="Classes">
+            <list string="Classes">
                 <field name="name"/>
                 <field name="teacher_id"/>
                 <field name="schedule"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -132,10 +132,10 @@
                     <notebook>
                         <page name="students" string="Students">
                             <field name="student_ids">
-                                <tree>
+                                <list>
                                     <field name="student_id"/>
                                     <field name="name"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                     </notebook>

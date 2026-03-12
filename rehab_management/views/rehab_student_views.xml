@@ -4,7 +4,7 @@
         <field name="name">rehab.student.list</field>
         <field name="model">rehab.student</field>
         <field name="arch" type="xml">
-            <tree string="Students">
+            <list string="Students">
                 <field name="student_id"/>
                 <field name="name"/>
                 <field name="phone"/>
@@ -13,7 +13,7 @@
                 <field name="monthly_fee" sum="Total Fees"/>
                 <field name="room_id"/>
                 <field name="class_id"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -101,13 +101,13 @@
                         </page>
                         <page string="Discipline Cases">
                             <field name="case_ids">
-                                <tree>
+                                <list>
                                     <field name="date_reported"/>
                                     <field name="violation"/>
                                     <field name="priority"/>
                                     <field name="status"/>
                                     <field name="fine_amount" sum="Total Fines"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                     </notebook>

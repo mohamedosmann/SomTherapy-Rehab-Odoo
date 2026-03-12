@@ -4,14 +4,14 @@
         <field name="name">rehab.teacher.list</field>
         <field name="model">rehab.teacher</field>
         <field name="arch" type="xml">
-            <tree string="Teachers">
+            <list string="Teachers">
                 <field name="teacher_id"/>
                 <field name="name"/>
                 <field name="phone"/>
                 <field name="email"/>
                 <field name="specialization"/>
                 <field name="status"/>
-            </tree>
+            </list>
         </field>
     </record>
 

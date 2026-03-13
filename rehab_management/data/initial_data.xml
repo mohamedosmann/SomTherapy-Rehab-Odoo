@@ -22,6 +22,35 @@
             <field name="name">Bank Account</field>
             <field name="account_type">asset_cash</field>
         </record>
+        
+        <!-- Outstanding Accounts for Bank -->
+        <record id="account_bank_outstanding_receipts" model="account.account">
+            <field name="code">101401</field>
+            <field name="name">Outstanding Receipts - Bank</field>
+            <field name="account_type">asset_current</field>
+            <field name="reconcile">True</field>
+        </record>
+        <record id="account_bank_outstanding_payments" model="account.account">
+            <field name="code">101402</field>
+            <field name="name">Outstanding Payments - Bank</field>
+            <field name="account_type">asset_current</field>
+            <field name="reconcile">True</field>
+        </record>
+
+        <!-- Outstanding Accounts for Cash -->
+        <record id="account_cash_outstanding_receipts" model="account.account">
+            <field name="code">101101</field>
+            <field name="name">Outstanding Receipts - Cash</field>
+            <field name="account_type">asset_current</field>
+            <field name="reconcile">True</field>
+        </record>
+        <record id="account_cash_outstanding_payments" model="account.account">
+            <field name="code">101102</field>
+            <field name="name">Outstanding Payments - Cash</field>
+            <field name="account_type">asset_current</field>
+            <field name="reconcile">True</field>
+        </record>
+
         <record id="account_student_fees" model="account.account">
             <field name="code">401100</field>
             <field name="name">Student Fees</field>
@@ -54,12 +83,16 @@
             <field name="type">cash</field>
             <field name="code">CASH</field>
             <field name="default_account_id" ref="account_cash_on_hand"/>
+            <field name="inbound_payment_method_line_ids" eval="[(0, 0, {'name': 'Manual', 'payment_method_id': ref('account.account_payment_method_manual_in'), 'payment_account_id': ref('account_cash_outstanding_receipts')})]"/>
+            <field name="outbound_payment_method_line_ids" eval="[(0, 0, {'name': 'Manual', 'payment_method_id': ref('account.account_payment_method_manual_out'), 'payment_account_id': ref('account_cash_outstanding_payments')})]"/>
         </record>
         <record id="journal_bank_payments" model="account.journal">
             <field name="name">Bank Payments</field>
             <field name="type">bank</field>
             <field name="code">BNK</field>
             <field name="default_account_id" ref="account_bank_account"/>
+            <field name="inbound_payment_method_line_ids" eval="[(0, 0, {'name': 'Manual', 'payment_method_id': ref('account.account_payment_method_manual_in'), 'payment_account_id': ref('account_bank_outstanding_receipts')})]"/>
+            <field name="outbound_payment_method_line_ids" eval="[(0, 0, {'name': 'Manual', 'payment_method_id': ref('account.account_payment_method_manual_out'), 'payment_account_id': ref('account_bank_outstanding_payments')})]"/>
         </record>
         <record id="journal_student_invoices" model="account.journal">
             <field name="name">Student Invoices</field>

@@ -76,6 +76,10 @@
         <menuitem id="menu_rehab_money_in" name="Money IN (Invoices)" parent="rehab_finance_dashboard_cat" action="account.action_move_out_invoice_type" sequence="10"/>
         <menuitem id="menu_rehab_money_out" name="Money OUT (Teacher Salaries)" parent="rehab_finance_dashboard_cat" action="account.action_move_in_invoice_type" sequence="20"/>
         <menuitem id="menu_rehab_payments" name="Payments Received" parent="rehab_finance_dashboard_cat" action="account.action_account_payments" sequence="30"/>
+        
+        <menuitem id="menu_rehab_finance_reports_cat" name="Finance Reports (IFRS)" parent="rehab_finance_dashboard_cat" sequence="100"/>
+        <menuitem id="menu_rehab_ifrs_reports" name="Generate IFRS Statements" parent="menu_rehab_finance_reports_cat" action="action_rehab_financial_report_wizard" sequence="10"/>
+        <menuitem id="menu_rehab_ledger" name="Complete Ledger (Journal Items)" parent="menu_rehab_finance_reports_cat" action="account.action_account_moves_all" sequence="20"/>
 
         <!-- Accounting Configuration & Reports -->
         <menuitem id="menu_rehab_accounting_section" name="Accounting Settings" parent="rehab_configuration_cat" sequence="20"/>
@@ -83,10 +87,5 @@
         <menuitem id="menu_rehab_chart_of_accounts" name="Chart of Accounts" parent="menu_rehab_accounting_section" action="account.action_account_form" sequence="20"/>
 
         <menuitem id="menu_rehab_student_type" name="Student Types" parent="rehab_configuration_cat" action="action_rehab_student_type" sequence="5"/>
-
-        <menuitem id="menu_rehab_reports_section" name="Reports" parent="rehab_configuration_cat" sequence="30"/>
-        <menuitem id="menu_rehab_ifrs_reports" name="IFRS Financial Statements" parent="menu_rehab_reports_section" action="action_rehab_financial_report_wizard" sequence="5"/>
-        <menuitem id="menu_rehab_report_invoice_analysis" name="Invoice Analysis" parent="menu_rehab_reports_section" action="account.action_account_invoice_report_all" sequence="10"/>
-        <menuitem id="menu_rehab_report_journal_items" name="Journal Items (Ledger)" parent="menu_rehab_reports_section" action="account.action_account_moves_all" sequence="20"/>
     </data>
 </odoo>

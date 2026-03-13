@@ -63,7 +63,7 @@
         <!-- Submenus: Logistics (Native Odoo) -->
         <menuitem id="menu_rehab_inventory" name="Inventory Overview" parent="rehab_logistics_menu_cat" action="stock.stock_picking_type_action" sequence="10"/>
         <menuitem id="menu_rehab_stock_moves" name="Stock Moves" parent="rehab_logistics_menu_cat" action="stock.stock_move_line_action" sequence="20"/>
-        <menuitem id="menu_rehab_stock_levels" name="Current Stock Levels" parent="rehab_logistics_menu_cat" action="stock.stock_quant_action" sequence="30"/>
+        <menuitem id="menu_rehab_stock_levels" name="Current Stock Levels" parent="rehab_logistics_menu_cat" action="stock.location_open_quants" sequence="30"/>
         <menuitem id="menu_rehab_purchase_rfq" name="Requests for Quotation" parent="rehab_logistics_menu_cat" action="purchase.purchase_rfq" sequence="40"/>
         <menuitem id="menu_rehab_purchase_orders" name="Purchase Orders" parent="rehab_logistics_menu_cat" action="purchase.purchase_form_action" sequence="50"/>
 

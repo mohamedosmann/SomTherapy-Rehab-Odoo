@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Replace "Powered by Odoo" in the login page and branding areas -->
-    <template id="brand_promotion_inherit" inherit_id="web.brand_promotion">
-        <xpath expr="//t" position="replace">
-            <t t-translation="off">
-                Powered by <a target="_blank" href="https://yos.so" class="badge text-bg-light">YOS ERP</a>
-            </t>
-        </xpath>
-    </template>
-
+    <!-- Replace "Powered by Odoo" in the brand promotion areas -->
     <template id="brand_promotion_message_inherit" inherit_id="web.brand_promotion_message">
         <xpath expr="//t" position="replace">
             <t t-translation="off">
@@ -17,11 +9,14 @@
         </xpath>
     </template>
 
+    <!-- Replace "Powered by Odoo" in the login page footer -->
     <template id="login_footer_inherit" inherit_id="web.login_layout">
-        <xpath expr="//div[hasclass('o_footer_copyright')]" position="replace">
-            <div class="o_footer_copyright text-center py-3">
-                Powered by <a href="https://yoserp.com" target="_blank">YOS ERP</a>
-            </div>
+        <xpath expr="//footer//a[contains(@href, 'odoo.com')]" position="replace">
+            <a href="https://yoserp.com" target="_blank">Powered by <span>YOS ERP</span></a>
+        </xpath>
+        <!-- If footer is not found by above, try targeting the div inside login_layout -->
+        <xpath expr="//div[contains(@t-if, 'not disable_footer')]//a[contains(@href, 'odoo.com')]" position="replace">
+            <a href="https://yoserp.com" target="_blank">Powered by <span>YOS ERP</span></a>
         </xpath>
     </template>
 </odoo>

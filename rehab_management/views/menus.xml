@@ -85,6 +85,7 @@
         <menuitem id="menu_rehab_student_type" name="Student Types" parent="rehab_configuration_cat" action="action_rehab_student_type" sequence="5"/>
 
         <menuitem id="menu_rehab_reports_section" name="Reports" parent="rehab_configuration_cat" sequence="30"/>
+        <menuitem id="menu_rehab_ifrs_reports" name="IFRS Financial Statements" parent="menu_rehab_reports_section" action="action_rehab_financial_report_wizard" sequence="5"/>
         <menuitem id="menu_rehab_report_invoice_analysis" name="Invoice Analysis" parent="menu_rehab_reports_section" action="account.action_account_invoice_report_all" sequence="10"/>
         <menuitem id="menu_rehab_report_journal_items" name="Journal Items (Ledger)" parent="menu_rehab_reports_section" action="account.action_account_moves_all" sequence="20"/>
     </data>

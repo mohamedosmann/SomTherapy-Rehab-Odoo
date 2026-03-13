@@ -11,11 +11,7 @@
 
     <!-- Replace "Powered by Odoo" in the login page footer -->
     <template id="login_footer_inherit" inherit_id="web.login_layout">
-        <xpath expr="//footer//a[contains(@href, 'odoo.com')]" position="replace">
-            <a href="https://yoserp.com" target="_blank">Powered by <span>YOS ERP</span></a>
-        </xpath>
-        <!-- If footer is not found by above, try targeting the div inside login_layout -->
-        <xpath expr="//div[contains(@t-if, 'not disable_footer')]//a[contains(@href, 'odoo.com')]" position="replace">
+        <xpath expr="//div[contains(@t-if, 'disable_footer')]//a[contains(@href, 'odoo.com')]" position="replace">
             <a href="https://yoserp.com" target="_blank">Powered by <span>YOS ERP</span></a>
         </xpath>
     </template>

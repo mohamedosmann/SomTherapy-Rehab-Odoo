@@ -26,13 +26,13 @@
     </record>
 
     <record id="rehab_discipline_menu_cat" model="ir.ui.menu">
-        <field name="name">Discipline</field>
+        <field name="name">5. Discipline</field>
         <field name="parent_id" ref="rehab_root_menu"/>
         <field name="sequence">40</field>
     </record>
 
     <record id="rehab_dormitory_menu_cat" model="ir.ui.menu">
-        <field name="name">Dormitory</field>
+        <field name="name">6. Dormitory</field>
         <field name="parent_id" ref="rehab_root_menu"/>
         <field name="sequence">50</field>
     </record>
@@ -44,7 +44,7 @@
     </record>
 
     <record id="rehab_configuration_cat" model="ir.ui.menu">
-        <field name="name">Settings</field>
+        <field name="name">7. Settings</field>
         <field name="parent_id" ref="rehab_root_menu"/>
         <field name="sequence">100</field>
     </record>

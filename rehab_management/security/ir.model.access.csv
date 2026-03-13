@@ -10,3 +10,4 @@ access_rehab_billing_wizard,rehab.billing.wizard,model_rehab_billing_wizard,base
 access_rehab_student_type,rehab.student.type,model_rehab_student_type,base.group_user,1,1,1,1
 access_rehab_staff_payment_wizard,rehab.staff.payment.wizard,model_rehab_staff_payment_wizard,base.group_user,1,1,1,1
 access_rehab_financial_report_wizard,rehab.financial.report.wizard,model_rehab_financial_report_wizard,base.group_user,1,1,1,1
+access_rehab_daily_collection_wizard,rehab.daily.collection.wizard,model_rehab_daily_collection_wizard,base.group_user,1,1,1,1

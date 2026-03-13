@@ -173,13 +173,13 @@
         <record id="property_account_receivable_id_default" model="ir.property">
             <field name="name">property_account_receivable_id</field>
             <field name="fields_id" search="[('model','=','res.partner'),('name','=','property_account_receivable_id')]"/>
-            <field name="value" eval="'account.account,' + str(ref('account_students_receivable'))"/>
+            <field name="value_reference" eval="'account.account,' + str(ref('account_students_receivable'))"/>
             <field name="company_id" ref="base.main_company"/>
         </record>
         <record id="property_account_payable_id_default" model="ir.property">
             <field name="name">property_account_payable_id</field>
             <field name="fields_id" search="[('model','=','res.partner'),('name','=','property_account_payable_id')]"/>
-            <field name="value" eval="'account.account,' + str(ref('account_staff_payable'))"/>
+            <field name="value_reference" eval="'account.account,' + str(ref('account_staff_payable'))"/>
             <field name="company_id" ref="base.main_company"/>
         </record>
 

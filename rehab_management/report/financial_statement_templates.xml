@@ -16,9 +16,11 @@
                 <div class="page">
                     <div class="text-center">
                         <h2>
-                            <t t-if="report_type == 'pl'">Statement of Profit or Loss</t>
-                            <t t-if="report_type == 'bs'">Statement of Financial Position</t>
+                        <h2>
+                            <t t-if="report_type == 'pl'">Statement of Profit or Loss (IFRS)</t>
+                            <t t-if="report_type == 'bs'">Statement of Financial Position (Balance Sheet)</t>
                             <t t-if="report_type == 'cf'">Statement of Cash Flows</t>
+                            <t t-if="report_type == 'tb'">Trial Balance</t>
                         </h2>
                         <h4><t t-esc="company.name"/></h4>
                         <p>
@@ -26,24 +28,51 @@
                         </p>
                     </div>
 
-                    <table class="table table-sm table-reports">
-                        <thead>
-                            <tr>
-                                <th>Description</th>
-                                <th class="text-end">Balance (<t t-esc="company.currency_id.symbol"/>)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <t t-foreach="lines" t-as="line">
+                    <t t-if="report_type != 'tb'">
+                        <table class="table table-sm table-reports">
+                            <thead>
                                 <tr>
-                                    <td><t t-esc="line['name']"/></td>
-                                    <td class="text-end">
-                                        <t t-esc="line['balance']" t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
-                                    </td>
+                                    <th>Description</th>
+                                    <th class="text-end">Balance (<t t-esc="company.currency_id.symbol"/>)</th>
                                 </tr>
-                            </t>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="lines" t-as="line">
+                                    <tr>
+                                        <td><t t-esc="line['name']"/></td>
+                                        <td class="text-end">
+                                            <t t-esc="line['balance']" t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </t>
+
+                    <t t-if="report_type == 'tb'">
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Account</th>
+                                    <th class="text-end">Debit</th>
+                                    <th class="text-end">Credit</th>
+                                    <th class="text-end">Net Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="lines" t-as="line">
+                                    <tr>
+                                        <td><t t-esc="line['code']"/></td>
+                                        <td><t t-esc="line['name']"/></td>
+                                        <td class="text-end"><t t-esc="line['debit']" t-options='{"widget": "monetary", "display_currency": company.currency_id}'/></td>
+                                        <td class="text-end"><t t-esc="line['credit']" t-options='{"widget": "monetary", "display_currency": company.currency_id}'/></td>
+                                        <td class="text-end"><t t-esc="line['balance']" t-options='{"widget": "monetary", "display_currency": company.currency_id}'/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </t>
 
                     <div class="mt-5">
                         <h3>Notes to the Financial Statements</h3>

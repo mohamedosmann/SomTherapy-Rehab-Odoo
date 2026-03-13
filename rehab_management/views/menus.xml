@@ -78,8 +78,17 @@
         <menuitem id="menu_rehab_payments" name="Payments Received" parent="rehab_finance_dashboard_cat" action="account.action_account_payments" sequence="30"/>
         
         <menuitem id="menu_rehab_finance_reports_cat" name="Finance Reports (IFRS)" parent="rehab_finance_dashboard_cat" sequence="100"/>
-        <menuitem id="menu_rehab_ifrs_reports" name="Generate IFRS Statements" parent="menu_rehab_finance_reports_cat" action="action_rehab_financial_report_wizard" sequence="10"/>
-        <menuitem id="menu_rehab_ledger" name="Complete Ledger (Journal Items)" parent="menu_rehab_finance_reports_cat" action="account.action_account_moves_all" sequence="20"/>
+        
+        <menuitem id="menu_rehab_report_pl" name="Profit &amp; Loss" parent="menu_rehab_finance_reports_cat" 
+                  action="action_rehab_financial_report_wizard" sequence="10" context="{'default_report_type': 'pl'}"/>
+        
+        <menuitem id="menu_rehab_report_bs" name="Balance Sheet" parent="menu_rehab_finance_reports_cat" 
+                  action="action_rehab_financial_report_wizard" sequence="20" context="{'default_report_type': 'bs'}"/>
+        
+        <menuitem id="menu_rehab_report_tb" name="Trial Balance" parent="menu_rehab_finance_reports_cat" 
+                  action="action_rehab_financial_report_wizard" sequence="30" context="{'default_report_type': 'tb'}"/>
+
+        <menuitem id="menu_rehab_ledger" name="Complete Ledger (Journal Items)" parent="menu_rehab_finance_reports_cat" action="account.action_account_moves_all" sequence="40"/>
 
         <!-- Accounting Configuration & Reports -->
         <menuitem id="menu_rehab_accounting_section" name="Accounting Settings" parent="rehab_configuration_cat" sequence="20"/>

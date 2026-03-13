@@ -10,7 +10,8 @@ class RehabFinancialReportWizard(models.TransientModel):
     report_type = fields.Selection([
         ('pl', 'Statement of Profit or Loss (IFRS)'),
         ('bs', 'Statement of Financial Position (Balance Sheet - IFRS)'),
-        ('cf', 'Statement of Cash Flows (IFRS)')
+        ('cf', 'Statement of Cash Flows (IFRS)'),
+        ('tb', 'Trial Balance')
     ], string='Report Type', required=True, default='pl')
     target_move = fields.Selection([
         ('posted', 'All Posted Entries'),

@@ -45,10 +45,19 @@ class FinancialStatementReport(models.AbstractModel):
                 ('income_tax', 'Income Tax')
             ]
             for cat_code, cat_name in categories:
-                balance = self._get_balance([('account_id.ifrs_category', '=', cat_code)] + domain)
+                cat_domain = [('account_id.ifrs_category', '=', cat_code)] + domain
+                balance = self._get_balance(cat_domain)
+                
+                # If no IFRS category, try to fallback to standard Odoo account types for major categories
+                if balance == 0:
+                    if cat_code == 'revenue':
+                        balance = self._get_balance([('account_id.account_type', 'in', ('income', 'income_other'))] + domain)
+                    elif cat_code == 'admin_exp':
+                        balance = self._get_balance([('account_id.account_type', 'in', ('expense', 'expense_depreciation', 'expense_direct_cost'))] + domain)
+                
                 # Revenue/Income are Credit-based, Expenses are Debit-based
                 if cat_code in ['revenue', 'other_income']:
-                    balance = -balance # Odoo stores Credit as negative
+                    balance = -balance 
                 
                 notes = self.env['account.account'].search([('ifrs_category', '=', cat_code)]).mapped('ifrs_note')
                 notes = [n for n in notes if n]
@@ -70,7 +79,16 @@ class FinancialStatementReport(models.AbstractModel):
                 ('current_liab', 'Current Liabilities')
             ]
             for cat_code, cat_name in categories:
-                balance = self._get_balance([('account_id.ifrs_category', '=', cat_code)] + domain)
+                cat_domain = [('account_id.ifrs_category', '=', cat_code)] + domain
+                balance = self._get_balance(cat_domain)
+                
+                # Fallbacks for BS
+                if balance == 0:
+                    if cat_code == 'current_asset':
+                        balance = self._get_balance([('account_id.account_type', 'in', ('asset_receivable', 'asset_cash', 'asset_current'))] + domain)
+                    elif cat_code == 'current_liab':
+                        balance = self._get_balance([('account_id.account_type', 'in', ('liability_payable', 'liability_current'))] + domain)
+
                 if cat_code in ['equity', 'non_current_liab', 'current_liab']:
                     balance = -balance
                 
@@ -83,6 +101,27 @@ class FinancialStatementReport(models.AbstractModel):
                     'is_total': False,
                     'notes': notes
                 })
+        
+        elif report_type == 'tb':
+            # Trial Balance logic: show all accounts with debits/credits
+            accounts = self.env['account.account'].search([])
+            for account in accounts:
+                acc_domain = [('account_id', '=', account.id)] + domain
+                amls = self.env['account.move.line'].search(acc_domain)
+                debit = sum(amls.mapped('debit'))
+                credit = sum(amls.mapped('credit'))
+                balance = debit - credit
+                if debit != 0 or credit != 0:
+                    lines.append({
+                        'code': account.code,
+                        'name': account.name,
+                        'debit': debit,
+                        'credit': credit,
+                        'balance': balance,
+                        'notes': []
+                    })
+
+        return lines
         
         return lines
 

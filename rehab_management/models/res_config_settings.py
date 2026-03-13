@@ -43,6 +43,14 @@ class ResConfigSettings(models.TransientModel):
         help="Liability account used for staff payroll/vendor bills."
     )
 
+    rehab_staff_journal_id = fields.Many2one(
+        'account.journal',
+        string="Staff Expense Journal",
+        domain=[('type', '=', 'purchase')],
+        config_parameter='rehab_management.staff_journal_id',
+        help="Default journal used for generating staff salary bills."
+    )
+
     # Robust fix for Odoo 18 Owl error: "is_installed_sale" field is undefined
     is_installed_sale = fields.Boolean(string="Is Sales Installed?")
     

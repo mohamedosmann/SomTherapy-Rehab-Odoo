@@ -14,11 +14,23 @@ class RehabStaffPaymentWizard(models.TransientModel):
 
         # Get settings or fallbacks
         ICP = self.env['ir.config_parameter'].sudo()
-        journal_id = ICP.get_param('rehab_management.invoice_journal_id')
         expense_account_id = ICP.get_param('rehab_management.staff_salary_account_id')
         payable_account_id = ICP.get_param('rehab_management.staff_payable_account_id')
 
-        journal = self.env['account.journal'].browse(int(journal_id)) if journal_id else self.env.ref('rehab_management.journal_staff_expenses', raise_if_not_found=False)
+        # Robust Journal Selection: must be a 'purchase' journal
+        journal_id = int(ICP.get_param('rehab_management.staff_journal_id', 0))
+        journal = self.env['account.journal'].browse(journal_id)
+        
+        if not journal.exists() or journal.type != 'purchase':
+            # Fallback 1: Try XML ID
+            journal = self.env.ref('rehab_management.journal_staff_expenses', raise_if_not_found=False)
+            if not journal or journal.type != 'purchase':
+                # Fallback 2: Search for ANY purchase journal
+                journal = self.env['account.journal'].search([('type', '=', 'purchase')], limit=1)
+
+        if not journal:
+            raise UserError(_("No 'Purchase' journal found for staff salaries. Please create a Vendor Bills journal in Accounting settings."))
+
         expense_account = self.env['account.account'].browse(int(expense_account_id)) if expense_account_id else self.env.ref('rehab_management.account_staff_salaries', raise_if_not_found=False)
         payable_account = self.env['account.account'].browse(int(payable_account_id)) if payable_account_id else self.env.ref('rehab_management.account_staff_payable', raise_if_not_found=False)
 

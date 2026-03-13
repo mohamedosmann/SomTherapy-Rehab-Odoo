@@ -84,6 +84,31 @@
         <field name="view_mode">list,form</field>
     </record>
 
+    <!-- Report Actions with Specific Contexts -->
+    <record id="action_rehab_report_pl" model="ir.actions.act_window">
+        <field name="name">Profit &amp; Loss</field>
+        <field name="res_model">rehab.financial.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_report_type': 'pl'}</field>
+    </record>
+
+    <record id="action_rehab_report_bs" model="ir.actions.act_window">
+        <field name="name">Balance Sheet</field>
+        <field name="res_model">rehab.financial.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_report_type': 'bs'}</field>
+    </record>
+
+    <record id="action_rehab_report_tb" model="ir.actions.act_window">
+        <field name="name">Trial Balance</field>
+        <field name="res_model">rehab.financial.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_report_type': 'tb'}</field>
+    </record>
+
     <!-- Submenus -->
     <record id="menu_rehab_student" model="ir.ui.menu">
         <field name="name">Students</field>
@@ -136,25 +161,22 @@
     <record id="menu_rehab_report_pl" model="ir.ui.menu">
         <field name="name">Profit &amp; Loss</field>
         <field name="parent_id" ref="menu_rehab_finance_reports_cat"/>
-        <field name="action" ref="action_rehab_financial_report_wizard"/>
+        <field name="action" ref="action_rehab_report_pl"/>
         <field name="sequence">10</field>
-        <field name="context">{'default_report_type': 'pl'}</field>
     </record>
 
     <record id="menu_rehab_report_bs" model="ir.ui.menu">
         <field name="name">Balance Sheet</field>
         <field name="parent_id" ref="menu_rehab_finance_reports_cat"/>
-        <field name="action" ref="action_rehab_financial_report_wizard"/>
+        <field name="action" ref="action_rehab_report_bs"/>
         <field name="sequence">20</field>
-        <field name="context">{'default_report_type': 'bs'}</field>
     </record>
 
     <record id="menu_rehab_report_tb" model="ir.ui.menu">
         <field name="name">Trial Balance</field>
         <field name="parent_id" ref="menu_rehab_finance_reports_cat"/>
-        <field name="action" ref="action_rehab_financial_report_wizard"/>
+        <field name="action" ref="action_rehab_report_tb"/>
         <field name="sequence">30</field>
-        <field name="context">{'default_report_type': 'tb'}</field>
     </record>
 
     <record id="menu_rehab_ledger" model="ir.ui.menu">
@@ -185,24 +207,11 @@
         <field name="sequence">30</field>
     </record>
 
-    <record id="menu_rehab_inventory" model="ir.ui.menu">
-        <field name="name">Inventory</field>
-        <field name="parent_id" ref="rehab_logistics_menu_cat"/>
-        <field name="action" ref="stock.stock_picking_type_action"/>
-        <field name="sequence">10</field>
-    </record>
-
-    <record id="menu_rehab_purchase" model="ir.ui.menu">
-        <field name="name">Purchase</field>
-        <field name="parent_id" ref="rehab_logistics_menu_cat"/>
-        <field name="action" ref="purchase.purchase_rfq"/>
-        <field name="sequence">20</field>
-    </record>
-
     <record id="menu_rehab_student_type" model="ir.ui.menu">
         <field name="name">Student Types</field>
         <field name="parent_id" ref="rehab_configuration_cat"/>
         <field name="action" ref="action_rehab_student_type"/>
         <field name="sequence">5</field>
     </record>
+
 </odoo>

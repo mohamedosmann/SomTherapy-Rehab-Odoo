@@ -26,3 +26,6 @@ class ResConfigSettings(models.TransientModel):
         config_parameter='rehab_management.invoice_journal_id',
         help="Default journal used for generating student invoices."
     )
+
+    # Robust fix for Odoo 18 Owl error: "is_installed_sale" field is undefined
+    is_installed_sale = fields.Boolean(string="Is Sales Installed?")

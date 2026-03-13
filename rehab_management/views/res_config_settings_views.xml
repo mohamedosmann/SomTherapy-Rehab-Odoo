@@ -42,8 +42,14 @@
         <field name="name">Settings</field>
         <field name="res_model">res.config.settings</field>
         <field name="view_mode">form</field>
-        <field name="context">{'module' : 'rehab_management', 'bin_size': False}</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'rehab_management'}</field>
     </record>
     
-    <menuitem id="menu_rehab_config_settings" name="General Settings" parent="rehab_configuration_cat" action="rehab_config_settings_action" sequence="0"/>
+    <record id="menu_rehab_config_settings" model="ir.ui.menu">
+        <field name="name">General Settings</field>
+        <field name="parent_id" ref="rehab_configuration_cat"/>
+        <field name="action" ref="rehab_config_settings_action"/>
+        <field name="sequence">0</field>
+    </record>
 </odoo>

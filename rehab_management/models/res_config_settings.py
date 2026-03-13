@@ -45,3 +45,7 @@ class ResConfigSettings(models.TransientModel):
 
     # Robust fix for Odoo 18 Owl error: "is_installed_sale" field is undefined
     is_installed_sale = fields.Boolean(string="Is Sales Installed?")
+    
+    # Fix for "days_to_purchase" and related fields often missing in base settings views
+    days_to_purchase = fields.Float(string="Days to Purchase", config_parameter='purchase.days_to_purchase')
+    is_installed_purchase = fields.Boolean(string="Is Purchase Installed?")

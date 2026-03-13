@@ -154,6 +154,24 @@
             <field name="code">STF</field>
         </record>
 
+        <!-- Somalian Payment Methods -->
+        <record id="payment_method_evc" model="payment.method">
+            <field name="name">EVC Plus</field>
+            <field name="code">evc_plus</field>
+        </record>
+        <record id="payment_method_salaam" model="payment.method">
+            <field name="name">Salaam Bank</field>
+            <field name="code">salaam_bank</field>
+        </record>
+        <record id="payment_method_sahal" model="payment.method">
+            <field name="name">Sahal</field>
+            <field name="code">sahal</field>
+        </record>
+        <record id="payment_method_edahab" model="payment.method">
+            <field name="name">eDahab</field>
+            <field name="code">edahab</field>
+        </record>
+
         <!-- Default Products -->
         <record id="product_monthly_fee" model="product.product">
             <field name="name">Monthly Rehab Fee</field>

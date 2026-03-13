@@ -75,12 +75,12 @@ class RehabStudent(models.Model):
             if not vals.get('partner_id') and vals.get('name'):
                 try:
                     # Auto-link to the pre-configured 'Students Receivable' account from our module
-                    account_id = self.env.ref('rehab_management.account_students_receivable', raise_if_not_found=False).id
+                    account = self.env.ref('rehab_management.account_students_receivable', raise_if_not_found=False)
+                    account_id = account.id if account else False
                     
-                    # If not found, find any Receivable account as a safe fallback
                     if not account_id:
                         fallback = self.env['account.account'].search([('account_type', '=', 'asset_receivable')], limit=1)
-                        account_id = fallback.id
+                        account_id = fallback.id if fallback else False
                     
                     partner_vals = {
                         'name': vals.get('name'),
@@ -179,3 +179,6 @@ class RehabStudent(models.Model):
                 'default_partner_type': 'customer',
             },
         }
+    def action_print_statement(self):
+        self.ensure_one()
+        return self.env.ref('rehab_management.action_report_student_statement').report_action(self)

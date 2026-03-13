@@ -13,16 +13,19 @@ class FinancialStatementReport(models.AbstractModel):
         target_move = form.get('target_move')
 
         lines = self._get_lines(report_type, date_from, date_to, target_move)
+        docs = self.env['rehab.financial.report.wizard'].browse(docids)
 
         return {
             'doc_ids': docids,
             'doc_model': 'rehab.financial.report.wizard',
+            'docs': docs,
             'data': data,
             'date_from': date_from,
             'date_to': date_to,
             'report_type': report_type,
             'lines': lines,
             'company': self.env.company,
+            'res_company': self.env.company,
         }
 
     def _get_lines(self, report_type, date_from, date_to, target_move):

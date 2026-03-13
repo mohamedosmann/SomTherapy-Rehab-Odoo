@@ -24,7 +24,7 @@
         'views/rehab_staff_views.xml',
         'views/account_move_views.xml',
         'views/account_account_views.xml',
-        'views/account_journal_views.xml',
+        # 'views/account_journal_views.xml',
         'views/account_payment_views.xml',
         'views/web_templates.xml',
         'report/financial_statement_templates.xml',

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="rehab_financial_report_wizard_view_form" model="ir.ui.view">
+        <field name="name">rehab.financial.report.wizard.form</field>
+        <field name="model">rehab.financial.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Financial Report">
+                <group>
+                    <group>
+                        <field name="report_type"/>
+                        <field name="target_move"/>
+                    </group>
+                    <group>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_generate_report" string="Download PDF" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_rehab_financial_report_wizard" model="ir.actions.act_window">
+        <field name="name">IFRS Financial Statements</field>
+        <field name="res_model">rehab.financial.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -2,15 +2,17 @@
 <odoo>
     <data>
         <!-- Root Menu -->
-        <menuitem id="rehab_root_menu" name="Rehab Management" sequence="10"/>
+        <menuitem id="rehab_root_menu" name="Rehab &amp; Finance" sequence="10"/>
 
-        <!-- Top Categories -->
-        <menuitem id="rehab_students_menu_cat" name="Students" parent="rehab_root_menu" sequence="10"/>
-        <menuitem id="rehab_discipline_menu_cat" name="Discipline" parent="rehab_root_menu" sequence="20"/>
-        <menuitem id="rehab_dormitory_menu_cat" name="Dormitory" parent="rehab_root_menu" sequence="30"/>
-        <menuitem id="rehab_logistics_menu_cat" name="Logistics" parent="rehab_root_menu" sequence="40"/>
-        <menuitem id="rehab_financials_menu_cat" name="Financials" parent="rehab_root_menu" sequence="50"/>
-        <menuitem id="rehab_configuration_cat" name="Configuration" parent="rehab_root_menu" sequence="100"/>
+        <!-- Top Categories (Simplified Order) -->
+        <menuitem id="rehab_students_menu_cat" name="1. Student Admitting" parent="rehab_root_menu" sequence="10"/>
+        <menuitem id="rehab_financials_menu_cat" name="2. Monthly Billing" parent="rehab_root_menu" sequence="20"/>
+        <menuitem id="rehab_finance_dashboard_cat" name="3. Money Tracking" parent="rehab_root_menu" sequence="30"/>
+        
+        <menuitem id="rehab_discipline_menu_cat" name="Discipline" parent="rehab_root_menu" sequence="40"/>
+        <menuitem id="rehab_dormitory_menu_cat" name="Dormitory" parent="rehab_root_menu" sequence="50"/>
+        <menuitem id="rehab_logistics_menu_cat" name="Logistics &amp; Purchase" parent="rehab_root_menu" sequence="60"/>
+        <menuitem id="rehab_configuration_cat" name="Settings" parent="rehab_root_menu" sequence="100"/>
 
         <!-- Actions -->
         <record id="action_rehab_student" model="ir.actions.act_window">
@@ -67,12 +69,13 @@
         <menuitem id="menu_rehab_purchase_rfq" name="Requests for Quotation" parent="rehab_logistics_menu_cat" action="purchase.purchase_rfq" sequence="40"/>
         <menuitem id="menu_rehab_purchase_orders" name="Purchase Orders" parent="rehab_logistics_menu_cat" action="purchase.purchase_form_action" sequence="50"/>
 
-        <!-- Submenus: Financials (Native Odoo + Custom Billing) -->
+        <!-- Submenus: Financials (Simplified) -->
         <menuitem id="menu_rehab_billing" name="Generate Monthly Billing" parent="rehab_financials_menu_cat" action="action_rehab_billing_wizard" sequence="5"/>
-        <menuitem id="menu_rehab_customer_invoices" name="Customer Invoices" parent="rehab_financials_menu_cat" action="account.action_move_out_invoice_type" sequence="10"/>
-        <menuitem id="menu_rehab_vendor_bills" name="Vendor Bills" parent="rehab_financials_menu_cat" action="account.action_move_in_invoice_type" sequence="20"/>
-        <menuitem id="menu_rehab_customer_payments" name="Customer Payments" parent="rehab_financials_menu_cat" action="account.action_account_payments" sequence="30"/>
-        <menuitem id="menu_rehab_vendor_payments" name="Vendor Payments" parent="rehab_financials_menu_cat" action="account.action_account_payments_payable" sequence="40"/>
+        
+        <!-- Money Tracking Dashboard Items -->
+        <menuitem id="menu_rehab_money_in" name="Money IN (Invoices)" parent="rehab_finance_dashboard_cat" action="account.action_move_out_invoice_type" sequence="10"/>
+        <menuitem id="menu_rehab_money_out" name="Money OUT (Teacher Salaries)" parent="rehab_finance_dashboard_cat" action="account.action_move_in_invoice_type" sequence="20"/>
+        <menuitem id="menu_rehab_payments" name="Payments Received" parent="rehab_finance_dashboard_cat" action="account.action_account_payments" sequence="30"/>
 
         <!-- Accounting Configuration & Reports -->
         <menuitem id="menu_rehab_accounting_section" name="Accounting Settings" parent="rehab_configuration_cat" sequence="20"/>

@@ -74,17 +74,18 @@ class RehabStudent(models.Model):
         for vals in vals_list:
             if not vals.get('partner_id') and vals.get('name'):
                 try:
-                    # Safely get the receivable account
+                    # Auto-link to the pre-configured 'Students Receivable' account
                     receivable_account = self.env.ref('rehab_management.account_students_receivable', raise_if_not_found=False)
-                    account_id = receivable_account.id if receivable_account else False
+                    
+                    # If not found (unlikely), fallback to the default company receivable
+                    account_id = receivable_account.id if receivable_account else self.env.company.property_account_receivable_id.id
                     
                     partner_vals = {
                         'name': vals.get('name'),
                         'customer_rank': 1,
                         'is_company': False,
+                        'property_account_receivable_id': account_id,
                     }
-                    if account_id:
-                        partner_vals['property_account_receivable_id'] = account_id
                         
                     partner = self.env['res.partner'].create(partner_vals)
                     vals['partner_id'] = partner.id

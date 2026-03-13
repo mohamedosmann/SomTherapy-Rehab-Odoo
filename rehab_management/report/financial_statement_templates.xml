@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_financial_statement" model="ir.actions.report">
+        <field name="name">Financial Statement (IFRS)</field>
+        <field name="model">rehab.financial.report.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">rehab_management.report_financial_statement</field>
+        <field name="report_file">rehab_management.report_financial_statement</field>
+        <field name="binding_model_id" ref="model_rehab_financial_report_wizard"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_financial_statement">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="text-center">
+                        <h2>
+                            <t t-if="report_type == 'pl'">Statement of Profit or Loss</t>
+                            <t t-if="report_type == 'bs'">Statement of Financial Position</t>
+                            <t t-if="report_type == 'cf'">Statement of Cash Flows</t>
+                        </h2>
+                        <h4><t t-esc="company.name"/></h4>
+                        <p>
+                            Period: <t t-esc="date_from"/> to <t t-esc="date_to"/>
+                        </p>
+                    </div>
+
+                    <table class="table table-sm table-reports">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th class="text-end">Balance (<t t-esc="company.currency_id.symbol"/>)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="lines" t-as="line">
+                                <tr>
+                                    <td><t t-esc="line['name']"/></td>
+                                    <td class="text-end">
+                                        <t t-esc="line['balance']" t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <div class="mt-5">
+                        <h3>Notes to the Financial Statements</h3>
+                        <t t-foreach="lines" t-as="line">
+                            <t t-if="line['notes']">
+                                <div class="mb-3">
+                                    <strong>Note - <t t-esc="line['name']"/>:</strong>
+                                    <ul>
+                                        <t t-foreach="line['notes']" t-as="note">
+                                            <li><t t-esc="note"/></li>
+                                        </t>
+                                    </ul>
+                                </div>
+                            </t>
+                        </t>
+                    </div>
+                    
+                    <div class="mt-4 small text-muted">
+                        <p>Report prepared in accordance with IFRS standards as implemented by YOS ERP.</p>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

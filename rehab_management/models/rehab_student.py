@@ -7,6 +7,7 @@ class RehabStudentType(models.Model):
 
     name = fields.Char(string='Type Name', required=True)
     description = fields.Text(string='Description')
+    default_monthly_fee = fields.Float(string='Default Monthly Fee', default=300.0)
 
 
 class RehabStudent(models.Model):
@@ -61,13 +62,11 @@ class RehabStudent(models.Model):
 
     case_ids = fields.One2many('rehab.discipline.case', 'student_id', string='Discipline Cases')
 
-    @api.depends('type_id', 'room_id.type')
+    @api.depends('type_id', 'room_id.extra_charge')
     def _compute_monthly_fee(self):
         for record in self:
-            base_rate = 500.0 if record.type_id and record.type_id.name == 'VIP' else 300.0
-            room_extra = 0.0
-            if record.room_id:
-                room_extra = 100.0 if record.room_id.type == 'VIP' else 50.0
+            base_rate = record.type_id.default_monthly_fee if record.type_id else 300.0
+            room_extra = record.room_id.extra_charge if record.room_id else 0.0
             record.monthly_fee = base_rate + room_extra
 
     @api.model_create_multi

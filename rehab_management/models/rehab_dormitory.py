@@ -10,6 +10,7 @@ class RehabRoom(models.Model):
         ('Normal', 'Normal'),
         ('VIP', 'VIP')
     ], string='Type', default='Normal')
+    extra_charge = fields.Float(string='Extra Charge', default=0.0)
     is_archived = fields.Boolean(string='Archived', default=False)
     student_ids = fields.One2many('rehab.student', 'room_id', string='Students')
 

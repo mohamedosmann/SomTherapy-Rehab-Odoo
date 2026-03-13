@@ -9,6 +9,7 @@
                 <field name="name"/>
                 <field name="capacity"/>
                 <field name="type"/>
+                <field name="extra_charge"/>
                 <field name="is_archived"/>
             </list>
         </field>
@@ -24,6 +25,7 @@
                         <field name="name"/>
                         <field name="capacity"/>
                         <field name="type"/>
+                        <field name="extra_charge"/>
                         <field name="is_archived"/>
                     </group>
                     <notebook>

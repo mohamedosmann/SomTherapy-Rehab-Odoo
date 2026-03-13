@@ -7,13 +7,27 @@ class FinancialStatementReport(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        if not data.get('form'):
-            raise UserError(_("Form content is missing, this report cannot be printed."))
+        form = {}
+        if data and data.get('form'):
+            form = data['form']
+        elif docids:
+            wizard = self.env['rehab.financial.report.wizard'].browse(docids)
+            if wizard:
+                wizard = wizard[0]
+                form = {
+                    'date_from': str(wizard.date_from),
+                    'date_to': str(wizard.date_to),
+                    'report_type': wizard.report_type,
+                    'target_move': wizard.target_move,
+                }
+        
+        if not form:
+            raise UserError(_("No report parameters found. Please try opening the report from the menu again."))
 
-        date_from = data['form'].get('date_from')
-        date_to = data['form'].get('date_to')
-        report_type = data['form'].get('report_type')
-        target_move = data['form'].get('target_move', 'posted')
+        date_from = form.get('date_from')
+        date_to = form.get('date_to')
+        report_type = form.get('report_type')
+        target_move = form.get('target_move', 'posted')
 
         lines = []
         if report_type == 'pl':
@@ -36,6 +50,7 @@ class FinancialStatementReport(models.AbstractModel):
             'date_to': date_to,
             'report_type': report_type,
             'lines': lines,
+            'res_company': self.env.company,
         }
 
     def _get_profit_loss_data(self, date_from, date_to, target_move):

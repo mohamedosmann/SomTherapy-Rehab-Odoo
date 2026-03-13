@@ -46,3 +46,15 @@ class RehabFinancialReportWizard(models.TransientModel):
         """
         wizard = self.create({'report_type': report_type})
         return wizard.action_view_report_html()
+
+    def _get_report_data(self):
+        return {
+            'ids': self.ids,
+            'model': self._name,
+            'form': {
+                'date_from': str(self.date_from) if self.date_from else '',
+                'date_to': str(self.date_to) if self.date_to else '',
+                'report_type': self.report_type,
+                'target_move': self.target_move,
+            }
+        }

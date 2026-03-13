@@ -17,14 +17,15 @@ class RehabBillingWizard(models.TransientModel):
         product_id = int(ICP.get_param('rehab_management.fee_product_id', 0))
         journal_id = int(ICP.get_param('rehab_management.invoice_journal_id', 0))
         
-        # Fallback to XML IDs if parameters are missing
-        if not product_id:
-            product = self.env.ref('rehab_management.product_monthly_fee', raise_if_not_found=False)
-            product_id = product.id if product else False
-            
-        if not journal_id:
-            journal = self.env.ref('rehab_management.journal_student_invoices', raise_if_not_found=False)
-            journal_id = journal.id if journal else False
+        # Fallback to XML IDs
+        product = self.env.ref('rehab_management.product_monthly_fee', raise_if_not_found=False)
+        journal = self.env.ref('rehab_management.journal_student_invoices', raise_if_not_found=False)
+        income_account = self.env.ref('rehab_management.account_student_fees', raise_if_not_found=False)
+
+        if not product_id and product:
+            product_id = product.id
+        if not journal_id and journal:
+            journal_id = journal.id
 
         invoices = self.env['account.move']
         errors = []
@@ -34,6 +35,17 @@ class RehabBillingWizard(models.TransientModel):
                 continue
             
             try:
+                # Explicitly determine the account to avoid the "accountable required fields" error
+                line_account_id = False
+                if product_id:
+                    # Try to get account from product
+                    prod = self.env['product.product'].browse(product_id)
+                    line_account_id = prod.property_account_income_id.id or prod.categ_id.property_account_income_categ_id.id
+                
+                # Fallback to the dedicated Student Fees account
+                if not line_account_id and income_account:
+                    line_account_id = income_account.id
+
                 invoice_vals = {
                     'move_type': 'out_invoice',
                     'partner_id': student.partner_id.id,
@@ -50,11 +62,12 @@ class RehabBillingWizard(models.TransientModel):
                 }
                 if product_id:
                     line_vals['product_id'] = product_id
+                if line_account_id:
+                    line_vals['account_id'] = line_account_id
                 
                 invoice_vals['invoice_line_ids'] = [(0, 0, line_vals)]
                 
                 inv = self.env['account.move'].create(invoice_vals)
-                # Auto-post if possible? User might want to review. Let's leave as draft.
                 student.last_billing_date = self.billing_date
                 invoices |= inv
             except Exception as e:

@@ -36,11 +36,12 @@ class AccountPayment(models.Model):
                     advance_acc = self.env['account.account'].search([('code', '=', '101300')], limit=1)
                 payment.advance_account_id = advance_acc
 
-    def _prepare_move_line_default_vals(self, write_off_line_vals=None):
+    def _prepare_move_line_default_vals(self, write_off_line_vals=None, force_balance=None):
         """
         Override to change the destination account when it's an advance payment.
         """
-        res = super()._prepare_move_line_default_vals(write_off_line_vals=write_off_line_vals)
+        self.ensure_one()
+        res = super()._prepare_move_line_default_vals(write_off_line_vals=write_off_line_vals, force_balance=force_balance)
         
         if self.is_advance and self.advance_account_id:
             # Determine the original destination accounts to replace

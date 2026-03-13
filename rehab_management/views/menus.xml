@@ -1,64 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<menuitem id="rehab_root_menu" name="Rehab &amp; Finance" sequence="10"/>
-<menuitem id="rehab_students_menu_cat" name="1. Student Admitting" parent="rehab_root_menu" sequence="10"/>
-<menuitem id="rehab_financials_menu_cat" name="2. Monthly Billing" parent="rehab_root_menu" sequence="20"/>
-<menuitem id="rehab_finance_dashboard_cat" name="3. Money Tracking" parent="rehab_root_menu" sequence="30"/>
-<menuitem id="rehab_discipline_menu_cat" name="Discipline" parent="rehab_root_menu" sequence="40"/>
-<menuitem id="rehab_dormitory_menu_cat" name="Dormitory" parent="rehab_root_menu" sequence="50"/>
-<menuitem id="rehab_logistics_menu_cat" name="Logistics &amp; Purchase" parent="rehab_root_menu" sequence="60"/>
-<menuitem id="rehab_configuration_cat" name="Settings" parent="rehab_root_menu" sequence="100"/>
-<record id="action_rehab_student" model="ir.actions.act_window">
-<field name="name">Students</field>
-<field name="res_model">rehab.student</field>
-<field name="view_mode">list,form,kanban</field>
-</record>
-<record id="action_rehab_discipline_case" model="ir.actions.act_window">
-<field name="name">Discipline Cases</field>
-<field name="res_model">rehab.discipline.case</field>
-<field name="view_mode">list,form</field>
-</record>
-<record id="action_rehab_room" model="ir.actions.act_window">
-<field name="name">Rooms</field>
-<field name="res_model">rehab.room</field>
-<field name="view_mode">list,form</field>
-</record>
-<record id="action_rehab_teacher" model="ir.actions.act_window">
-<field name="name">Teachers</field>
-<field name="res_model">rehab.teacher</field>
-<field name="view_mode">list,form</field>
-</record>
-<record id="action_rehab_class" model="ir.actions.act_window">
-<field name="name">Classes</field>
-<field name="res_model">rehab.class</field>
-<field name="view_mode">list,form</field>
-</record>
-<record id="action_rehab_student_type" model="ir.actions.act_window">
-<field name="name">Student Types</field>
-<field name="res_model">rehab.student.type</field>
-<field name="view_mode">list,form</field>
-</record>
-<menuitem id="menu_rehab_student" name="Students" parent="rehab_students_menu_cat" action="action_rehab_student" sequence="10"/>
-<menuitem id="menu_rehab_discipline_case" name="Discipline Cases" parent="rehab_discipline_menu_cat" action="action_rehab_discipline_case" sequence="10"/>
-<menuitem id="menu_rehab_room" name="Rooms" parent="rehab_dormitory_menu_cat" action="action_rehab_room" sequence="10"/>
-<menuitem id="menu_rehab_teacher" name="Teachers" parent="rehab_dormitory_menu_cat" action="action_rehab_teacher" sequence="20"/>
-<menuitem id="menu_rehab_class" name="Classes" parent="rehab_dormitory_menu_cat" action="action_rehab_class" sequence="30"/>
-<menuitem id="menu_rehab_inventory" name="Inventory Overview" parent="rehab_logistics_menu_cat" action="stock.stock_picking_type_action" sequence="10"/>
-<menuitem id="menu_rehab_stock_moves" name="Stock Moves" parent="rehab_logistics_menu_cat" action="stock.stock_move_line_action" sequence="20"/>
-<menuitem id="menu_rehab_stock_levels" name="Current Stock Levels" parent="rehab_logistics_menu_cat" action="stock.location_open_quants" sequence="30"/>
-<menuitem id="menu_rehab_purchase_rfq" name="Requests for Quotation" parent="rehab_logistics_menu_cat" action="purchase.purchase_rfq" sequence="40"/>
-<menuitem id="menu_rehab_purchase_orders" name="Purchase Orders" parent="rehab_logistics_menu_cat" action="purchase.purchase_form_action" sequence="50"/>
-<menuitem id="menu_rehab_billing" name="Generate Monthly Billing" parent="rehab_financials_menu_cat" action="action_rehab_billing_wizard" sequence="5"/>
-<menuitem id="menu_rehab_money_in" name="Money IN (Invoices)" parent="rehab_finance_dashboard_cat" action="account.action_move_out_invoice_type" sequence="10"/>
-<menuitem id="menu_rehab_money_out" name="Money OUT (Teacher Salaries)" parent="rehab_finance_dashboard_cat" action="account.action_move_in_invoice_type" sequence="20"/>
-<menuitem id="menu_rehab_payments" name="Payments Received" parent="rehab_finance_dashboard_cat" action="account.action_account_payments" sequence="30"/>
-<menuitem id="menu_rehab_finance_reports_cat" name="Finance Reports" parent="rehab_finance_dashboard_cat" sequence="100"/>
-<menuitem id="menu_rehab_report_pl" name="Profit &amp; Loss" parent="menu_rehab_finance_reports_cat" action="action_rehab_financial_report_wizard" sequence="10" context="{'default_report_type': 'pl'}"/>
-<menuitem id="menu_rehab_report_bs" name="Balance Sheet" parent="menu_rehab_finance_reports_cat" action="action_rehab_financial_report_wizard" sequence="20" context="{'default_report_type': 'bs'}"/>
-<menuitem id="menu_rehab_report_tb" name="Trial Balance" parent="menu_rehab_finance_reports_cat" action="action_rehab_financial_report_wizard" sequence="30" context="{'default_report_type': 'tb'}"/>
-<menuitem id="menu_rehab_ledger" name="Complete Ledger (Journal Items)" parent="menu_rehab_finance_reports_cat" action="account.action_account_moves_all" sequence="40"/>
-<menuitem id="menu_rehab_accounting_section" name="Accounting Settings" parent="rehab_configuration_cat" sequence="20"/>
-<menuitem id="menu_rehab_journals" name="Journals" parent="menu_rehab_accounting_section" action="account.action_account_journal_form" sequence="10"/>
-<menuitem id="menu_rehab_chart_of_accounts" name="Chart of Accounts" parent="menu_rehab_accounting_section" action="account.action_account_form" sequence="20"/>
-<menuitem id="menu_rehab_student_type" name="Student Types" parent="rehab_configuration_cat" action="action_rehab_student_type" sequence="5"/>
+    <record id="rehab_root_menu" model="ir.ui.menu">
+        <field name="name">Rehab &amp; Finance</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="rehab_students_menu_cat" model="ir.ui.menu">
+        <field name="name">1. Student Admitting</field>
+        <field name="parent_id" ref="rehab_root_menu"/>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="rehab_financials_menu_cat" model="ir.ui.menu">
+        <field name="name">2. Monthly Billing</field>
+        <field name="parent_id" ref="rehab_root_menu"/>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="rehab_finance_dashboard_cat" model="ir.ui.menu">
+        <field name="name">3. Money Tracking</field>
+        <field name="parent_id" ref="rehab_root_menu"/>
+        <field name="sequence">30</field>
+    </record>
+
+    <record id="rehab_discipline_menu_cat" model="ir.ui.menu">
+        <field name="name">Discipline</field>
+        <field name="parent_id" ref="rehab_root_menu"/>
+        <field name="sequence">40</field>
+    </record>
+
+    <record id="rehab_dormitory_menu_cat" model="ir.ui.menu">
+        <field name="name">Dormitory</field>
+        <field name="parent_id" ref="rehab_root_menu"/>
+        <field name="sequence">50</field>
+    </record>
+
+    <record id="rehab_logistics_menu_cat" model="ir.ui.menu">
+        <field name="name">Logistics &amp; Purchase</field>
+        <field name="parent_id" ref="rehab_root_menu"/>
+        <field name="sequence">60</field>
+    </record>
+
+    <record id="rehab_configuration_cat" model="ir.ui.menu">
+        <field name="name">Settings</field>
+        <field name="parent_id" ref="rehab_root_menu"/>
+        <field name="sequence">100</field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_rehab_student" model="ir.actions.act_window">
+        <field name="name">Students</field>
+        <field name="res_model">rehab.student</field>
+        <field name="view_mode">list,form,kanban</field>
+    </record>
+
+    <record id="action_rehab_discipline_case" model="ir.actions.act_window">
+        <field name="name">Discipline Cases</field>
+        <field name="res_model">rehab.discipline.case</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_rehab_room" model="ir.actions.act_window">
+        <field name="name">Rooms</field>
+        <field name="res_model">rehab.room</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_rehab_teacher" model="ir.actions.act_window">
+        <field name="name">Teachers</field>
+        <field name="res_model">rehab.teacher</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_rehab_class" model="ir.actions.act_window">
+        <field name="name">Classes</field>
+        <field name="res_model">rehab.class</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_rehab_student_type" model="ir.actions.act_window">
+        <field name="name">Student Types</field>
+        <field name="res_model">rehab.student.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Submenus -->
+    <record id="menu_rehab_student" model="ir.ui.menu">
+        <field name="name">Students</field>
+        <field name="parent_id" ref="rehab_students_menu_cat"/>
+        <field name="action" ref="action_rehab_student"/>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="menu_rehab_discipline_case" model="ir.ui.menu">
+        <field name="name">Discipline Cases</field>
+        <field name="parent_id" ref="rehab_discipline_menu_cat"/>
+        <field name="action" ref="action_rehab_discipline_case"/>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="menu_rehab_billing" model="ir.ui.menu">
+        <field name="name">Generate Monthly Billing</field>
+        <field name="parent_id" ref="rehab_financials_menu_cat"/>
+        <field name="action" ref="action_rehab_billing_wizard"/>
+        <field name="sequence">5</field>
+    </record>
+
+    <record id="menu_rehab_money_in" model="ir.ui.menu">
+        <field name="name">Money IN (Invoices)</field>
+        <field name="parent_id" ref="rehab_finance_dashboard_cat"/>
+        <field name="action" ref="account.action_move_out_invoice_type"/>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="menu_rehab_money_out" model="ir.ui.menu">
+        <field name="name">Money OUT (Teacher Salaries)</field>
+        <field name="parent_id" ref="rehab_finance_dashboard_cat"/>
+        <field name="action" ref="account.action_move_in_invoice_type"/>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="menu_rehab_payments" model="ir.ui.menu">
+        <field name="name">Payments Received</field>
+        <field name="parent_id" ref="rehab_finance_dashboard_cat"/>
+        <field name="action" ref="account.action_account_payments"/>
+        <field name="sequence">30</field>
+    </record>
+
+    <record id="menu_rehab_finance_reports_cat" model="ir.ui.menu">
+        <field name="name">Finance Reports</field>
+        <field name="parent_id" ref="rehab_finance_dashboard_cat"/>
+        <field name="sequence">100</field>
+    </record>
+
+    <record id="menu_rehab_report_pl" model="ir.ui.menu">
+        <field name="name">Profit &amp; Loss</field>
+        <field name="parent_id" ref="menu_rehab_finance_reports_cat"/>
+        <field name="action" ref="action_rehab_financial_report_wizard"/>
+        <field name="sequence">10</field>
+        <field name="context">{'default_report_type': 'pl'}</field>
+    </record>
+
+    <record id="menu_rehab_report_bs" model="ir.ui.menu">
+        <field name="name">Balance Sheet</field>
+        <field name="parent_id" ref="menu_rehab_finance_reports_cat"/>
+        <field name="action" ref="action_rehab_financial_report_wizard"/>
+        <field name="sequence">20</field>
+        <field name="context">{'default_report_type': 'bs'}</field>
+    </record>
+
+    <record id="menu_rehab_report_tb" model="ir.ui.menu">
+        <field name="name">Trial Balance</field>
+        <field name="parent_id" ref="menu_rehab_finance_reports_cat"/>
+        <field name="action" ref="action_rehab_financial_report_wizard"/>
+        <field name="sequence">30</field>
+        <field name="context">{'default_report_type': 'tb'}</field>
+    </record>
+
+    <record id="menu_rehab_ledger" model="ir.ui.menu">
+        <field name="name">Complete Ledger</field>
+        <field name="parent_id" ref="menu_rehab_finance_reports_cat"/>
+        <field name="action" ref="account.action_account_moves_all"/>
+        <field name="sequence">40</field>
+    </record>
+
+    <record id="menu_rehab_room" model="ir.ui.menu">
+        <field name="name">Rooms</field>
+        <field name="parent_id" ref="rehab_dormitory_menu_cat"/>
+        <field name="action" ref="action_rehab_room"/>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="menu_rehab_teacher" model="ir.ui.menu">
+        <field name="name">Teachers</field>
+        <field name="parent_id" ref="rehab_dormitory_menu_cat"/>
+        <field name="action" ref="action_rehab_teacher"/>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="menu_rehab_class" model="ir.ui.menu">
+        <field name="name">Classes</field>
+        <field name="parent_id" ref="rehab_dormitory_menu_cat"/>
+        <field name="action" ref="action_rehab_class"/>
+        <field name="sequence">30</field>
+    </record>
+
+    <record id="menu_rehab_inventory" model="ir.ui.menu">
+        <field name="name">Inventory</field>
+        <field name="parent_id" ref="rehab_logistics_menu_cat"/>
+        <field name="action" ref="stock.stock_picking_type_action"/>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="menu_rehab_purchase" model="ir.ui.menu">
+        <field name="name">Purchase</field>
+        <field name="parent_id" ref="rehab_logistics_menu_cat"/>
+        <field name="action" ref="purchase.purchase_rfq"/>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="menu_rehab_student_type" model="ir.ui.menu">
+        <field name="name">Student Types</field>
+        <field name="parent_id" ref="rehab_configuration_cat"/>
+        <field name="action" ref="action_rehab_student_type"/>
+        <field name="sequence">5</field>
+    </record>
 </odoo>

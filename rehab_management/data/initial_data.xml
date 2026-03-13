@@ -172,15 +172,15 @@
         <!-- Config parameters -->
         <record id="config_student_fee_product" model="ir.config_parameter">
             <field name="key">rehab_management.fee_product_id</field>
-            <field name="value" eval="ref('product_monthly_fee')"/>
+            <field name="value" eval="str(ref('product_monthly_fee'))"/>
         </record>
         <record id="config_student_invoice_journal" model="ir.config_parameter">
             <field name="key">rehab_management.invoice_journal_id</field>
-            <field name="value" eval="ref('journal_student_invoices')"/>
+            <field name="value" eval="str(ref('journal_student_invoices'))"/>
         </record>
         <record id="config_staff_salary_account" model="ir.config_parameter">
             <field name="key">rehab_management.staff_salary_account_id</field>
-            <field name="value" eval="ref('account_staff_salaries')"/>
+            <field name="value" eval="str(ref('account_staff_salaries'))"/>
         </record>
 
     </data>

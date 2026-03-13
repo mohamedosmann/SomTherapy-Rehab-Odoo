@@ -5,25 +5,8 @@
         <field name="model">account.journal</field>
         <field name="inherit_id" ref="account.view_account_journal_form"/>
         <field name="arch" type="xml">
-            <!-- Labels for Direct Posting clarity -->
             <xpath expr="//field[@name='default_account_id']" position="attributes">
                 <attribute name="string">Bank Account (Direct Posting)</attribute>
-            </xpath>
-
-            <!-- Add Bank Account column to lists in a safe way -->
-            <xpath expr="//field[@name='inbound_payment_method_line_ids']//field[@name='name']" position="after">
-                <field name="payment_account_id" string="Bank Account" optional="show"/>
-            </xpath>
-            <xpath expr="//field[@name='outbound_payment_method_line_ids']//field[@name='name']" position="after">
-                <field name="payment_account_id" string="Bank Account" optional="show"/>
-            </xpath>
-
-            <!-- Add Register Payment buttons to the top of the form -->
-            <xpath expr="//sheet" position="before">
-                <header>
-                    <button name="%(account.action_account_payments)d" string="Register Incoming" type="action" class="btn-primary" invisible="type not in ('bank', 'cash')" context="{'default_payment_type': 'inbound', 'default_journal_id': active_id}"/>
-                    <button name="%(account.action_account_payments_payable)d" string="Register Outgoing" type="action" class="btn-secondary" invisible="type not in ('bank', 'cash')" context="{'default_payment_type': 'outbound', 'default_journal_id': active_id}"/>
-                </header>
             </xpath>
         </field>
     </record>

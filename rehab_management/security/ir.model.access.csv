@@ -8,3 +8,5 @@ access_rehab_teacher,rehab.teacher,model_rehab_teacher,base.group_user,1,1,1,1
 access_rehab_class,rehab.class,model_rehab_class,base.group_user,1,1,1,1
 access_rehab_billing_wizard,rehab.billing.wizard,model_rehab_billing_wizard,base.group_user,1,1,1,1
 access_rehab_student_type,rehab.student.type,model_rehab_student_type,base.group_user,1,1,1,1
+access_rehab_teacher_payment_wizard,rehab.teacher.payment.wizard,model_rehab_teacher_payment_wizard,base.group_user,1,1,1,1
+access_rehab_financial_report_wizard,rehab.financial.report.wizard,model_rehab_financial_report_wizard,base.group_user,1,1,1,1

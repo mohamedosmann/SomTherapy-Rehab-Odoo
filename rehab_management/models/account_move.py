@@ -52,7 +52,8 @@ class AccountMove(models.Model):
 
     def action_apply_advance(self):
         """
-        Creates a reconciliation entry moving balance from Advance Liability to Accounts Receivable.
+        Creates a reconciliation entry moving balance from Advance Liability to Accounts Receivable,
+        then reconciles it with the invoice.
         """
         self.ensure_one()
         if not self.has_advance:
@@ -61,21 +62,69 @@ class AccountMove(models.Model):
         if self.state != 'posted':
             raise UserError(_("Invoices must be posted before applying advances."))
 
-        # Logic to create the reconciliation move
+        advance_accounts = [
+            self.env.ref('rehab_management.rehab_account_customer_advance', raise_if_not_found=False).id,
+            self.env.ref('rehab_management.rehab_account_vendor_advance', raise_if_not_found=False).id
+        ]
+        if not any(advance_accounts):
+             advance_accounts = self.env['account.account'].search([('code', 'in', ['201400', '101300'])]).ids
+
+        domain = [
+            ('partner_id', '=', self.partner_id.id),
+            ('account_id', 'in', advance_accounts),
+            ('parent_state', '=', 'posted'),
+            ('reconciled', '=', False)
+        ]
+        advance_lines = self.env['account.move.line'].search(domain)
+        amount_to_apply = min(self.amount_residual, abs(sum(advance_lines.mapped('balance'))))
+
+        if amount_to_apply <= 0:
+            return True
+
+        # Create Reclassification Move
         # Debit: Advance Liability
         # Credit: Accounts Receivable
+        reclass_move = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': fields.Date.today(),
+            'journal_id': self.journal_id.id, # Or a specific reclass journal
+            'ref': _('Advance application for %s') % self.name,
+            'line_ids': [
+                (0, 0, {
+                    'name': _('Advance application'),
+                    'partner_id': self.partner_id.id,
+                    'account_id': advance_lines[0].account_id.id,
+                    'debit': amount_to_apply if self.move_type == 'out_invoice' else 0.0,
+                    'credit': amount_to_apply if self.move_type == 'in_invoice' else 0.0,
+                }),
+                (0, 0, {
+                    'name': _('Advance application'),
+                    'partner_id': self.partner_id.id,
+                    'account_id': self.partner_id.property_account_receivable_id.id if self.move_type == 'out_invoice' else self.partner_id.property_account_payable_id.id,
+                    'debit': amount_to_apply if self.move_type == 'in_invoice' else 0.0,
+                    'credit': amount_to_apply if self.move_type == 'out_invoice' else 0.0,
+                }),
+            ]
+        })
+        reclass_move.action_post()
+
+        # Reconcile the new AR/AP line with the Invoice
+        reclass_line = reclass_move.line_ids.filtered(lambda l: l.account_id.id in [self.partner_id.property_account_receivable_id.id, self.partner_id.property_account_payable_id.id])
+        invoice_line = self.line_ids.filtered(lambda l: l.account_id.id in [self.partner_id.property_account_receivable_id.id, self.partner_id.property_account_payable_id.id])
         
-        # This is a bit complex for a one-shot, but basically:
-        # 1. Find the advance lines
-        # 2. Create a new move to clear them and move to AR
-        # 3. Reconcile the new AR line with the invoice
+        (reclass_line + invoice_line).reconcile()
+        
+        # Also reconcile with the original advance payment line
+        (reclass_move.line_ids - reclass_line + advance_lines).reconcile()
+
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',
             'params': {
                 'title': _('Advance Applied'),
-                'message': _('Advance balance has been applied to this invoice.'),
+                'message': _('Successfully applied %s from advance balance.') % amount_to_apply,
                 'sticky': False,
+                'type': 'success',
             }
         }
 

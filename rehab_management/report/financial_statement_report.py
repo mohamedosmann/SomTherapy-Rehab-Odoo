@@ -1,4 +1,4 @@
-from odoo import models, api, _
+from odoo import models, fields, api, _
 
 class FinancialStatementReport(models.AbstractModel):
     _name = 'report.rehab_management.report_financial_statement'
@@ -6,14 +6,27 @@ class FinancialStatementReport(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        form = data.get('form')
-        date_from = form.get('date_from')
-        date_to = form.get('date_to')
-        report_type = form.get('report_type')
-        target_move = form.get('target_move')
+        if data and data.get('form'):
+            form = data.get('form')
+        elif docids:
+            wizard = self.env['rehab.financial.report.wizard'].browse(docids)
+            form = {
+                'date_from': wizard.date_from,
+                'date_to': wizard.date_to,
+                'report_type': wizard.report_type,
+                'target_move': wizard.target_move,
+            }
+        else:
+            form = {}
+
+        date_from = form.get('date_from', fields.Date.today().replace(day=1, month=1))
+        date_to = form.get('date_to', fields.Date.today())
+        report_type = form.get('report_type', 'pl')
+        target_move = form.get('target_move', 'posted')
 
         lines = self._get_lines(report_type, date_from, date_to, target_move)
         docs = self.env['rehab.financial.report.wizard'].browse(docids)
+        company = self.env.company
 
         return {
             'doc_ids': docids,
@@ -24,8 +37,9 @@ class FinancialStatementReport(models.AbstractModel):
             'date_to': date_to,
             'report_type': report_type,
             'lines': lines,
-            'company': self.env.company,
-            'res_company': self.env.company,
+            'company': company,
+            'res_company': company,
+            'user': self.env.user,
         }
 
     def _get_lines(self, report_type, date_from, date_to, target_move):

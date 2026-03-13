@@ -13,7 +13,9 @@ class RehabFinancialReportWizard(models.TransientModel):
         ('cf', 'Statement of Cash Flows'),
         ('summary', 'Executive Summary'),
         ('tax', 'Tax Return (VAT/Sales Tax)'),
-        ('tb', 'Trial Balance')
+        ('tb', 'Trial Balance'),
+        ('aged_receivable', 'Aged Receivable (Customer Aging)'),
+        ('aged_payable', 'Aged Payable (Vendor Aging)')
     ], string='Report Type', required=True, default='pl')
     target_move = fields.Selection([
         ('posted', 'All Posted Entries'),
@@ -30,14 +32,17 @@ class RehabFinancialReportWizard(models.TransientModel):
         data = self._get_report_data()
         return self.env.ref('rehab_management.action_report_financial_statement_html').report_action(self, data=data)
 
-    def _get_report_data(self):
-        return {
-            'ids': self.ids,
-            'model': self._name,
-            'form': {
-                'date_from': self.date_from,
-                'date_to': self.date_to,
-                'report_type': self.report_type,
-                'target_move': self.target_move,
-            }
-        }
+    def auto_open_report(self):
+        """
+        Called directly from menus to skip the wizard and show the report with default dates.
+        """
+        self.ensure_one()
+        return self.action_view_report_html()
+
+    @api.model
+    def action_direct_open(self, report_type):
+        """
+        Creates a dummy wizard and returns the report action.
+        """
+        wizard = self.create({'report_type': report_type})
+        return wizard.action_view_report_html()

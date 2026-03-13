@@ -38,8 +38,15 @@
                         <table class="table table-sm table-reports">
                             <thead>
                                 <tr>
-                                    <th>Description</th>
-                                    <th class="text-end">Balance (<t t-esc="res_company.currency_id.symbol"/>)</th>
+                                    <th>
+                                        <t t-if="report_type in ('aged_receivable', 'aged_payable')">Partner / Customer Name</t>
+                                        <t t-else="">Description</t>
+                                    </th>
+                                    <th class="text-end">
+                                        <t t-if="report_type in ('aged_receivable', 'aged_payable')">Total Outstanding</t>
+                                        <t t-else="">Balance</t>
+                                        (<t t-esc="res_company.currency_id.symbol"/>)
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>

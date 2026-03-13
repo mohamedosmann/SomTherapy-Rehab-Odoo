@@ -111,6 +111,25 @@
         <field name="context">{'default_report_type': 'tb'}</field>
     </record>
 
+    <!-- SERVER ACTIONS FOR AUTO-OPEN -->
+    <record id="action_rehab_report_pl_auto" model="ir.actions.server">
+        <field name="name">Profit and Loss (Auto)</field>
+        <field name="model_id" ref="model_rehab_financial_report_wizard"/>
+        <field name="state">code</field>
+        <field name="code">
+action = model.action_direct_open('pl')
+        </field>
+    </record>
+
+    <record id="action_rehab_report_bs_auto" model="ir.actions.server">
+        <field name="name">Balance Sheet (Auto)</field>
+        <field name="model_id" ref="model_rehab_financial_report_wizard"/>
+        <field name="state">code</field>
+        <field name="code">
+action = model.action_direct_open('bs')
+        </field>
+    </record>
+
     <record id="action_rehab_report_cf" model="ir.actions.act_window">
         <field name="name">Cash Flow Statement</field>
         <field name="res_model">rehab.financial.report.wizard</field>
@@ -133,6 +152,61 @@
         <field name="view_mode">form</field>
         <field name="target">new</field>
         <field name="context">{'default_report_type': 'tax'}</field>
+    </record>
+
+    <!-- SERVER ACTIONS FOR AUTO-OPEN -->
+    <record id="action_rehab_report_pl_auto" model="ir.actions.server">
+        <field name="name">Profit and Loss (Auto)</field>
+        <field name="model_id" ref="model_rehab_financial_report_wizard"/>
+        <field name="state">code</field>
+        <field name="code">
+action = model.action_direct_open('pl')
+        </field>
+    </record>
+
+    <record id="action_rehab_report_bs_auto" model="ir.actions.server">
+        <field name="name">Balance Sheet (Auto)</field>
+        <field name="model_id" ref="model_rehab_financial_report_wizard"/>
+        <field name="state">code</field>
+        <field name="code">
+action = model.action_direct_open('bs')
+        </field>
+    </record>
+
+    <record id="action_rehab_report_cf_auto" model="ir.actions.server">
+        <field name="name">Cash Flow (Auto)</field>
+        <field name="model_id" ref="model_rehab_financial_report_wizard"/>
+        <field name="state">code</field>
+        <field name="code">
+action = model.action_direct_open('cf')
+        </field>
+    </record>
+
+    <record id="action_rehab_report_tb_auto" model="ir.actions.server">
+        <field name="name">Trial Balance (Auto)</field>
+        <field name="model_id" ref="model_rehab_financial_report_wizard"/>
+        <field name="state">code</field>
+        <field name="code">
+action = model.action_direct_open('tb')
+        </field>
+    </record>
+
+    <record id="action_rehab_report_aged_receivable_auto" model="ir.actions.server">
+        <field name="name">Aged Receivable (Auto)</field>
+        <field name="model_id" ref="model_rehab_financial_report_wizard"/>
+        <field name="state">code</field>
+        <field name="code">
+action = model.action_direct_open('aged_receivable')
+        </field>
+    </record>
+
+    <record id="action_rehab_report_aged_payable_auto" model="ir.actions.server">
+        <field name="name">Aged Payable (Auto)</field>
+        <field name="model_id" ref="model_rehab_financial_report_wizard"/>
+        <field name="state">code</field>
+        <field name="code">
+action = model.action_direct_open('aged_payable')
+        </field>
     </record>
 
     <!-- ACTIONS: AUDIT AND PARTNER -->
@@ -257,21 +331,21 @@
     <record id="menu_rehab_report_bs" model="ir.ui.menu">
         <field name="name">Balance Sheet</field>
         <field name="parent_id" ref="menu_statement_reports"/>
-        <field name="action" ref="action_rehab_report_bs"/>
+        <field name="action" ref="action_rehab_report_bs_auto"/>
         <field name="sequence">10</field>
     </record>
 
     <record id="menu_rehab_report_pl" model="ir.ui.menu">
         <field name="name">Profit &amp; Loss</field>
         <field name="parent_id" ref="menu_statement_reports"/>
-        <field name="action" ref="action_rehab_report_pl"/>
+        <field name="action" ref="action_rehab_report_pl_auto"/>
         <field name="sequence">20</field>
     </record>
 
     <record id="menu_rehab_report_cf" model="ir.ui.menu">
         <field name="name">Cash Flow Statement</field>
         <field name="parent_id" ref="menu_statement_reports"/>
-        <field name="action" ref="action_rehab_report_cf"/>
+        <field name="action" ref="action_rehab_report_cf_auto"/>
         <field name="sequence">30</field>
     </record>
 
@@ -305,7 +379,7 @@
     <record id="menu_rehab_report_tb" model="ir.ui.menu">
         <field name="name">Trial Balance</field>
         <field name="parent_id" ref="menu_audit_reports"/>
-        <field name="action" ref="action_rehab_report_tb"/>
+        <field name="action" ref="action_rehab_report_tb_auto"/>
         <field name="sequence">20</field>
     </record>
 
@@ -332,14 +406,14 @@
     <record id="menu_rehab_aged_receivable" model="ir.ui.menu">
         <field name="name">Aged Receivable</field>
         <field name="parent_id" ref="menu_partner_reports"/>
-        <field name="action" ref="action_rehab_aged_receivable"/>
+        <field name="action" ref="action_rehab_report_aged_receivable_auto"/>
         <field name="sequence">20</field>
     </record>
 
     <record id="menu_rehab_aged_payable" model="ir.ui.menu">
         <field name="name">Aged Payable</field>
         <field name="parent_id" ref="menu_partner_reports"/>
-        <field name="action" ref="action_rehab_aged_payable"/>
+        <field name="action" ref="action_rehab_report_aged_payable_auto"/>
         <field name="sequence">30</field>
     </record>
 

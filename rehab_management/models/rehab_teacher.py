@@ -30,11 +30,15 @@ class RehabTeacher(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             if not vals.get('partner_id') and vals.get('name'):
+                # Try to get the dedicated Staff Payable account
+                payable_account = self.env.ref('rehab_management.account_staff_payable', raise_if_not_found=False)
+                account_id = payable_account.id if payable_account else self.env.company.property_account_payable_id.id
+                
                 partner = self.env['res.partner'].create({
                     'name': vals.get('name'),
                     'is_company': False,
-                    'supplier_rank': 1, # They are providers of service
-                    'property_account_payable_id': self.env.ref('rehab_management.account_staff_payable').id,
+                    'supplier_rank': 1, 
+                    'property_account_payable_id': account_id,
                 })
                 vals['partner_id'] = partner.id
         return super(RehabTeacher, self).create(vals_list)

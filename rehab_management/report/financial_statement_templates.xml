@@ -16,7 +16,6 @@
                 <div class="page">
                     <div class="text-center">
                         <h2>
-                        <h2>
                             <t t-if="report_type == 'pl'">Statement of Profit or Loss (IFRS)</t>
                             <t t-if="report_type == 'bs'">Statement of Financial Position (Balance Sheet)</t>
                             <t t-if="report_type == 'cf'">Statement of Cash Flows</t>

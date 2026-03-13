@@ -152,6 +152,18 @@ class RehabStudent(models.Model):
 
     def action_register_advanced_payment(self):
         self.ensure_one()
+        if not self.partner_id:
+            raise UserError(_("Please ensure this student has a related Financial Account (Partner) set."))
+        
+        # Ensure the partner has a receivable account set to avoid the "No outstanding account found" error
+        if not self.partner_id.property_account_receivable_id:
+            receivable_account = self.env.ref('rehab_management.account_students_receivable', raise_if_not_found=False)
+            if receivable_account:
+                self.partner_id.sudo().property_account_receivable_id = receivable_account.id
+            else:
+                # Fallback to company default if ours isn't found
+                self.partner_id.sudo().property_account_receivable_id = self.env.company.property_account_receivable_id.id
+
         return {
             'name': 'Register Advanced Payment',
             'type': 'ir.actions.act_window',

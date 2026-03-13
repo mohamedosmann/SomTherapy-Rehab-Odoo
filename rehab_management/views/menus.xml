@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
         <!-- Root Menu -->
         <menuitem id="rehab_root_menu" name="Rehab &amp; Finance" sequence="10"/>
 
@@ -96,5 +95,4 @@
         <menuitem id="menu_rehab_chart_of_accounts" name="Chart of Accounts" parent="menu_rehab_accounting_section" action="account.action_account_form" sequence="20"/>
 
         <menuitem id="menu_rehab_student_type" name="Student Types" parent="rehab_configuration_cat" action="action_rehab_student_type" sequence="5"/>
-    </data>
 </odoo>

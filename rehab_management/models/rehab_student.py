@@ -74,11 +74,13 @@ class RehabStudent(models.Model):
         for vals in vals_list:
             if not vals.get('partner_id') and vals.get('name'):
                 try:
-                    # Auto-link to the pre-configured 'Students Receivable' account
-                    receivable_account = self.env.ref('rehab_management.account_students_receivable', raise_if_not_found=False)
+                    # Auto-link to the pre-configured 'Students Receivable' account from our module
+                    account_id = self.env.ref('rehab_management.account_students_receivable', raise_if_not_found=False).id
                     
-                    # If not found (unlikely), fallback to the default company receivable
-                    account_id = receivable_account.id if receivable_account else self.env.company.property_account_receivable_id.id
+                    # If not found, find any Receivable account as a safe fallback
+                    if not account_id:
+                        fallback = self.env['account.account'].search([('account_type', '=', 'asset_receivable')], limit=1)
+                        account_id = fallback.id
                     
                     partner_vals = {
                         'name': vals.get('name'),
@@ -161,8 +163,9 @@ class RehabStudent(models.Model):
             if receivable_account:
                 self.partner_id.sudo().property_account_receivable_id = receivable_account.id
             else:
-                # Fallback to company default if ours isn't found
-                self.partner_id.sudo().property_account_receivable_id = self.env.company.property_account_receivable_id.id
+                # Fallback to any receivable account if ours isn't found
+                fallback = self.env['account.account'].search([('account_type', '=', 'asset_receivable')], limit=1)
+                self.partner_id.sudo().property_account_receivable_id = fallback.id
 
         return {
             'name': 'Register Advanced Payment',

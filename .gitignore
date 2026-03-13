@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.log
+*.conf
+/fix_xml_tags.py
+/diag_local.py
+/server_*.log
+/local_odoo.log

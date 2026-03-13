@@ -20,6 +20,7 @@
         'views/rehab_dormitory_views.xml',
         'views/rehab_teacher_views.xml',
         'views/account_move_views.xml',
+        'views/web_templates.xml',
     ],
     'installable': True,
     'application': True,

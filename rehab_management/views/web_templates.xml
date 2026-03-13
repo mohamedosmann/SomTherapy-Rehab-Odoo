@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Replace "Powered by Odoo" in the login page and branding areas -->
+    <template id="brand_promotion_inherit" inherit_id="web.brand_promotion">
+        <xpath expr="//t" position="replace">
+            <t t-translation="off">
+                Powered by <a target="_blank" href="https://yos.so" class="badge text-bg-light">YOS ERP</a>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="brand_promotion_message_inherit" inherit_id="web.brand_promotion_message">
+        <xpath expr="//t" position="replace">
+            <t t-translation="off">
+                Powered by <a target="_blank" href="https://yoserp.com">YOS ERP</a>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="login_footer_inherit" inherit_id="web.login_layout">
+        <xpath expr="//div[hasclass('o_footer_copyright')]" position="replace">
+            <div class="o_footer_copyright text-center py-3">
+                Powered by <a href="https://yoserp.com" target="_blank">YOS ERP</a>
+            </div>
+        </xpath>
+    </template>
+</odoo>

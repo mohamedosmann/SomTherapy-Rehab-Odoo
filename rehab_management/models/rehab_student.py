@@ -75,7 +75,7 @@ class RehabStudent(models.Model):
             if not vals.get('partner_id') and vals.get('name'):
                 try:
                     # Auto-link to the pre-configured 'Students Receivable' account from our module
-                    account = self.env.ref('rehab_management.account_students_receivable', raise_if_not_found=False)
+                    account = self.env.ref('rehab_management.rehab_account_students_receivable', raise_if_not_found=False)
                     account_id = account.id if account else False
                     
                     if not account_id:
@@ -157,9 +157,9 @@ class RehabStudent(models.Model):
         if not self.partner_id:
             raise UserError(_("Please ensure this student has a related Financial Account (Partner) set."))
         
-        # Ensure the partner has a receivable account set to avoid the "No outstanding account found" error
+        # Ensure the partner has a receivable account set
         if not self.partner_id.property_account_receivable_id:
-            receivable_account = self.env.ref('rehab_management.account_students_receivable', raise_if_not_found=False)
+            receivable_account = self.env.ref('rehab_management.rehab_account_students_receivable', raise_if_not_found=False)
             if receivable_account:
                 self.partner_id.sudo().property_account_receivable_id = receivable_account.id
             else:
@@ -177,6 +177,7 @@ class RehabStudent(models.Model):
                 'default_partner_id': self.partner_id.id,
                 'default_payment_type': 'inbound',
                 'default_partner_type': 'customer',
+                'default_is_advance': True,  # Using the new Advance Payment feature
             },
         }
     def action_print_statement(self):

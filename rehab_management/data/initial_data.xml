@@ -1,150 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
-        <!-- Accounts from CSV -->
-        <record id="account_students_receivable" model="account.account">
+    <data noupdate="1">
+        <!-- Core Financial Accounts for Rehab Management -->
+        
+        <!-- Receivable/Payable -->
+        <record id="rehab_account_students_receivable" model="account.account">
             <field name="code">101200</field>
-            <field name="name">Students Receivable</field>
+            <field name="name">Students Receivable (Rehab)</field>
             <field name="account_type">asset_receivable</field>
+            <field name="reconcile" eval="True"/>
         </record>
-        <record id="account_staff_payable" model="account.account">
+        
+        <record id="rehab_account_staff_payable" model="account.account">
             <field name="code">201200</field>
-            <field name="name">Staff Payable</field>
+            <field name="name">Staff Payable (Rehab)</field>
             <field name="account_type">liability_payable</field>
+            <field name="reconcile" eval="True"/>
         </record>
-        <!-- Main Cash/Bank Accounts -->
-        <record id="account_cash_on_hand" model="account.account">
+
+        <!-- Advance Payment Accounts (Liability/Asset) -->
+        <record id="rehab_account_customer_advance" model="account.account">
+            <field name="code">201400</field>
+            <field name="name">Customer Advance Payments (Liability)</field>
+            <field name="account_type">liability_current</field>
+            <field name="reconcile" eval="True"/>
+        </record>
+
+        <record id="rehab_account_vendor_advance" model="account.account">
+            <field name="code">101300</field>
+            <field name="name">Vendor Advance Payments (Asset)</field>
+            <field name="account_type">asset_current</field>
+            <field name="reconcile" eval="True"/>
+        </record>
+
+        <!-- Liquidity Accounts -->
+        <record id="rehab_account_cash_on_hand" model="account.account">
             <field name="code">101100</field>
-            <field name="name">Cash on Hand</field>
+            <field name="name">Cash on Hand (Rehab)</field>
             <field name="account_type">asset_cash</field>
         </record>
-        <record id="account_bank_account" model="account.account">
+
+        <record id="rehab_account_bank_account" model="account.account">
             <field name="code">101400</field>
-            <field name="name">Bank Account</field>
+            <field name="name">Bank Account (Rehab)</field>
             <field name="account_type">asset_cash</field>
         </record>
         
-        <!-- EVC Accounts -->
-        <record id="account_evc_account" model="account.account">
+        <record id="rehab_account_evc_account" model="account.account">
             <field name="code">101500</field>
-            <field name="name">EVC Plus Account</field>
+            <field name="name">EVC Plus Account (Rehab)</field>
             <field name="account_type">asset_cash</field>
         </record>
 
-        <!-- Salaam Accounts -->
-        <record id="account_salaam_account" model="account.account">
+        <record id="rehab_account_salaam_account" model="account.account">
             <field name="code">101600</field>
-            <field name="name">Salaam Bank Account</field>
+            <field name="name">Salaam Bank Account (Rehab)</field>
             <field name="account_type">asset_cash</field>
         </record>
 
-        <!-- Suspense Accounts (Optional) -->
-        <record id="account_bank_suspense" model="account.account">
+        <!-- Suspense/Clearing -->
+        <record id="rehab_account_bank_suspense" model="account.account">
             <field name="code">101402</field>
-            <field name="name">Bank Suspense</field>
+            <field name="name">Rehab Bank Suspense</field>
             <field name="account_type">asset_current</field>
         </record>
 
-
-        <record id="account_student_fees" model="account.account">
+        <!-- Income/Expense -->
+        <record id="rehab_account_student_fees" model="account.account">
             <field name="code">401100</field>
-            <field name="name">Student Fees</field>
+            <field name="name">Student Fees (Income)</field>
             <field name="account_type">income</field>
         </record>
-        <record id="account_staff_salaries" model="account.account">
+
+        <record id="rehab_account_staff_salaries" model="account.account">
             <field name="code">601100</field>
-            <field name="name">Staff Salaries</field>
+            <field name="name">Staff Salaries (Expense)</field>
             <field name="account_type">expense</field>
         </record>
-        <record id="account_dormitory_expenses" model="account.account">
+
+        <record id="rehab_account_dormitory_expenses" model="account.account">
             <field name="code">601300</field>
             <field name="name">Dormitory Expenses</field>
             <field name="account_type">expense</field>
         </record>
-        <record id="account_supplies" model="account.account">
+
+        <record id="rehab_account_supplies" model="account.account">
             <field name="code">601400</field>
-            <field name="name">Supplies</field>
+            <field name="name">Rehab Supplies</field>
             <field name="account_type">expense</field>
         </record>
 
-        <!-- Journals (Using as Payment Methods) -->
-        <!-- Direct Posting Journals -->
-        <record id="journal_cash_payments" model="account.journal">
-            <field name="name">Cash</field>
+        <!-- Journals (Using unique prefixes to avoid conflicts with existing journals) -->
+        <record id="rehab_journal_cash" model="account.journal">
+            <field name="name">Rehab Cash</field>
             <field name="type">cash</field>
-            <field name="code">CASH</field>
-            <field name="default_account_id" ref="account_cash_on_hand"/>
-            <field name="inbound_payment_method_line_ids" eval="[(0, 0, {'name': 'Manual', 'payment_method_id': ref('account.account_payment_method_manual_in'), 'payment_account_id': ref('account_cash_on_hand')})]"/>
-            <field name="outbound_payment_method_line_ids" eval="[(0, 0, {'name': 'Manual', 'payment_method_id': ref('account.account_payment_method_manual_out'), 'payment_account_id': ref('account_cash_on_hand')})]"/>
-        </record>
-        <record id="journal_bank_payments" model="account.journal">
-            <field name="name">Bank</field>
-            <field name="type">bank</field>
-            <field name="code">BNK</field>
-            <field name="default_account_id" ref="account_bank_account"/>
-            <field name="suspense_account_id" ref="account_bank_suspense"/>
-            <field name="inbound_payment_method_line_ids" eval="[(0, 0, {'name': 'Manual', 'payment_method_id': ref('account.account_payment_method_manual_in'), 'payment_account_id': ref('account_bank_account')})]"/>
-            <field name="outbound_payment_method_line_ids" eval="[(0, 0, {'name': 'Manual', 'payment_method_id': ref('account.account_payment_method_manual_out'), 'payment_account_id': ref('account_bank_account')})]"/>
-        </record>
-        <record id="journal_evc_payments" model="account.journal">
-            <field name="name">EVC Plus</field>
-            <field name="type">bank</field>
-            <field name="code">EVC</field>
-            <field name="default_account_id" ref="account_evc_account"/>
-            <field name="inbound_payment_method_line_ids" eval="[(0, 0, {'name': 'Manual', 'payment_method_id': ref('account.account_payment_method_manual_in'), 'payment_account_id': ref('account_evc_account')})]"/>
-            <field name="outbound_payment_method_line_ids" eval="[(0, 0, {'name': 'Manual', 'payment_method_id': ref('account.account_payment_method_manual_out'), 'payment_account_id': ref('account_evc_account')})]"/>
-        </record>
-        <record id="journal_salaam_payments" model="account.journal">
-            <field name="name">Salaam Bank</field>
-            <field name="type">bank</field>
-            <field name="code">SLM</field>
-            <field name="default_account_id" ref="account_salaam_account"/>
-            <field name="inbound_payment_method_line_ids" eval="[(0, 0, {'name': 'Manual', 'payment_method_id': ref('account.account_payment_method_manual_in'), 'payment_account_id': ref('account_salaam_account')})]"/>
-            <field name="outbound_payment_method_line_ids" eval="[(0, 0, {'name': 'Manual', 'payment_method_id': ref('account.account_payment_method_manual_out'), 'payment_account_id': ref('account_salaam_account')})]"/>
-        </record>
-        <record id="journal_student_invoices" model="account.journal">
-            <field name="name">Student Invoices</field>
-            <field name="type">sale</field>
-            <field name="code">INV</field>
-        </record>
-        <record id="journal_staff_expenses" model="account.journal">
-            <field name="name">Staff Expenses</field>
-            <field name="type">purchase</field>
-            <field name="code">STF</field>
+            <field name="code">RCASH</field>
+            <field name="default_account_id" ref="rehab_account_cash_on_hand"/>
         </record>
 
-        <!-- Somalian Payment Methods -->
-        <record id="payment_method_evc" model="payment.method">
-            <field name="name">EVC Plus</field>
-            <field name="code">evc_plus</field>
+        <record id="rehab_journal_bank" model="account.journal">
+            <field name="name">Rehab Bank</field>
+            <field name="type">bank</field>
+            <field name="code">RBNK</field>
+            <field name="default_account_id" ref="rehab_account_bank_account"/>
+            <field name="suspense_account_id" ref="rehab_account_bank_suspense"/>
         </record>
-        <record id="payment_method_salaam" model="payment.method">
-            <field name="name">Salaam Bank</field>
-            <field name="code">salaam_bank</field>
+
+        <record id="rehab_journal_evc" model="account.journal">
+            <field name="name">Rehab EVC Plus</field>
+            <field name="type">bank</field>
+            <field name="code">REVC</field>
+            <field name="default_account_id" ref="rehab_account_evc_account"/>
         </record>
-        <record id="payment_method_sahal" model="payment.method">
-            <field name="name">Sahal</field>
-            <field name="code">sahal</field>
+
+        <record id="rehab_journal_salaam" model="account.journal">
+            <field name="name">Rehab Salaam Bank</field>
+            <field name="type">bank</field>
+            <field name="code">RSLM</field>
+            <field name="default_account_id" ref="rehab_account_salaam_account"/>
         </record>
-        <record id="payment_method_edahab" model="payment.method">
-            <field name="name">eDahab</field>
-            <field name="code">edahab</field>
+
+        <record id="rehab_journal_student_invoices" model="account.journal">
+            <field name="name">Rehab Student Invoices</field>
+            <field name="type">sale</field>
+            <field name="code">REINV</field>
+        </record>
+
+        <record id="rehab_journal_staff_expenses" model="account.journal">
+            <field name="name">Rehab Staff Expenses</field>
+            <field name="type">purchase</field>
+            <field name="code">RESTF</field>
         </record>
 
         <!-- Default Products -->
-        <record id="product_monthly_fee" model="product.product">
+        <record id="rehab_product_monthly_fee" model="product.product">
             <field name="name">Monthly Rehab Fee</field>
             <field name="type">service</field>
             <field name="list_price">300.0</field>
-            <field name="property_account_income_id" ref="account_student_fees"/>
+            <field name="property_account_income_id" ref="rehab_account_student_fees"/>
         </record>
 
-        <record id="product_discipline_fine" model="product.product">
+        <record id="rehab_product_discipline_fine" model="product.product">
             <field name="name">Discipline Fine</field>
             <field name="type">service</field>
             <field name="list_price">50.0</field>
-            <field name="property_account_income_id" ref="account_student_fees"/>
+            <field name="property_account_income_id" ref="rehab_account_student_fees"/>
         </record>
-
     </data>
 </odoo>

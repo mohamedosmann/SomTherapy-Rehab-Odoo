@@ -15,8 +15,8 @@ class FinancialStatementReport(models.AbstractModel):
             if wizard:
                 wizard = wizard[0]
                 form = {
-                    'date_from': str(wizard.date_from),
-                    'date_to': str(wizard.date_to),
+                    'date_from': wizard.date_from.strftime('%Y-%m-%d') if wizard.date_from else '',
+                    'date_to': wizard.date_to.strftime('%Y-%m-%d') if wizard.date_to else '',
                     'report_type': wizard.report_type,
                     'target_move': wizard.target_move,
                 }

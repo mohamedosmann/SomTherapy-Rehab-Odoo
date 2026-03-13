@@ -1,6 +1,6 @@
 {
     'name': 'Rehab Management',
-    'version': '1.0',
+    'version': '1.1',
     'summary': 'Odoo customization for Rehab and Dormitory Management',
     'description': """
         Customization for Rehab and Dormitory Management, 
@@ -13,6 +13,7 @@
         'security/ir.model.access.csv',
         'data/initial_data.xml',
         'wizard/rehab_billing_wizard_views.xml',
+        'wizard/rehab_financial_report_wizard_views.xml',
         'views/menus.xml',
         'views/res_config_settings_views.xml',
         'views/rehab_student_views.xml',
@@ -20,7 +21,9 @@
         'views/rehab_dormitory_views.xml',
         'views/rehab_teacher_views.xml',
         'views/account_move_views.xml',
+        'views/account_account_views.xml',
         'views/web_templates.xml',
+        'report/financial_statement_templates.xml',
     ],
     'installable': True,
     'application': True,

@@ -20,7 +20,16 @@ class RehabFinancialReportWizard(models.TransientModel):
 
     def action_generate_report(self):
         self.ensure_one()
-        data = {
+        data = self._get_report_data()
+        return self.env.ref('rehab_management.action_report_financial_statement').report_action(self, data=data)
+
+    def action_view_report_html(self):
+        self.ensure_one()
+        data = self._get_report_data()
+        return self.env.ref('rehab_management.action_report_financial_statement_html').report_action(self, data=data)
+
+    def _get_report_data(self):
+        return {
             'ids': self.ids,
             'model': self._name,
             'form': {
@@ -30,4 +39,3 @@ class RehabFinancialReportWizard(models.TransientModel):
                 'target_move': self.target_move,
             }
         }
-        return self.env.ref('rehab_management.action_report_financial_statement').report_action(self, data=data)

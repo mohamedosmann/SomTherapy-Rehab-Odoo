@@ -1,12 +1,18 @@
 <odoo>
     <record id="action_report_financial_statement" model="ir.actions.report">
-        <field name="name">Financial Statement (IFRS)</field>
+        <field name="name">Financial Statement (PDF)</field>
         <field name="model">rehab.financial.report.wizard</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">rehab_management.report_financial_statement</field>
         <field name="report_file">rehab_management.report_financial_statement</field>
-        <field name="binding_model_id" ref="model_rehab_financial_report_wizard"/>
-        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_financial_statement_html" model="ir.actions.report">
+        <field name="name">Financial Statement (HTML View)</field>
+        <field name="model">rehab.financial.report.wizard</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">rehab_management.report_financial_statement</field>
+        <field name="report_file">rehab_management.report_financial_statement</field>
     </record>
 
     <template id="report_financial_statement">

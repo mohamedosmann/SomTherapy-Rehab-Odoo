@@ -16,7 +16,8 @@
                     </group>
                 </group>
                 <footer>
-                    <button name="action_generate_report" string="Download PDF" type="object" class="btn-primary"/>
+                    <button name="action_view_report_html" string="View in Browser (HTML/No Download)" type="object" class="btn-primary"/>
+                    <button name="action_generate_report" string="Download PDF" type="object" class="btn-secondary"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>

@@ -27,12 +27,12 @@ class ResConfigSettings(models.TransientModel):
         help="Default journal used for generating student invoices."
     )
 
-    rehab_teacher_payroll_account_id = fields.Many2one(
+    rehab_staff_salary_account_id = fields.Many2one(
         'account.account',
-        string="Teacher Salary Account",
+        string="Staff Salary Account",
         domain=[('account_type', '=', 'expense')],
-        config_parameter='rehab_management.teacher_salary_account_id',
-        help="Expense account used for teacher salaries."
+        config_parameter='rehab_management.staff_salary_account_id',
+        help="Expense account used for staff salaries."
     )
 
     rehab_staff_payable_account_id = fields.Many2one(

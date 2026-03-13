@@ -36,9 +36,13 @@ class RehabTeacher(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             if not vals.get('partner_id') and vals.get('name'):
-                # Try to get the dedicated Staff Payable account
-                payable_account = self.env.ref('rehab_management.account_staff_payable', raise_if_not_found=False)
-                account_id = payable_account.id if payable_account else self.env.company.property_account_payable_id.id
+                # Try to get the dedicated Staff Payable account from our module
+                account_id = self.env.ref('rehab_management.account_staff_payable', raise_if_not_found=False).id
+                
+                # If not found, find any Liability Payable account as a safe fallback
+                if not account_id:
+                    fallback = self.env['account.account'].search([('account_type', '=', 'liability_payable')], limit=1)
+                    account_id = fallback.id
                 
                 partner = self.env['res.partner'].create({
                     'name': vals.get('name'),

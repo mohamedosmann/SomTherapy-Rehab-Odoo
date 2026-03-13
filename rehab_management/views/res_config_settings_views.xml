@@ -27,7 +27,7 @@
                             <div class="content-group">
                                 <div class="row mt16">
                                     <label for="rehab_invoice_journal_id" class="col-lg-4 o_light_label"/>
-                                    <field name="rehab_invoice_journal_id"/>
+                                    <field name="rehab_invoice_journal_id" domain="[('type', '=', 'sale')]"/>
                                 </div>
                             </div>
                         </setting>

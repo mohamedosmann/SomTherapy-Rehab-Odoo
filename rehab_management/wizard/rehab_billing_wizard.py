@@ -15,17 +15,29 @@ class RehabBillingWizard(models.TransientModel):
         # Get settings or fallbacks
         ICP = self.env['ir.config_parameter'].sudo()
         product_id = int(ICP.get_param('rehab_management.fee_product_id', 0))
-        journal_id = int(ICP.get_param('rehab_management.invoice_journal_id', 0))
         
-        # Fallback to XML IDs
+        # Robust Journal Selection: must be a 'sale' journal
+        journal_id = int(ICP.get_param('rehab_management.invoice_journal_id', 0))
+        journal = self.env['account.journal'].browse(journal_id)
+        
+        if not journal.exists() or journal.type != 'sale':
+            # Fallback 1: Try XML ID
+            journal = self.env.ref('rehab_management.journal_student_invoices', raise_if_not_found=False)
+            if not journal or journal.type != 'sale':
+                # Fallback 2: Search for ANY sale journal
+                journal = self.env['account.journal'].search([('type', '=', 'sale')], limit=1)
+        
+        if not journal:
+            raise UserError(_("No 'Sale' journal found. Please create a Customer Invoice journal in Accounting settings."))
+
+        journal_id = journal.id
+        
+        # Fallback for products and accounts
         product = self.env.ref('rehab_management.product_monthly_fee', raise_if_not_found=False)
-        journal = self.env.ref('rehab_management.journal_student_invoices', raise_if_not_found=False)
         income_account = self.env.ref('rehab_management.account_student_fees', raise_if_not_found=False)
 
         if not product_id and product:
             product_id = product.id
-        if not journal_id and journal:
-            journal_id = journal.id
 
         invoices = self.env['account.move']
         errors = []

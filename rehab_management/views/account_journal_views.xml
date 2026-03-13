@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_journal_form_inherited_rehab" model="ir.ui.view">
+        <field name="name">account.journal.form.inherited.rehab</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <!-- Add Register Payment buttons to Incoming Payments tab -->
+            <xpath expr="//page[@name='inbound_payment_settings']" position="inside">
+                <div class="o_horizontal_separator mt-3" string="Actions"/>
+                <div class="oe_button_box" name="button_box_inbound">
+                    <button name="%(account.action_account_payments)d" 
+                            string="Register Incoming Payment" 
+                            type="action" 
+                            class="btn-primary" 
+                            icon="fa-money"
+                            context="{'default_payment_type': 'inbound', 'default_journal_id': active_id}"/>
+                </div>
+            </xpath>
+
+            <!-- Add Register Payment buttons to Outgoing Payments tab -->
+            <xpath expr="//page[@name='outbound_payment_settings']" position="inside">
+                <div class="o_horizontal_separator mt-3" string="Actions"/>
+                <div class="oe_button_box" name="button_box_outbound">
+                    <button name="%(account.action_account_payments_payable)d" 
+                            string="Register Outgoing Payment" 
+                            type="action" 
+                            class="btn-primary" 
+                            icon="fa-money"
+                            context="{'default_payment_type': 'outbound', 'default_journal_id': active_id}"/>
+                </div>
+            </xpath>
+
+            <!-- Add Bank Account column to lists -->
+            <xpath expr="//field[@name='inbound_payment_method_line_ids']/list/field[@name='name']" position="after">
+                <field name="payment_account_id" string="Bank Account" groups="account.group_account_readonly"/>
+            </xpath>
+            <xpath expr="//field[@name='outbound_payment_method_line_ids']/list/field[@name='name']" position="after">
+                <field name="payment_account_id" string="Bank Account" groups="account.group_account_readonly"/>
+            </xpath>
+
+            <!-- Labels for Direct Posting clarity -->
+            <xpath expr="//field[@name='default_account_id']" position="attributes">
+                <attribute name="string">Bank Account (Direct Posting)</attribute>
+            </xpath>
+            
+            <!-- Hide Outstanding Accounts to prevent confusion as per user request -->
+            <xpath expr="//field[@name='outbound_payment_method_line_ids']/list/field[@name='payment_account_id']" position="attributes">
+                <attribute name="invisible">0</attribute>
+                <attribute name="readonly">0</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

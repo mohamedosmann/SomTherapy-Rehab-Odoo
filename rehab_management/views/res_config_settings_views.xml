@@ -31,6 +31,19 @@
                                 </div>
                             </div>
                         </setting>
+
+                        <setting id="rehab_payroll" title="Payroll Configuration" help="Set accounts for teacher salaries.">
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label for="rehab_teacher_payroll_account_id" class="col-lg-4 o_light_label"/>
+                                    <field name="rehab_teacher_payroll_account_id"/>
+                                </div>
+                                <div class="row mt16">
+                                    <label for="rehab_staff_payable_account_id" class="col-lg-4 o_light_label"/>
+                                    <field name="rehab_staff_payable_account_id"/>
+                                </div>
+                            </div>
+                        </setting>
                     </block>
 
                 </app>

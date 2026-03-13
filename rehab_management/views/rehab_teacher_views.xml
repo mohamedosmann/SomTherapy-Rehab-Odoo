@@ -30,19 +30,43 @@
                             <field name="name" placeholder="Teacher Name"/>
                         </h1>
                     </div>
-                    <group>
-                        <group>
-                            <field name="teacher_id"/>
-                            <field name="partner_id" readonly="1"/>
-                            <field name="phone"/>
-                            <field name="email"/>
-                        </group>
-                        <group>
-                            <field name="specialization"/>
-                            <field name="department"/>
-                            <field name="salary_amount"/>
-                        </group>
-                    </group>
+                    <notebook>
+                        <page name="info" string="Employment Info">
+                            <group>
+                                <group>
+                                    <field name="teacher_id"/>
+                                    <field name="partner_id" readonly="1"/>
+                                    <field name="phone"/>
+                                    <field name="email"/>
+                                </group>
+                                <group>
+                                    <field name="specialization"/>
+                                    <field name="department"/>
+                                    <field name="salary_amount"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page name="classes" string="Assigned Classes">
+                            <field name="class_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="subject"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="documents" string="Identity Documents">
+                            <group>
+                                <group string="Main Identity">
+                                    <field name="passport_image" widget="image"/>
+                                    <field name="cid_letter" widget="image"/>
+                                </group>
+                                <group string="Educational &amp; Legal">
+                                    <field name="uni_certificates" widget="image"/>
+                                    <field name="contract_url" widget="url"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

@@ -131,6 +131,13 @@
         <field name="sequence">5</field>
     </record>
 
+    <record id="menu_rehab_teacher_payroll" model="ir.ui.menu">
+        <field name="name">Generate Teacher Salaries</field>
+        <field name="parent_id" ref="rehab_financials_menu_cat"/>
+        <field name="action" ref="action_rehab_teacher_payment_wizard"/>
+        <field name="sequence">10</field>
+    </record>
+
     <record id="menu_rehab_money_in" model="ir.ui.menu">
         <field name="name">Money IN (Invoices)</field>
         <field name="parent_id" ref="rehab_finance_dashboard_cat"/>

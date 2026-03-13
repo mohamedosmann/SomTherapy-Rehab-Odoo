@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_rehab_teacher_payment_wizard_form" model="ir.ui.view">
+        <field name="name">rehab.teacher.payment.wizard.form</field>
+        <field name="model">rehab.teacher.payment.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Teacher Salary Bills">
+                <group>
+                    <field name="date"/>
+                </group>
+                <notebook>
+                    <page name="teachers" string="Selected Teachers">
+                        <field name="teacher_ids">
+                            <list>
+                                <field name="teacher_id"/>
+                                <field name="name"/>
+                                <field name="salary_amount" sum="Total Salaries"/>
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
+                <footer>
+                    <button name="action_generate_bills" string="Generate Salary Bills" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_rehab_teacher_payment_wizard" model="ir.actions.act_window">
+        <field name="name">Teacher Salary Distribution</field>
+        <field name="res_model">rehab.teacher.payment.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -22,6 +22,12 @@ class RehabTeacher(models.Model):
     
     salary_amount = fields.Float(string='Monthly Salary', default=0.0)
     
+    # Identity Documents
+    passport_image = fields.Binary(string='Passport Image')
+    cid_letter = fields.Binary(string='CID Letter')
+    uni_certificates = fields.Binary(string='University Certificates')
+    contract_url = fields.Char(string='Contract URL')
+    
     # _sql_constraints = [
     #     ('teacher_id_unique', 'UNIQUE(teacher_id)', 'Teacher ID must be unique!')
     # ]

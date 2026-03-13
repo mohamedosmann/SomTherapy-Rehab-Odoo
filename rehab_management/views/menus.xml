@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- ROOT MENU -->
     <record id="rehab_root_menu" model="ir.ui.menu">
         <field name="name">Rehab &amp; Finance</field>
         <field name="sequence">10</field>
     </record>
 
+    <!-- TOP LEVEL CATEGORIES -->
     <record id="rehab_students_menu_cat" model="ir.ui.menu">
         <field name="name">1. Student Admitting</field>
         <field name="parent_id" ref="rehab_root_menu"/>
@@ -35,10 +37,10 @@
         <field name="sequence">50</field>
     </record>
 
-    <record id="rehab_logistics_menu_cat" model="ir.ui.menu">
-        <field name="name">Logistics &amp; Purchase</field>
+    <record id="rehab_reporting_root" model="ir.ui.menu">
+        <field name="name">4. Reporting</field>
         <field name="parent_id" ref="rehab_root_menu"/>
-        <field name="sequence">60</field>
+        <field name="sequence">90</field>
     </record>
 
     <record id="rehab_configuration_cat" model="ir.ui.menu">
@@ -47,38 +49,7 @@
         <field name="sequence">100</field>
     </record>
 
-    <record id="rehab_reporting_root" model="ir.ui.menu">
-        <field name="name">Reporting</field>
-        <field name="parent_id" ref="rehab_root_menu"/>
-        <field name="sequence">90</field>
-    </record>
-
-    <!-- Report Categories -->
-    <record id="menu_statement_reports" model="ir.ui.menu">
-        <field name="name">Statement Reports</field>
-        <field name="parent_id" ref="rehab_reporting_root"/>
-        <field name="sequence">10</field>
-    </record>
-
-    <record id="menu_audit_reports" model="ir.ui.menu">
-        <field name="name">Audit Reports</field>
-        <field name="parent_id" ref="rehab_reporting_root"/>
-        <field name="sequence">20</field>
-    </record>
-
-    <record id="menu_partner_reports" model="ir.ui.menu">
-        <field name="name">Partner Reports</field>
-        <field name="parent_id" ref="rehab_reporting_root"/>
-        <field name="sequence">30</field>
-    </record>
-
-    <record id="menu_management_reports" model="ir.ui.menu">
-        <field name="name">Management Reports</field>
-        <field name="parent_id" ref="rehab_reporting_root"/>
-        <field name="sequence">40</field>
-    </record>
-
-    <!-- Actions -->
+    <!-- ACTIONS: CORE -->
     <record id="action_rehab_student" model="ir.actions.act_window">
         <field name="name">Students</field>
         <field name="res_model">rehab.student</field>
@@ -115,7 +86,7 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <!-- Report Actions with Specific Contexts -->
+    <!-- ACTIONS: REPORTING WIZARDS -->
     <record id="action_rehab_report_pl" model="ir.actions.act_window">
         <field name="name">Profit &amp; Loss</field>
         <field name="res_model">rehab.financial.report.wizard</field>
@@ -140,12 +111,43 @@
         <field name="context">{'default_report_type': 'tb'}</field>
     </record>
 
-    <!-- NEW ACTIONS for Audit and Partner Reports -->
+    <record id="action_rehab_report_cf" model="ir.actions.act_window">
+        <field name="name">Cash Flow Statement</field>
+        <field name="res_model">rehab.financial.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_report_type': 'cf'}</field>
+    </record>
+
+    <record id="action_rehab_report_summary" model="ir.actions.act_window">
+        <field name="name">Executive Summary</field>
+        <field name="res_model">rehab.financial.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_report_type': 'summary'}</field>
+    </record>
+
+    <record id="action_rehab_report_tax" model="ir.actions.act_window">
+        <field name="name">Tax Return</field>
+        <field name="res_model">rehab.financial.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_report_type': 'tax'}</field>
+    </record>
+
+    <!-- ACTIONS: AUDIT AND PARTNER -->
     <record id="action_rehab_general_ledger" model="ir.actions.act_window">
         <field name="name">General Ledger</field>
         <field name="res_model">account.move.line</field>
         <field name="view_mode">list,form,pivot,graph</field>
         <field name="context">{'search_default_group_by_account': 1, 'search_default_posted': 1}</field>
+    </record>
+
+    <record id="action_rehab_journal_audit" model="ir.actions.act_window">
+        <field name="name">Journal Audit</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_group_by_journal': 1, 'search_default_posted': 1}</field>
     </record>
 
     <record id="action_rehab_partner_ledger" model="ir.actions.act_window">
@@ -170,7 +172,7 @@
         <field name="view_mode">list,pivot</field>
     </record>
 
-    <!-- Submenus -->
+    <!-- SUBMENUS: STUDENTS -->
     <record id="menu_rehab_student" model="ir.ui.menu">
         <field name="name">Students</field>
         <field name="parent_id" ref="rehab_students_menu_cat"/>
@@ -178,27 +180,22 @@
         <field name="sequence">10</field>
     </record>
 
-    <record id="menu_rehab_discipline_case" model="ir.ui.menu">
-        <field name="name">Discipline Cases</field>
-        <field name="parent_id" ref="rehab_discipline_menu_cat"/>
-        <field name="action" ref="action_rehab_discipline_case"/>
-        <field name="sequence">10</field>
-    </record>
-
+    <!-- SUBMENUS: BILLING -->
     <record id="menu_rehab_billing" model="ir.ui.menu">
         <field name="name">Generate Monthly Billing</field>
         <field name="parent_id" ref="rehab_financials_menu_cat"/>
-        <field name="action" ref="action_rehab_billing_wizard"/>
+        <field name="action" ref="rehab_management.action_rehab_billing_wizard"/>
         <field name="sequence">5</field>
     </record>
 
     <record id="menu_rehab_staff_payroll" model="ir.ui.menu">
         <field name="name">Generate Staff Salaries</field>
         <field name="parent_id" ref="rehab_financials_menu_cat"/>
-        <field name="action" ref="action_rehab_staff_payment_wizard"/>
+        <field name="action" ref="rehab_management.action_rehab_staff_payment_wizard"/>
         <field name="sequence">10</field>
     </record>
 
+    <!-- SUBMENUS: MONEY TRACKING -->
     <record id="menu_rehab_money_in" model="ir.ui.menu">
         <field name="name">Money IN (Invoices)</field>
         <field name="parent_id" ref="rehab_finance_dashboard_cat"/>
@@ -220,81 +217,15 @@
         <field name="sequence">30</field>
     </record>
 
-    <!-- REORGANIZED REPORT MENUS -->
-    <!-- Statement Reports -->
-    <record id="menu_rehab_report_bs" model="ir.ui.menu">
-        <field name="name">Balance Sheet</field>
-        <field name="parent_id" ref="menu_statement_reports"/>
-        <field name="action" ref="action_rehab_report_bs"/>
+    <!-- SUBMENUS: DISCIPLINE -->
+    <record id="menu_rehab_discipline_case" model="ir.ui.menu">
+        <field name="name">Discipline Cases</field>
+        <field name="parent_id" ref="rehab_discipline_menu_cat"/>
+        <field name="action" ref="action_rehab_discipline_case"/>
         <field name="sequence">10</field>
     </record>
 
-    <record id="menu_rehab_report_pl" model="ir.ui.menu">
-        <field name="name">Profit &amp; Loss</field>
-        <field name="parent_id" ref="menu_statement_reports"/>
-        <field name="action" ref="action_rehab_report_pl"/>
-        <field name="sequence">20</field>
-    </record>
-
-    <record id="menu_rehab_report_cf" model="ir.ui.menu">
-        <field name="name">Cash Flow Statement</field>
-        <field name="parent_id" ref="menu_statement_reports"/>
-        <field name="action" ref="action_rehab_report_pl"/> <!-- Placeholder using wizard -->
-        <field name="sequence">30</field>
-    </record>
-
-    <record id="menu_rehab_report_summary" model="ir.ui.menu">
-        <field name="name">Executive Summary</field>
-        <field name="parent_id" ref="menu_statement_reports"/>
-        <field name="action" ref="action_rehab_report_pl"/> <!-- Placeholder -->
-        <field name="sequence">40</field>
-    </record>
-
-    <!-- Audit Reports -->
-    <record id="menu_rehab_general_ledger" model="ir.ui.menu">
-        <field name="name">General Ledger</field>
-        <field name="parent_id" ref="menu_audit_reports"/>
-        <field name="action" ref="action_rehab_general_ledger"/>
-        <field name="sequence">10</field>
-    </record>
-
-    <record id="menu_rehab_report_tb" model="ir.ui.menu">
-        <field name="name">Trial Balance</field>
-        <field name="parent_id" ref="menu_audit_reports"/>
-        <field name="action" ref="action_rehab_report_tb"/>
-        <field name="sequence">20</field>
-    </record>
-
-    <!-- Partner Reports -->
-    <record id="menu_rehab_partner_ledger" model="ir.ui.menu">
-        <field name="name">Partner Ledger</field>
-        <field name="parent_id" ref="menu_partner_reports"/>
-        <field name="action" ref="action_rehab_partner_ledger"/>
-        <field name="sequence">10</field>
-    </record>
-
-    <record id="menu_rehab_aged_receivable" model="ir.ui.menu">
-        <field name="name">Aged Receivable</field>
-        <field name="parent_id" ref="menu_partner_reports"/>
-        <field name="action" ref="action_rehab_aged_receivable"/>
-        <field name="sequence">20</field>
-    </record>
-
-    <record id="menu_rehab_aged_payable" model="ir.ui.menu">
-        <field name="name">Aged Payable</field>
-        <field name="parent_id" ref="menu_partner_reports"/>
-        <field name="action" ref="action_rehab_aged_payable"/>
-        <field name="sequence">30</field>
-    </record>
-
-    <!-- Management Reports -->
-    <record id="menu_rehab_invoice_analysis" model="ir.ui.menu">
-        <field name="name">Invoice Analysis</field>
-        <field name="parent_id" ref="menu_management_reports"/>
-        <field name="action" ref="account.action_account_invoice_report_all"/>
-        <field name="sequence">10</field>
-    </record>
-
+    <!-- SUBMENUS: DORMITORY -->
     <record id="menu_rehab_room" model="ir.ui.menu">
         <field name="name">Rooms</field>
         <field name="parent_id" ref="rehab_dormitory_menu_cat"/>
@@ -316,6 +247,123 @@
         <field name="sequence">30</field>
     </record>
 
+    <!-- SUBMENUS: REPORTING (REORGANIZED) -->
+    <record id="menu_statement_reports" model="ir.ui.menu">
+        <field name="name">Statement Reports</field>
+        <field name="parent_id" ref="rehab_reporting_root"/>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="menu_rehab_report_bs" model="ir.ui.menu">
+        <field name="name">Balance Sheet</field>
+        <field name="parent_id" ref="menu_statement_reports"/>
+        <field name="action" ref="action_rehab_report_bs"/>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="menu_rehab_report_pl" model="ir.ui.menu">
+        <field name="name">Profit &amp; Loss</field>
+        <field name="parent_id" ref="menu_statement_reports"/>
+        <field name="action" ref="action_rehab_report_pl"/>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="menu_rehab_report_cf" model="ir.ui.menu">
+        <field name="name">Cash Flow Statement</field>
+        <field name="parent_id" ref="menu_statement_reports"/>
+        <field name="action" ref="action_rehab_report_cf"/>
+        <field name="sequence">30</field>
+    </record>
+
+    <record id="menu_rehab_report_summary" model="ir.ui.menu">
+        <field name="name">Executive Summary</field>
+        <field name="parent_id" ref="menu_statement_reports"/>
+        <field name="action" ref="action_rehab_report_summary"/>
+        <field name="sequence">40</field>
+    </record>
+
+    <record id="menu_rehab_report_tax" model="ir.ui.menu">
+        <field name="name">Tax Return</field>
+        <field name="parent_id" ref="menu_statement_reports"/>
+        <field name="action" ref="action_rehab_report_tax"/>
+        <field name="sequence">50</field>
+    </record>
+
+    <record id="menu_audit_reports" model="ir.ui.menu">
+        <field name="name">Audit Reports</field>
+        <field name="parent_id" ref="rehab_reporting_root"/>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="menu_rehab_general_ledger" model="ir.ui.menu">
+        <field name="name">General Ledger</field>
+        <field name="parent_id" ref="menu_audit_reports"/>
+        <field name="action" ref="action_rehab_general_ledger"/>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="menu_rehab_report_tb" model="ir.ui.menu">
+        <field name="name">Trial Balance</field>
+        <field name="parent_id" ref="menu_audit_reports"/>
+        <field name="action" ref="action_rehab_report_tb"/>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="menu_rehab_journal_audit" model="ir.ui.menu">
+        <field name="name">Journal Audit</field>
+        <field name="parent_id" ref="menu_audit_reports"/>
+        <field name="action" ref="action_rehab_journal_audit"/>
+        <field name="sequence">30</field>
+    </record>
+
+    <record id="menu_partner_reports" model="ir.ui.menu">
+        <field name="name">Partner Reports</field>
+        <field name="parent_id" ref="rehab_reporting_root"/>
+        <field name="sequence">30</field>
+    </record>
+
+    <record id="menu_rehab_partner_ledger" model="ir.ui.menu">
+        <field name="name">Partner Ledger</field>
+        <field name="parent_id" ref="menu_partner_reports"/>
+        <field name="action" ref="action_rehab_partner_ledger"/>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="menu_rehab_aged_receivable" model="ir.ui.menu">
+        <field name="name">Aged Receivable</field>
+        <field name="parent_id" ref="menu_partner_reports"/>
+        <field name="action" ref="action_rehab_aged_receivable"/>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="menu_rehab_aged_payable" model="ir.ui.menu">
+        <field name="name">Aged Payable</field>
+        <field name="parent_id" ref="menu_partner_reports"/>
+        <field name="action" ref="action_rehab_aged_payable"/>
+        <field name="sequence">30</field>
+    </record>
+
+    <record id="menu_management_reports" model="ir.ui.menu">
+        <field name="name">Management Reports</field>
+        <field name="parent_id" ref="rehab_reporting_root"/>
+        <field name="sequence">40</field>
+    </record>
+
+    <record id="menu_rehab_invoice_analysis" model="ir.ui.menu">
+        <field name="name">Invoice Analysis</field>
+        <field name="parent_id" ref="menu_management_reports"/>
+        <field name="action" ref="account.action_account_invoice_report_all"/>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="menu_rehab_daily_collection" model="ir.ui.menu">
+        <field name="name">Daily Collection Report</field>
+        <field name="parent_id" ref="menu_management_reports"/>
+        <field name="action" ref="action_rehab_daily_collection_wizard"/>
+        <field name="sequence">20</field>
+    </record>
+
+    <!-- SUBMENUS: SETTINGS/CONFIG -->
     <record id="menu_rehab_student_type" model="ir.ui.menu">
         <field name="name">Student Types</field>
         <field name="parent_id" ref="rehab_configuration_cat"/>
@@ -323,10 +371,17 @@
         <field name="sequence">5</field>
     </record>
 
+    <record id="menu_rehab_config_settings" model="ir.ui.menu">
+        <field name="name">General Settings</field>
+        <field name="parent_id" ref="rehab_configuration_cat"/>
+        <field name="action" ref="rehab_config_settings_action"/>
+        <field name="sequence">10</field>
+    </record>
+
     <record id="menu_rehab_acconuting_config_cat" model="ir.ui.menu">
         <field name="name">Accounting Setup</field>
         <field name="parent_id" ref="rehab_configuration_cat"/>
-        <field name="sequence">10</field>
+        <field name="sequence">20</field>
     </record>
 
     <record id="menu_rehab_chart_of_accounts" model="ir.ui.menu">

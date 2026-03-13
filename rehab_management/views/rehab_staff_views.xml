@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_rehab_teacher_tree" model="ir.ui.view">
-        <field name="name">rehab.teacher.tree</field>
-        <field name="model">rehab.teacher</field>
+    <record id="view_rehab_staff_tree" model="ir.ui.view">
+        <field name="name">rehab.staff.tree</field>
+        <field name="model">rehab.staff</field>
         <field name="arch" type="xml">
-            <list string="Teachers">
-                <field name="teacher_id"/>
+            <list string="Staff">
+                <field name="staff_id"/>
                 <field name="name"/>
+                <field name="job_role"/>
                 <field name="phone"/>
                 <field name="email"/>
-                <field name="specialization"/>
                 <field name="status"/>
             </list>
         </field>
     </record>
 
-    <record id="view_rehab_teacher_form" model="ir.ui.view">
-        <field name="name">rehab.teacher.form</field>
-        <field name="model">rehab.teacher</field>
+    <record id="view_rehab_staff_form" model="ir.ui.view">
+        <field name="name">rehab.staff.form</field>
+        <field name="model">rehab.staff</field>
         <field name="arch" type="xml">
-            <form string="Teacher">
+            <form string="Staff Member">
                 <header>
                     <field name="status" widget="statusbar" statusbar_visible="active,inactive"/>
                 </header>
@@ -27,26 +27,29 @@
                     <field name="image" widget="image" class="oe_avatar"/>
                     <div class="oe_title">
                         <h1>
-                            <field name="name" placeholder="Teacher Name"/>
+                            <field name="name" placeholder="Staff Name"/>
                         </h1>
+                        <h3>
+                            <field name="job_role"/>
+                        </h3>
                     </div>
                     <notebook>
                         <page name="info" string="Employment Info">
                             <group>
                                 <group>
-                                    <field name="teacher_id"/>
+                                    <field name="staff_id"/>
                                     <field name="partner_id" readonly="1"/>
                                     <field name="phone"/>
                                     <field name="email"/>
                                 </group>
                                 <group>
-                                    <field name="specialization"/>
+                                    <field name="specialization" invisible="job_role != 'teacher'"/>
                                     <field name="department"/>
                                     <field name="salary_amount"/>
                                 </group>
                             </group>
                         </page>
-                        <page name="classes" string="Assigned Classes">
+                        <page name="classes" string="Assigned Classes" invisible="job_role != 'teacher'">
                             <field name="class_ids">
                                 <list>
                                     <field name="name"/>

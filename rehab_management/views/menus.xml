@@ -66,9 +66,9 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <record id="action_rehab_teacher" model="ir.actions.act_window">
-        <field name="name">Teachers</field>
-        <field name="res_model">rehab.teacher</field>
+    <record id="action_rehab_staff" model="ir.actions.act_window">
+        <field name="name">Staff Management</field>
+        <field name="res_model">rehab.staff</field>
         <field name="view_mode">list,form</field>
     </record>
 
@@ -131,10 +131,10 @@
         <field name="sequence">5</field>
     </record>
 
-    <record id="menu_rehab_teacher_payroll" model="ir.ui.menu">
-        <field name="name">Generate Teacher Salaries</field>
+    <record id="menu_rehab_staff_payroll" model="ir.ui.menu">
+        <field name="name">Generate Staff Salaries</field>
         <field name="parent_id" ref="rehab_financials_menu_cat"/>
-        <field name="action" ref="action_rehab_teacher_payment_wizard"/>
+        <field name="action" ref="action_rehab_staff_payment_wizard"/>
         <field name="sequence">10</field>
     </record>
 
@@ -146,7 +146,7 @@
     </record>
 
     <record id="menu_rehab_money_out" model="ir.ui.menu">
-        <field name="name">Money OUT (Teacher Salaries)</field>
+        <field name="name">Money OUT (Staff Salaries)</field>
         <field name="parent_id" ref="rehab_finance_dashboard_cat"/>
         <field name="action" ref="account.action_move_in_invoice_type"/>
         <field name="sequence">20</field>
@@ -200,10 +200,10 @@
         <field name="sequence">10</field>
     </record>
 
-    <record id="menu_rehab_teacher" model="ir.ui.menu">
-        <field name="name">Teachers</field>
+    <record id="menu_rehab_staff" model="ir.ui.menu">
+        <field name="name">Staff List</field>
         <field name="parent_id" ref="rehab_dormitory_menu_cat"/>
-        <field name="action" ref="action_rehab_teacher"/>
+        <field name="action" ref="action_rehab_staff"/>
         <field name="sequence">20</field>
     </record>
 

@@ -94,13 +94,8 @@
             <field name="name">Student Fees</field>
             <field name="account_type">income</field>
         </record>
-        <record id="account_teacher_salaries" model="account.account">
-            <field name="code">601100</field>
-            <field name="name">Teacher Salaries</field>
-            <field name="account_type">expense</field>
-        </record>
         <record id="account_staff_salaries" model="account.account">
-            <field name="code">601200</field>
+            <field name="code">601100</field>
             <field name="name">Staff Salaries</field>
             <field name="account_type">expense</field>
         </record>
@@ -174,7 +169,33 @@
             <field name="property_account_income_id" ref="account_student_fees"/>
         </record>
 
-        <!-- Config parameters as simple records (I will set values in Python later or use a different approach) -->
+        <!-- Set default accounts for the company -->
+        <record id="property_account_receivable_id_default" model="ir.property">
+            <field name="name">property_account_receivable_id</field>
+            <field name="fields_id" search="[('model','=','res.partner'),('name','=','property_account_receivable_id')]"/>
+            <field name="value" eval="'account.account,' + str(ref('account_students_receivable'))"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+        <record id="property_account_payable_id_default" model="ir.property">
+            <field name="name">property_account_payable_id</field>
+            <field name="fields_id" search="[('model','=','res.partner'),('name','=','property_account_payable_id')]"/>
+            <field name="value" eval="'account.account,' + str(ref('account_staff_payable'))"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <!-- Config parameters -->
+        <record id="config_student_fee_product" model="ir.config_parameter">
+            <field name="key">rehab_management.fee_product_id</field>
+            <field name="value" eval="ref('product_monthly_fee')"/>
+        </record>
+        <record id="config_student_invoice_journal" model="ir.config_parameter">
+            <field name="key">rehab_management.invoice_journal_id</field>
+            <field name="value" eval="ref('journal_student_invoices')"/>
+        </record>
+        <record id="config_staff_salary_account" model="ir.config_parameter">
+            <field name="key">rehab_management.staff_salary_account_id</field>
+            <field name="value" eval="ref('account_staff_salaries')"/>
+        </record>
 
     </data>
 </odoo>

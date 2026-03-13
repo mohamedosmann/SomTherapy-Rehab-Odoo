@@ -4,9 +4,9 @@ access_rehab_discipline_case,rehab.discipline.case,model_rehab_discipline_case,b
 access_rehab_session,rehab.session,model_rehab_session,base.group_user,1,1,1,1
 access_rehab_progress_log,rehab.progress.log,model_rehab_progress_log,base.group_user,1,1,1,1
 access_rehab_room,rehab.room,model_rehab_room,base.group_user,1,1,1,1
-access_rehab_teacher,rehab.teacher,model_rehab_teacher,base.group_user,1,1,1,1
+access_rehab_staff,rehab.staff,model_rehab_staff,base.group_user,1,1,1,1
 access_rehab_class,rehab.class,model_rehab_class,base.group_user,1,1,1,1
 access_rehab_billing_wizard,rehab.billing.wizard,model_rehab_billing_wizard,base.group_user,1,1,1,1
 access_rehab_student_type,rehab.student.type,model_rehab_student_type,base.group_user,1,1,1,1
-access_rehab_teacher_payment_wizard,rehab.teacher.payment.wizard,model_rehab_teacher_payment_wizard,base.group_user,1,1,1,1
+access_rehab_staff_payment_wizard,rehab.staff.payment.wizard,model_rehab_staff_payment_wizard,base.group_user,1,1,1,1
 access_rehab_financial_report_wizard,rehab.financial.report.wizard,model_rehab_financial_report_wizard,base.group_user,1,1,1,1

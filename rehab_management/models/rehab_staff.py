@@ -1,15 +1,22 @@
 from odoo import models, fields, api, _
 
-class RehabTeacher(models.Model):
-    _name = 'rehab.teacher'
-    _description = 'Rehab Teacher'
+class RehabStaff(models.Model):
+    _name = 'rehab.staff'
+    _description = 'Rehab Staff'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     partner_id = fields.Many2one('res.partner', string='Related Partner', ondelete='restrict')
     name = fields.Char(related='partner_id.name', store=True, readonly=False)
-    teacher_id = fields.Char(string='Teacher ID', required=True, copy=False)
+    staff_id = fields.Char(string='Staff ID', required=True, copy=False)
     phone = fields.Char(string='Phone')
     email = fields.Char(string='Email')
+    job_role = fields.Selection([
+        ('teacher', 'Teacher'),
+        ('cleaner', 'Cleaner'),
+        ('security', 'Security'),
+        ('admin', 'Admin'),
+        ('other', 'Other')
+    ], string='Role', default='teacher', tracking=True)
     specialization = fields.Char(string='Specialization')
     department = fields.Char(string='Department')
     status = fields.Selection([
@@ -18,7 +25,7 @@ class RehabTeacher(models.Model):
     ], string='Status', default='active', tracking=True)
     
     image = fields.Binary(string='Image')
-    class_ids = fields.One2many('rehab.class', 'teacher_id', string='Classes')
+    class_ids = fields.One2many('rehab.class', 'teacher_id', string='Classes') # Map classes to staff
     
     salary_amount = fields.Float(string='Monthly Salary', default=0.0)
     
@@ -28,10 +35,6 @@ class RehabTeacher(models.Model):
     uni_certificates = fields.Binary(string='University Certificates')
     contract_url = fields.Char(string='Contract URL')
     
-    # _sql_constraints = [
-    #     ('teacher_id_unique', 'UNIQUE(teacher_id)', 'Teacher ID must be unique!')
-    # ]
-
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
@@ -51,4 +54,4 @@ class RehabTeacher(models.Model):
                     'property_account_payable_id': account_id,
                 })
                 vals['partner_id'] = partner.id
-        return super(RehabTeacher, self).create(vals_list)
+        return super(RehabStaff, self).create(vals_list)

@@ -21,5 +21,5 @@ class RehabClass(models.Model):
     name = fields.Char(string='Class Name', required=True)
     schedule = fields.Char(string='Schedule')
     is_archived = fields.Boolean(string='Archived', default=False)
-    teacher_id = fields.Many2one('rehab.teacher', string='Teacher')
+    teacher_id = fields.Many2one('rehab.staff', string='Staff/Teacher')
     student_ids = fields.One2many('rehab.student', 'class_id', string='Students')

@@ -8,10 +8,10 @@
     """,
     'author': 'Antigravity',
     'depends': ['base', 'mail', 'account', 'stock', 'purchase'],
+    'license': 'LGPL-3',
     'data': [
         'security/ir.model.access.csv',
-        'data/account.account.csv',
-        'data/account.journal.csv',
+        'data/initial_data.xml',
         'wizard/rehab_billing_wizard_views.xml',
         'views/res_config_settings_views.xml',
         'views/menus.xml',

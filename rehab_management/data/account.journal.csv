@@ -1,5 +1,0 @@
-id,name,type,code,default_account_id/id
-journal_cash_payments,Cash Payments,cash,CASH,account_cash_on_hand
-journal_bank_payments,Bank Payments,bank,BNK,account_bank_account
-journal_student_invoices,Student Invoices,sale,INV,
-journal_staff_expenses,Staff Expenses,purchase,STF,

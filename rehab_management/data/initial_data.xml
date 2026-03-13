@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Accounts from CSV -->
+        <record id="account_students_receivable" model="account.account">
+            <field name="code">101200</field>
+            <field name="name">Students Receivable</field>
+            <field name="account_type">asset_receivable</field>
+        </record>
+        <record id="account_staff_payable" model="account.account">
+            <field name="code">201200</field>
+            <field name="name">Staff Payable</field>
+            <field name="account_type">liability_payable</field>
+        </record>
+        <record id="account_cash_on_hand" model="account.account">
+            <field name="code">101100</field>
+            <field name="name">Cash on Hand</field>
+            <field name="account_type">asset_cash</field>
+        </record>
+        <record id="account_bank_account" model="account.account">
+            <field name="code">101400</field>
+            <field name="name">Bank Account</field>
+            <field name="account_type">asset_cash</field>
+        </record>
+        <record id="account_student_fees" model="account.account">
+            <field name="code">401100</field>
+            <field name="name">Student Fees</field>
+            <field name="account_type">income</field>
+        </record>
+        <record id="account_teacher_salaries" model="account.account">
+            <field name="code">601100</field>
+            <field name="name">Teacher Salaries</field>
+            <field name="account_type">expense</field>
+        </record>
+        <record id="account_staff_salaries" model="account.account">
+            <field name="code">601200</field>
+            <field name="name">Staff Salaries</field>
+            <field name="account_type">expense</field>
+        </record>
+        <record id="account_dormitory_expenses" model="account.account">
+            <field name="code">601300</field>
+            <field name="name">Dormitory Expenses</field>
+            <field name="account_type">expense</field>
+        </record>
+        <record id="account_supplies" model="account.account">
+            <field name="code">601400</field>
+            <field name="name">Supplies</field>
+            <field name="account_type">expense</field>
+        </record>
+
+        <!-- Journals from CSV -->
+        <record id="journal_cash_payments" model="account.journal">
+            <field name="name">Cash Payments</field>
+            <field name="type">cash</field>
+            <field name="code">CASH</field>
+            <field name="default_account_id" ref="account_cash_on_hand"/>
+        </record>
+        <record id="journal_bank_payments" model="account.journal">
+            <field name="name">Bank Payments</field>
+            <field name="type">bank</field>
+            <field name="code">BNK</field>
+            <field name="default_account_id" ref="account_bank_account"/>
+        </record>
+        <record id="journal_student_invoices" model="account.journal">
+            <field name="name">Student Invoices</field>
+            <field name="type">sale</field>
+            <field name="code">INV</field>
+        </record>
+        <record id="journal_staff_expenses" model="account.journal">
+            <field name="name">Staff Expenses</field>
+            <field name="type">purchase</field>
+            <field name="code">STF</field>
+        </record>
+    </data>
+</odoo>

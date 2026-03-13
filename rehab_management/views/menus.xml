@@ -221,4 +221,24 @@
         <field name="sequence">5</field>
     </record>
 
+    <record id="menu_rehab_acconuting_config_cat" model="ir.ui.menu">
+        <field name="name">Accounting Setup</field>
+        <field name="parent_id" ref="rehab_configuration_cat"/>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="menu_rehab_chart_of_accounts" model="ir.ui.menu">
+        <field name="name">Chart of Accounts</field>
+        <field name="parent_id" ref="menu_rehab_acconuting_config_cat"/>
+        <field name="action" ref="account.action_account_form"/>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="menu_rehab_journals" model="ir.ui.menu">
+        <field name="name">Journals</field>
+        <field name="parent_id" ref="menu_rehab_acconuting_config_cat"/>
+        <field name="action" ref="account.action_account_journal_form"/>
+        <field name="sequence">20</field>
+    </record>
+
 </odoo>

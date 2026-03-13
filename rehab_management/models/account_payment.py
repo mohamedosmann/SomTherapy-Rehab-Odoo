@@ -40,12 +40,26 @@ class AccountPayment(models.Model):
         """
         Override to change the destination account when it's an advance payment.
         """
-        res = super(AccountPayment, self)._prepare_move_line_default_vals(write_off_line_vals)
+        res = super()._prepare_move_line_default_vals(write_off_line_vals=write_off_line_vals)
+        
         if self.is_advance and self.advance_account_id:
+            # Determine the original destination accounts to replace
+            partner_accounts = []
+            if self.partner_id:
+                if self.partner_id.property_account_receivable_id:
+                    partner_accounts.append(self.partner_id.property_account_receivable_id.id)
+                if self.partner_id.property_account_payable_id:
+                    partner_accounts.append(self.partner_id.property_account_payable_id.id)
+            
+            if not partner_accounts:
+                # Fallback to standard codes if property fields are not set
+                partner_accounts = self.env['account.account'].search([
+                    ('account_type', 'in', ('asset_receivable', 'liability_payable'))
+                ]).ids
+
             for line in res:
-                # Identify the line that goes to the partner account
-                # In Odoo, this is usually the one where account_id is the partner's receivable/payable
-                if line.get('account_id') in [self.partner_id.property_account_receivable_id.id, self.partner_id.property_account_payable_id.id]:
+                # Replace partner account with the advance account
+                if line.get('account_id') in partner_accounts:
                     line['account_id'] = self.advance_account_id.id
         return res
 

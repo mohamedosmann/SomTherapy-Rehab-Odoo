@@ -9,8 +9,10 @@ class RehabFinancialReportWizard(models.TransientModel):
     date_to = fields.Date(string='End Date', required=True, default=fields.Date.today)
     report_type = fields.Selection([
         ('pl', 'Statement of Profit or Loss (IFRS)'),
-        ('bs', 'Statement of Financial Position (Balance Sheet - IFRS)'),
-        ('cf', 'Statement of Cash Flows (IFRS)'),
+        ('bs', 'Statement of Financial Position (Balance Sheet)'),
+        ('cf', 'Statement of Cash Flows'),
+        ('summary', 'Executive Summary'),
+        ('tax', 'Tax Return (VAT/Sales Tax)'),
         ('tb', 'Trial Balance')
     ], string='Report Type', required=True, default='pl')
     target_move = fields.Selection([

@@ -137,6 +137,53 @@ class FinancialStatementReport(models.AbstractModel):
                         'balance': balance,
                         'notes': []
                     })
+        
+        elif report_type == 'summary':
+            # Executive Summary: High level KPIs
+            # 1. Total Revenue
+            revenue = -self._get_balance([('account_id.account_type', 'in', ('income', 'income_other'))] + domain + [('date', '>=', date_from)])
+            lines.append({'name': 'Total Revenue (Period)', 'balance': revenue})
+            
+            # 2. Total Expenses
+            expenses = self._get_balance([('account_id.account_type', 'in', ('expense', 'expense_depreciation', 'expense_direct_cost'))] + domain + [('date', '>=', date_from)])
+            lines.append({'name': 'Total Expenses (Period)', 'balance': expenses})
+            
+            # 3. Net Profit
+            lines.append({'name': 'Net Profit/Loss', 'balance': revenue - expenses})
+            
+            # 4. Cash Position
+            cash = self._get_balance([('account_id.account_type', '=', 'asset_cash')] + domain)
+            lines.append({'name': 'Current Cash Position', 'balance': cash})
+            
+            # 5. Accounts Receivable
+            ar = self._get_balance([('account_id.account_type', '=', 'asset_receivable')] + domain)
+            lines.append({'name': 'Total Unpaid Student Invoices (AR)', 'balance': ar})
+
+        elif report_type == 'cf':
+            # Simplified Cash Flow: Cash basis (simplified)
+            # Cash at start of period
+            domain_start = [('date', '<', date_from), ('account_id.account_type', '=', 'asset_cash')]
+            if target_move == 'posted': domain_start.append(('parent_state', '=', 'posted'))
+            cash_start = self._get_balance(domain_start)
+            lines.append({'name': 'Cash at Beginning of Period', 'balance': cash_start})
+            
+            # Operating Activities (Simplified as Inflow - Outflow)
+            cash_in = -self._get_balance([('account_id.account_type', 'in', ('income', 'income_other')), ('date', '>=', date_from), ('date', '<=', date_to)])
+            cash_out = self._get_balance([('account_id.account_type', 'in', ('expense', 'expense_depreciation', 'expense_direct_cost')), ('date', '>=', date_from), ('date', '<=', date_to)])
+            lines.append({'name': 'Estimated Cash Inflow from Operations', 'balance': cash_in})
+            lines.append({'name': 'Estimated Cash Outflow from Operations', 'balance': cash_out})
+            
+            # Total Change
+            lines.append({'name': 'Net Change in Cash', 'balance': cash_in - cash_out})
+            lines.append({'name': 'Cash at End of Period', 'balance': cash_start + (cash_in - cash_out)})
+
+        elif report_type == 'tax':
+            # Simplified Tax Return
+            tax_received = -self._get_balance([('account_id.account_type', '=', 'liability_current'), ('account_id.name', 'ilike', 'tax')] + domain)
+            tax_paid = self._get_balance([('account_id.account_type', '=', 'asset_current'), ('account_id.name', 'ilike', 'tax')] + domain)
+            lines.append({'name': 'Tax Received on Sales', 'balance': tax_received})
+            lines.append({'name': 'Tax Paid on Purchases', 'balance': tax_paid})
+            lines.append({'name': 'Net Tax Due/Refund', 'balance': tax_received - tax_paid})
 
         return lines
         

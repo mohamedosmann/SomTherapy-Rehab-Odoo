@@ -24,6 +24,8 @@
                             <t t-if="report_type == 'pl'">Statement of Profit or Loss (IFRS)</t>
                             <t t-if="report_type == 'bs'">Statement of Financial Position (Balance Sheet)</t>
                             <t t-if="report_type == 'cf'">Statement of Cash Flows</t>
+                            <t t-if="report_type == 'summary'">Executive Summary</t>
+                            <t t-if="report_type == 'tax'">Tax Return (VAT/Sales Tax)</t>
                             <t t-if="report_type == 'tb'">Trial Balance</t>
                         </h2>
                         <h4><t t-esc="res_company.name"/></h4>

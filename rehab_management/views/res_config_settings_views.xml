@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="base.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//form" position="inside">
-                <app data-string="Rehab Management" string="Rehab Management" name="rehab_management" groups="base.group_user">
+                <app data-string="Rehab Management" string="Rehab Management" name="rehab_management">
                     
                     <block title="Accounting Integration" name="rehab_accounting_setting_container">
                         <setting id="rehab_billing_products" title="Billing Products" help="Set default products for rendering invoices safely.">

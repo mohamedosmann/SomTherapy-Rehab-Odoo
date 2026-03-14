@@ -19,10 +19,10 @@
             <field name="reconcile" eval="True"/>
         </record>
 
-        <!-- Advance Payment Accounts (Liability/Asset) - Requirements fulfilled -->
+        <!-- Advance Payment Accounts (Liability/Asset) -->
         <record id="rehab_account_customer_advance" model="account.account">
             <field name="code">201400</field>
-            <field name="name">Customer Advance Payments (Liability)</field>
+            <field name="name">Customer Credit/Advance (Liability)</field>
             <field name="account_type">liability_current</field>
             <field name="reconcile" eval="True"/>
         </record>
@@ -34,28 +34,34 @@
             <field name="reconcile" eval="True"/>
         </record>
 
-        <!-- Liquidity Accounts -->
+        <!-- Liquidity Accounts (Ready to Use / Renameable) -->
         <record id="rehab_account_cash_on_hand" model="account.account">
             <field name="code">101109</field>
-            <field name="name">Cash on Hand (Rehab)</field>
+            <field name="name">Cash on Hand - Rename Me</field>
             <field name="account_type">asset_cash</field>
         </record>
 
         <record id="rehab_account_bank_account" model="account.account">
             <field name="code">101409</field>
-            <field name="name">Bank Account (Rehab)</field>
+            <field name="name">General Bank Account - Rename Me</field>
             <field name="account_type">asset_cash</field>
         </record>
         
         <record id="rehab_account_evc_account" model="account.account">
             <field name="code">101509</field>
-            <field name="name">EVC Plus Account (Rehab)</field>
+            <field name="name">EVC Plus Account - Rename Me</field>
+            <field name="account_type">asset_cash</field>
+        </record>
+
+        <record id="rehab_account_edahab_account" model="account.account">
+            <field name="code">101510</field>
+            <field name="name">e-Dahab Account - Rename Me</field>
             <field name="account_type">asset_cash</field>
         </record>
 
         <record id="rehab_account_salaam_account" model="account.account">
             <field name="code">101609</field>
-            <field name="name">Salaam Bank Account (Rehab)</field>
+            <field name="name">Salaam Bank Account - Rename Me</field>
             <field name="account_type">asset_cash</field>
         </record>
 
@@ -79,28 +85,16 @@
             <field name="account_type">expense</field>
         </record>
 
-        <record id="rehab_account_dormitory_expenses" model="account.account">
-            <field name="code">601309</field>
-            <field name="name">Dormitory Expenses</field>
-            <field name="account_type">expense</field>
-        </record>
-
-        <record id="rehab_account_supplies" model="account.account">
-            <field name="code">601409</field>
-            <field name="name">Rehab Supplies</field>
-            <field name="account_type">expense</field>
-        </record>
-
-        <!-- Journals (Using unique prefixes to avoid conflicts with existing journals) -->
+        <!-- Journals (Ready for Payments) -->
         <record id="rehab_journal_cash" model="account.journal">
-            <field name="name">Rehab Cash</field>
+            <field name="name">Cash Payments</field>
             <field name="type">cash</field>
             <field name="code">RCASH</field>
             <field name="default_account_id" ref="rehab_account_cash_on_hand"/>
         </record>
 
         <record id="rehab_journal_bank" model="account.journal">
-            <field name="name">Rehab Bank</field>
+            <field name="name">Bank (General)</field>
             <field name="type">bank</field>
             <field name="code">RBNK</field>
             <field name="default_account_id" ref="rehab_account_bank_account"/>
@@ -108,27 +102,34 @@
         </record>
 
         <record id="rehab_journal_evc" model="account.journal">
-            <field name="name">Rehab EVC Plus</field>
+            <field name="name">Bank (EVC Plus)</field>
             <field name="type">bank</field>
             <field name="code">REVC</field>
             <field name="default_account_id" ref="rehab_account_evc_account"/>
         </record>
 
+        <record id="rehab_journal_edahab" model="account.journal">
+            <field name="name">Bank (e-Dahab)</field>
+            <field name="type">bank</field>
+            <field name="code">REDHB</field>
+            <field name="default_account_id" ref="rehab_account_edahab_account"/>
+        </record>
+
         <record id="rehab_journal_salaam" model="account.journal">
-            <field name="name">Rehab Salaam Bank</field>
+            <field name="name">Bank (Salaam Bank)</field>
             <field name="type">bank</field>
             <field name="code">RSLM</field>
             <field name="default_account_id" ref="rehab_account_salaam_account"/>
         </record>
 
         <record id="rehab_journal_student_invoices" model="account.journal">
-            <field name="name">Rehab Student Invoices</field>
+            <field name="name">Student Invoices</field>
             <field name="type">sale</field>
             <field name="code">REINV</field>
         </record>
 
         <record id="rehab_journal_staff_expenses" model="account.journal">
-            <field name="name">Rehab Staff Expenses</field>
+            <field name="name">Staff Salary Bills</field>
             <field name="type">purchase</field>
             <field name="code">RESTF</field>
         </record>
@@ -137,7 +138,7 @@
         <record id="rehab_product_monthly_fee" model="product.product">
             <field name="name">Monthly Rehab Fee</field>
             <field name="type">service</field>
-            <field name="list_price">300.0</field>
+            <field name="list_price">100.0</field>
             <field name="property_account_income_id" ref="rehab_account_student_fees"/>
         </record>
 

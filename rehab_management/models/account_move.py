@@ -25,18 +25,25 @@ class AccountMove(models.Model):
                 move.has_advance = False
                 continue
             
-            # Search for move lines in the advance accounts
-            advance_accounts = [
-                self.env.ref('rehab_management.rehab_account_customer_advance', raise_if_not_found=False).id,
-                self.env.ref('rehab_management.rehab_account_vendor_advance', raise_if_not_found=False).id
-            ]
-            # Fallback to search if ref fails (e.g. initial install)
-            if not any(advance_accounts):
-                advance_accounts = self.env['account.account'].search([('code', 'in', ['201400', '101300'])]).ids
+            # Search for move lines in the advance accounts safely
+            advance_accounts_list = []
+            for xml_id in ['rehab_management.rehab_account_customer_advance', 'rehab_management.rehab_account_vendor_advance']:
+                acc = self.env.ref(xml_id, raise_if_not_found=False)
+                if acc:
+                    advance_accounts_list.append(acc.id)
+            
+            # Fallback to search if ref fails (e.g. initial install or manual deletion of XML ID)
+            if not advance_accounts_list:
+                advance_accounts_list = self.env['account.account'].search([('code', 'in', ['201400', '101300'])]).ids
+
+            if not advance_accounts_list:
+                move.advance_balance = 0.0
+                move.has_advance = False
+                continue
 
             domain = [
                 ('partner_id', '=', move.partner_id.id),
-                ('account_id', 'in', advance_accounts),
+                ('account_id', 'in', advance_accounts_list),
                 ('parent_state', '=', 'posted'),
                 ('reconciled', '=', False)
             ]
@@ -62,16 +69,21 @@ class AccountMove(models.Model):
         if self.state != 'posted':
             raise UserError(_("Invoices must be posted before applying advances."))
 
-        advance_accounts = [
-            self.env.ref('rehab_management.rehab_account_customer_advance', raise_if_not_found=False).id,
-            self.env.ref('rehab_management.rehab_account_vendor_advance', raise_if_not_found=False).id
-        ]
-        if not any(advance_accounts):
-             advance_accounts = self.env['account.account'].search([('code', 'in', ['201400', '101300'])]).ids
+        advance_accounts_list = []
+        for xml_id in ['rehab_management.rehab_account_customer_advance', 'rehab_management.rehab_account_vendor_advance']:
+            acc = self.env.ref(xml_id, raise_if_not_found=False)
+            if acc:
+                advance_accounts_list.append(acc.id)
+        
+        if not advance_accounts_list:
+             advance_accounts_list = self.env['account.account'].search([('code', 'in', ['201400', '101300'])]).ids
+
+        if not advance_accounts_list:
+             raise UserError(_("Advance accounts could not be found. Please check your configuration."))
 
         domain = [
             ('partner_id', '=', self.partner_id.id),
-            ('account_id', 'in', advance_accounts),
+            ('account_id', 'in', advance_accounts_list),
             ('parent_state', '=', 'posted'),
             ('reconciled', '=', False)
         ]
@@ -129,7 +141,7 @@ class AccountMove(models.Model):
         }
 
     def action_post(self):
-        res = super(AccountMove, self).action_post()
+        res = super().action_post()
         # Auto-detect advances on post
         for move in self:
             if move.has_advance:

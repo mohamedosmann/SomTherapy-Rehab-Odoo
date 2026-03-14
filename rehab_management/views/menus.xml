@@ -445,12 +445,6 @@ action = model.action_direct_open('aged_payable')
         <field name="sequence">5</field>
     </record>
 
-    <record id="menu_rehab_config_settings" model="ir.ui.menu">
-        <field name="name">General Settings</field>
-        <field name="parent_id" ref="rehab_configuration_cat"/>
-        <field name="action" ref="rehab_config_settings_action"/>
-        <field name="sequence">10</field>
-    </record>
 
     <record id="menu_rehab_acconuting_config_cat" model="ir.ui.menu">
         <field name="name">Accounting Setup</field>

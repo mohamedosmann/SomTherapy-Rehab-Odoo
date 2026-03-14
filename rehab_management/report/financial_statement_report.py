@@ -40,6 +40,8 @@ class FinancialStatementReport(models.AbstractModel):
             lines = self._get_cash_flow_data(date_from, date_to, target_move)
         elif report_type == 'summary':
             lines = self._get_executive_summary_data(date_from, date_to, target_move)
+        elif report_type == 'tax':
+            lines = self._get_tax_report_data(date_from, date_to, target_move)
         elif report_type in ('aged_receivable', 'aged_payable'):
             lines = self._get_aged_balance_data(date_to, target_move, report_type)
 
@@ -118,7 +120,8 @@ class FinancialStatementReport(models.AbstractModel):
                     'name': account.name,
                     'debit': debit,
                     'credit': credit,
-                    'balance': debit - credit
+                    'balance': debit - credit,
+                    'notes': []
                 })
         return res
 
@@ -206,3 +209,11 @@ class FinancialStatementReport(models.AbstractModel):
                     ]
                 })
         return res
+
+    def _get_tax_report_data(self, date_from, date_to, target_move):
+        """
+        Logic for Tax Report (Placeholder for simplified VAT/Sales Tax)
+        """
+        return [
+            {'name': _('Total Taxes Payable'), 'balance': 0.0, 'notes': [_("Simplified Tax tracking not yet active")]},
+        ]

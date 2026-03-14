@@ -57,3 +57,39 @@ class ResConfigSettings(models.TransientModel):
     # Fix for "days_to_purchase" and related fields often missing in base settings views
     days_to_purchase = fields.Float(string="Days to Purchase", config_parameter='purchase.days_to_purchase')
     is_installed_purchase = fields.Boolean(string="Is Purchase Installed?")
+
+    # Sequence Configuration
+    rehab_student_id_prefix = fields.Char(
+        string="Student ID Prefix",
+        default="STD-",
+        help="Prefix used for Student IDs (e.g. STD-)"
+    )
+    
+    rehab_staff_id_prefix = fields.Char(
+        string="Staff ID Prefix",
+        default="STAFF-",
+        help="Prefix used for Staff IDs (e.g. STAFF-)"
+    )
+
+    def set_values(self):
+        super().set_values()
+        # Update the actual sequence records when settings are saved
+        student_seq = self.env.ref('rehab_management.seq_rehab_student', raise_if_not_found=False)
+        if student_seq:
+            student_seq.prefix = self.rehab_student_id_prefix
+        
+        staff_seq = self.env.ref('rehab_management.seq_rehab_staff', raise_if_not_found=False)
+        if staff_seq:
+            staff_seq.prefix = self.rehab_staff_id_prefix
+
+    def get_values(self):
+        res = super().get_values()
+        # Pull current prefix from the sequences
+        student_seq = self.env.ref('rehab_management.seq_rehab_student', raise_if_not_found=False)
+        if student_seq:
+            res['rehab_student_id_prefix'] = student_seq.prefix
+            
+        staff_seq = self.env.ref('rehab_management.seq_rehab_staff', raise_if_not_found=False)
+        if staff_seq:
+            res['rehab_staff_id_prefix'] = staff_seq.prefix
+        return res

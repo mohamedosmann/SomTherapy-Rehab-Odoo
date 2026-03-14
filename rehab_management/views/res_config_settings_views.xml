@@ -50,6 +50,25 @@
                         </setting>
                     </block>
 
+                    <block title="Identification Sequences" name="rehab_sequence_setting_container">
+                        <setting id="rehab_student_sequence" title="Student Identification" help="Configure the shortcode for Student IDs.">
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label for="rehab_student_id_prefix" class="col-lg-4 o_light_label"/>
+                                    <field name="rehab_student_id_prefix" placeholder="e.g. STD-"/>
+                                </div>
+                            </div>
+                        </setting>
+                        <setting id="rehab_staff_sequence" title="Staff Identification" help="Configure the shortcode for Staff IDs.">
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label for="rehab_staff_id_prefix" class="col-lg-4 o_light_label"/>
+                                    <field name="rehab_staff_id_prefix" placeholder="e.g. STAFF-"/>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+
                 </app>
             </xpath>
         </field>

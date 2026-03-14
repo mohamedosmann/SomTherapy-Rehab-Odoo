@@ -7,7 +7,7 @@
         mirroring features from Somtherapy system.
     """,
     'author': 'Antigravity',
-    'depends': ['base', 'mail', 'account', 'stock', 'purchase'],
+    'depends': ['base', 'mail', 'account', 'stock', 'purchase', 'payment'],
     'license': 'LGPL-3',
     'data': [
         'security/ir.model.access.csv',

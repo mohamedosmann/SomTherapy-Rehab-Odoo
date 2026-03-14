@@ -147,5 +147,21 @@
             <field name="list_price">50.0</field>
             <field name="property_account_income_id" ref="rehab_account_student_fees"/>
         </record>
+
+        <!-- Payment Methods -->
+        <record id="rehab_payment_method_evc" model="payment.method">
+            <field name="name">EVC Plus</field>
+            <field name="code">rehab_evc</field>
+        </record>
+
+        <record id="rehab_payment_method_edahab" model="payment.method">
+            <field name="name">e-Dahab</field>
+            <field name="code">rehab_edahab</field>
+        </record>
+
+        <record id="rehab_payment_method_merchant" model="payment.method">
+            <field name="name">Merchant / POS</field>
+            <field name="code">rehab_merchant</field>
+        </record>
     </data>
 </odoo>

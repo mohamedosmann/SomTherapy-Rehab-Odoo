@@ -26,6 +26,7 @@
         'views/account_account_views.xml',
         'views/account_journal_views.xml',
         'views/account_payment_views.xml',
+        'views/payment_method_views.xml',
         'views/web_templates.xml',
         'report/financial_statement_templates.xml',
         'report/daily_collection_templates.xml',

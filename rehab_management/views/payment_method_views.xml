@@ -3,7 +3,7 @@
     <record id="payment_method_view_form_rehab" model="ir.ui.view">
         <field name="name">payment.method.view.form.rehab</field>
         <field name="model">payment.method</field>
-        <field name="inherit_id" ref="account.payment_method_view_form"/>
+        <field name="inherit_id" ref="payment.payment_method_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='name']" position="after">
                 <field name="code" placeholder="Unique Code (e.g. evc_plus)"/>

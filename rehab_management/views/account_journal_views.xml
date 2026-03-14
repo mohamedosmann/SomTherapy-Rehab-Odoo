@@ -14,8 +14,8 @@
             <xpath expr="//sheet" position="inside">
                 <div class="o_horizontal_separator" invisible="type not in ('bank', 'cash')">Direct Payments</div>
                 <div class="oe_button_box" name="button_box_rehab" style="position: relative; float: none; display: block; margin-bottom: 20px;" invisible="type not in ('bank', 'cash')">
-                    <button name="%(account.action_account_payments)d" string="Register Incoming Payment" type="action" class="btn-primary" context="{'default_payment_type': 'inbound', 'default_journal_id': active_id}"/>
-                    <button name="%(account.action_account_payments_payable)d" string="Register Outgoing Payment" type="action" class="btn-secondary" context="{'default_payment_type': 'outbound', 'default_journal_id': active_id}"/>
+                    <button name="%(account.action_account_payments)d" string="Register Incoming Payment" type="action" class="btn-primary" context="{'default_payment_type': 'inbound', 'default_journal_id': id}"/>
+                    <button name="%(account.action_account_payments_payable)d" string="Register Outgoing Payment" type="action" class="btn-secondary" context="{'default_payment_type': 'outbound', 'default_journal_id': id}"/>
                 </div>
             </xpath>
         </field>

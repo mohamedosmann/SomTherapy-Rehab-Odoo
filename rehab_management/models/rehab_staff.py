@@ -7,7 +7,7 @@ class RehabStaff(models.Model):
 
     partner_id = fields.Many2one('res.partner', string='Related Partner', ondelete='restrict')
     name = fields.Char(related='partner_id.name', store=True, readonly=False)
-    staff_id = fields.Char(string='Staff ID', required=True, copy=False)
+    staff_id = fields.Char(string='Staff ID', required=True, copy=False, readonly=True, default=lambda self: _('New'))
     phone = fields.Char(string='Phone')
     email = fields.Char(string='Email')
     job_role = fields.Selection([
@@ -38,6 +38,9 @@ class RehabStaff(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
+            if vals.get('staff_id', _('New')) == _('New'):
+                vals['staff_id'] = self.env['ir.sequence'].next_by_code('rehab.staff') or _('New')
+                
             if not vals.get('partner_id'):
                 partner_vals = {
                     'name': vals.get('name'),
@@ -61,4 +64,4 @@ class RehabStaff(models.Model):
 
                 partner = self.env['res.partner'].create(partner_vals)
                 vals['partner_id'] = partner.id
-        return super(RehabStaff, self).create(vals_list)
+        return super().create(vals_list)

@@ -17,7 +17,7 @@ class RehabStudent(models.Model):
 
     partner_id = fields.Many2one('res.partner', string='Financial Account', ondelete='restrict')
     name = fields.Char(related='partner_id.name', string='Name', store=True, readonly=False)
-    student_id = fields.Char(string='Student ID', required=True, copy=False)
+    student_id = fields.Char(string='Student ID', required=True, copy=False, readonly=True, default=lambda self: _('New'))
     phone = fields.Char(string='Phone')
     type_id = fields.Many2one('rehab.student.type', string='Type', tracking=True)
     status = fields.Selection([
@@ -72,6 +72,9 @@ class RehabStudent(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
+            if vals.get('student_id', _('New')) == _('New'):
+                vals['student_id'] = self.env['ir.sequence'].next_by_code('rehab.student') or _('New')
+            
             if not vals.get('partner_id') and vals.get('name'):
                 try:
                     # Auto-link to the pre-configured 'Students Receivable' account from our module

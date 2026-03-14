@@ -52,8 +52,9 @@
                     <div class="oe_title">
                         <label for="name" class="oe_edit_only"/>
                         <h1><field name="name" placeholder="Full Name"/></h1>
-                        <label for="student_id" class="oe_edit_only"/>
-                        <field name="student_id" placeholder="e.g. STU-2024-001" style="font-weight: bold;"/>
+                        <h2 class="o_row">
+                            <field name="student_id" readonly="1"/>
+                        </h2>
                     </div>
                     <group>
                         <group string="Basic Details">

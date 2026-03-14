@@ -12,6 +12,7 @@
     'data': [
         'security/ir.model.access.csv',
         'data/initial_data.xml',
+        'data/sequences.xml',
         'wizard/rehab_billing_wizard_views.xml',
         'wizard/rehab_staff_payment_wizard_views.xml',
         'wizard/rehab_financial_report_wizard_views.xml',

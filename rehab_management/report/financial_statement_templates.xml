@@ -18,6 +18,54 @@
     <template id="report_financial_statement">
         <t t-call="web.html_container">
             <t t-call="web.external_layout">
+                <style>
+                    .page {
+                        font-family: 'Inter', sans-serif;
+                        color: #111827;
+                    }
+                    .table-reports thead th, .table-striped thead th {
+                        background-color: #f9fafb;
+                        text-transform: uppercase;
+                        font-size: 0.75rem;
+                        letter-spacing: 0.05em;
+                        border-bottom: 2px solid #e5e7eb;
+                        padding: 12px 8px;
+                    }
+                    .table-reports tbody tr:hover, .table-striped tbody tr:hover {
+                        background-color: #f3f4f6 !important;
+                        transition: background-color 0.2s ease;
+                    }
+                    .table-reports td, .table-striped td {
+                        padding: 12px 8px;
+                        vertical-align: middle;
+                        border-bottom: 1px solid #f3f4f6;
+                    }
+                    .page a {
+                        color: #2563eb;
+                        text-decoration: none;
+                        font-weight: 500;
+                    }
+                    .page a:hover {
+                        color: #1d4ed8;
+                        text-decoration: underline;
+                    }
+                    h2 {
+                        color: #111827;
+                        font-weight: 700;
+                        margin-bottom: 0.5rem;
+                    }
+                    h4 {
+                        color: #4b5563;
+                        font-weight: 500;
+                    }
+                    .text-muted {
+                        color: #6b7280 !important;
+                    }
+                    .text-end {
+                        font-family: 'Roboto Mono', monospace;
+                        font-weight: 600;
+                    }
+                </style>
                 <div class="page">
                     <div class="text-center">
                         <h2>
@@ -52,7 +100,11 @@
                             <tbody>
                                 <t t-foreach="lines" t-as="line">
                                     <tr>
-                                        <td><t t-esc="line['name']"/></td>
+                                        <td>
+                                            <a t-attf-href="/web#model=account.move.line&amp;action=account.action_account_moves_all&amp;domain=#{line.get('domain') or []}&amp;context={'search_default_posted':1}">
+                                                <t t-esc="line['name']"/>
+                                            </a>
+                                        </td>
                                         <td class="text-end">
                                             <t t-esc="line['balance']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/>
                                         </td>
@@ -77,7 +129,11 @@
                                 <t t-foreach="lines" t-as="line">
                                     <tr>
                                         <td><t t-esc="line['code']"/></td>
-                                        <td><t t-esc="line['name']"/></td>
+                                        <td>
+                                            <a t-attf-href="/web#model=account.move.line&amp;action=account.action_account_moves_all&amp;domain=#{line.get('domain') or []}&amp;context={'search_default_posted':1}">
+                                                <t t-esc="line['name']"/>
+                                            </a>
+                                        </td>
                                         <td class="text-end"><t t-esc="line['debit']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
                                         <td class="text-end"><t t-esc="line['credit']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
                                         <td class="text-end"><t t-esc="line['balance']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>

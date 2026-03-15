@@ -73,11 +73,11 @@ class FinancialStatementReport(models.AbstractModel):
         net_profit = gross_profit - expense_total
         
         return [
-            {'name': _('Total Revenue'), 'balance': income_total, 'notes': []},
-            {'name': _('Cost of Revenue (COGS)'), 'balance': cogs_total, 'notes': []},
-            {'name': _('Gross Profit'), 'balance': gross_profit, 'notes': []},
-            {'name': _('Operating Expenses'), 'balance': expense_total, 'notes': []},
-            {'name': _('Net Profit / (Loss)'), 'balance': net_profit, 'notes': []},
+            {'name': _('Total Revenue'), 'balance': income_total, 'notes': [], 'domain': [('account_id.account_type', 'in', ('income', 'income_other')), ('date', '>=', date_from), ('date', '<=', date_to)]},
+            {'name': _('Cost of Revenue (COGS)'), 'balance': cogs_total, 'notes': [], 'domain': [('account_id.account_type', '=', 'expense_direct_cost'), ('date', '>=', date_from), ('date', '<=', date_to)]},
+            {'name': _('Gross Profit'), 'balance': gross_profit, 'notes': [], 'domain': [('account_id.account_type', 'in', ('income', 'income_other', 'expense_direct_cost')), ('date', '>=', date_from), ('date', '<=', date_to)]},
+            {'name': _('Operating Expenses'), 'balance': expense_total, 'notes': [], 'domain': [('account_id.account_type', 'in', ('expense', 'expense_depreciation')), ('date', '>=', date_from), ('date', '<=', date_to)]},
+            {'name': _('Net Profit / (Loss)'), 'balance': net_profit, 'notes': [], 'domain': [('account_id.account_type', 'in', ('income', 'income_other', 'expense', 'expense_depreciation', 'expense_direct_cost')), ('date', '>=', date_from), ('date', '<=', date_to)]},
         ]
 
     def _get_balance_sheet_data(self, date_to, target_move):
@@ -97,9 +97,9 @@ class FinancialStatementReport(models.AbstractModel):
         equity += pl_net
 
         return [
-            {'name': _('Total Assets'), 'balance': assets, 'notes': []},
-            {'name': _('Total Liabilities'), 'balance': liabilities, 'notes': []},
-            {'name': _('Total Equity (incl. Retained Earnings)'), 'balance': equity, 'notes': []},
+            {'name': _('Total Assets'), 'balance': assets, 'notes': [], 'domain': [('account_id.account_type', 'in', ('asset_receivable', 'asset_cash', 'asset_current', 'asset_non_current', 'asset_fixed', 'asset_prepayments')), ('date', '<=', date_to)]},
+            {'name': _('Total Liabilities'), 'balance': liabilities, 'notes': [], 'domain': [('account_id.account_type', 'in', ('liability_payable', 'liability_current', 'liability_non_current')), ('date', '<=', date_to)]},
+            {'name': _('Total Equity (incl. Retained Earnings)'), 'balance': equity, 'notes': [], 'domain': [('account_id.account_type', 'in', ('equity', 'income', 'income_other', 'expense', 'expense_depreciation', 'expense_direct_cost')), ('date', '<=', date_to)]},
         ]
 
     def _get_trial_balance_data(self, date_from, date_to, target_move):
@@ -116,12 +116,14 @@ class FinancialStatementReport(models.AbstractModel):
             credit = sum(lines.mapped('credit'))
             if debit != 0 or credit != 0:
                 res.append({
+                    'id': account.id,
                     'code': account.code,
                     'name': account.name,
                     'debit': debit,
                     'credit': credit,
                     'balance': debit - credit,
-                    'notes': []
+                    'notes': [],
+                    'domain': [('account_id', '=', account.id), ('date', '>=', date_from), ('date', '<=', date_to)]
                 })
         return res
 

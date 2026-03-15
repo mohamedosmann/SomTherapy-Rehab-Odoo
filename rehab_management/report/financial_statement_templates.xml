@@ -32,14 +32,10 @@
                     .table-reports td { padding: 10px; border-bottom: 1px solid #f1f5f9; }
                     .text-end { text-align: right !important; }
                 </style>
-                <script type="text/javascript">
-                    function openDrillDown(domain) {
-                        var baseUrl = window.location.origin;
-                        var url = baseUrl + '/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=' + domain + '&amp;context={"search_default_posted":1}';
-                        window.open(url, '_blank');
-                    }
-                </script>
                 <div class="page">
+                    <!-- Base URL passed from Python to ensure correct redirection -->
+                    <t t-set="actual_base_url" t-value="base_url or ''"/>
+                    
                     <div class="text-center" style="margin-bottom: 30px;">
                         <h2 style="font-weight: 700; color: #1e293b;">
                             <t t-if="report_type == 'pl'">Profit &amp; Loss Statement</t>
@@ -68,8 +64,8 @@
                             <t t-foreach="lines" t-as="line">
                                 <tr t-if="report_type != 'tb'">
                                     <td>
-                                        <a href="#" class="drill-down-link" 
-                                           t-att-onclick="'openDrillDown(\'%s\'); return false;' % line.get('domain_str', '[]')">
+                                        <a t-att-href="'%s/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=%s&amp;context={\"search_default_posted\":1}' % (actual_base_url, line.get('domain_str', '[]'))" 
+                                           class="drill-down-link" target="_blank">
                                             <t t-esc="line['name']"/>
                                         </a>
                                     </td>
@@ -80,8 +76,8 @@
                                 <tr t-if="report_type == 'tb'">
                                     <td><t t-esc="line['code']"/></td>
                                     <td>
-                                        <a href="#" class="drill-down-link" 
-                                           t-att-onclick="'openDrillDown(\'%s\'); return false;' % line.get('domain_str', '[]')">
+                                        <a t-att-href="'%s/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=%s&amp;context={\"search_default_posted\":1}' % (actual_base_url, line.get('domain_str', '[]'))" 
+                                           class="drill-down-link" target="_blank">
                                             <t t-esc="line['name']"/>
                                         </a>
                                     </td>

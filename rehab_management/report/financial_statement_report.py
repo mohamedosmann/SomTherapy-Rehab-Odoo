@@ -53,6 +53,7 @@ class FinancialStatementReport(models.AbstractModel):
             'report_type': report_type,
             'lines': lines,
             'res_company': self.env.company,
+            'base_url': self.env['ir.config_parameter'].sudo().get_param('web.base.url'),
         }
 
     def _get_profit_loss_data(self, date_from, date_to, target_move):

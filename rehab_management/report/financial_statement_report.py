@@ -81,7 +81,7 @@ class FinancialStatementReport(models.AbstractModel):
         ]
         import json
         for r in res:
-            r['domain_str'] = json.dumps(r['domain'])
+            r['domain_str'] = json.dumps(r.get('domain', [])).replace("'", "\\'")
         return res
 
     def _get_balance_sheet_data(self, date_to, target_move):
@@ -107,7 +107,7 @@ class FinancialStatementReport(models.AbstractModel):
         ]
         import json
         for r in res:
-            r['domain_str'] = json.dumps(r['domain'])
+            r['domain_str'] = json.dumps(r.get('domain', [])).replace("'", "\\'")
         return res
 
     def _get_trial_balance_data(self, date_from, date_to, target_move):
@@ -135,7 +135,7 @@ class FinancialStatementReport(models.AbstractModel):
                 })
         import json
         for r in res:
-            r['domain_str'] = json.dumps(r['domain'])
+            r['domain_str'] = json.dumps(r.get('domain', [])).replace("'", "\\'")
         return res
 
     def _get_cash_flow_data(self, date_from, date_to, target_move):

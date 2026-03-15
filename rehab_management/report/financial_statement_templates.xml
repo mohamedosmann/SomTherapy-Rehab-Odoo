@@ -101,7 +101,7 @@
                                 <t t-foreach="lines" t-as="line">
                                     <tr>
                                         <td>
-                                            <a t-attf-href="/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=#{line.get('domain', '[]')}&amp;context={'search_default_posted':1}" target="_blank">
+                                            <a href="#" t-attf-onclick="window.open('/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=#{str(line.get('domain', [])).replace('&', '&amp;')}&amp;context={\'search_default_posted\':1}', '_blank'); return false;" class="o_ignore_navigation">
                                                 <t t-esc="line['name']"/>
                                             </a>
                                         </td>
@@ -130,7 +130,7 @@
                                     <tr>
                                         <td><t t-esc="line['code']"/></td>
                                         <td>
-                                            <a t-attf-href="/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=#{line.get('domain', '[]')}&amp;context={'search_default_posted':1}" target="_blank">
+                                            <a href="#" t-attf-onclick="window.open('/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=#{str(line.get('domain', [])).replace('&', '&amp;')}&amp;context={\'search_default_posted\':1}', '_blank'); return false;" class="o_ignore_navigation">
                                                 <t t-esc="line['name']"/>
                                             </a>
                                         </td>

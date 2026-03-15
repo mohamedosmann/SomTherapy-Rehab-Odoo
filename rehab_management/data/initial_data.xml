@@ -21,14 +21,14 @@
 
         <!-- Advance Payment Accounts (Liability/Asset) -->
         <record id="rehab_account_customer_advance" model="account.account">
-            <field name="code">201400</field>
+            <field name="code">201409</field>
             <field name="name">Customer Credit/Advance (Liability)</field>
             <field name="account_type">liability_current</field>
             <field name="reconcile" eval="True"/>
         </record>
 
         <record id="rehab_account_vendor_advance" model="account.account">
-            <field name="code">101300</field>
+            <field name="code">101309</field>
             <field name="name">Vendor Advance Payments (Asset)</field>
             <field name="account_type">asset_current</field>
             <field name="reconcile" eval="True"/>

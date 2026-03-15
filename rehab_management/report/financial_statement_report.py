@@ -211,10 +211,10 @@ class FinancialStatementReport(models.AbstractModel):
                 else:
                     b_90_plus += amount
             
-            total = float(b_0_30) + float(b_31_60) + float(b_61_90) + float(b_90_plus)
+            total = float(b_0_30 or 0) + float(b_31_60 or 0) + float(b_61_90 or 0) + float(b_90_plus or 0)
             if total != 0:
                 res.append({
-                    'name': partner.name,
+                    'name': partner.name if partner else _("Unknown Partner"),
                     'balance': total,
                     'notes': [
                         _("0-30 days: %s") % b_0_30,

@@ -34,7 +34,9 @@
                     .text-end { text-align: right !important; }
                     .report-header { margin-bottom: 40px; border-bottom: 2px solid #3b82f6; padding-bottom: 20px; }
                 </style>
-                <div class="page">
+                <div class="page" id="financial_report_container">
+                    <t t-set="actual_base_url" t-value="base_url or ''"/>
+                    
                     <div class="text-center report-header">
                         <h1 style="font-weight: 800; color: #1e293b; margin-bottom: 8px;">
                             <t t-if="report_type == 'pl'">Profit &amp; Loss Statement</t>
@@ -65,10 +67,8 @@
                             <t t-foreach="lines" t-as="line">
                                 <tr t-if="report_type != 'tb'">
                                     <td>
-                                        <span class="drill-down-link o_ignore_navigation" 
-                                              role="button"
-                                              t-att-data-domain="line.get('domain_str', '[]')"
-                                              onclick="event.preventDefault(); event.stopPropagation(); var d = this.getAttribute('data-domain'); var url = window.location.origin + '/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=' + encodeURIComponent(d) + '&amp;context=%7B%22search_default_posted%22%3A1%7D'; window.open(url, '_blank'); return false;">
+                                        <span class="drill-down-link js_drill_down" 
+                                              t-att-data-domain="line.get('domain_str', '[]')">
                                             <t t-esc="line['name']"/>
                                         </span>
                                     </td>
@@ -79,10 +79,8 @@
                                 <tr t-if="report_type == 'tb'">
                                     <td><t t-esc="line['code']"/></td>
                                     <td>
-                                        <span class="drill-down-link o_ignore_navigation" 
-                                              role="button"
-                                              t-att-data-domain="line.get('domain_str', '[]')"
-                                              onclick="event.preventDefault(); event.stopPropagation(); var d = this.getAttribute('data-domain'); var url = window.location.origin + '/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=' + encodeURIComponent(d) + '&amp;context=%7B%22search_default_posted%22%3A1%7D'; window.open(url, '_blank'); return false;">
+                                        <span class="drill-down-link js_drill_down" 
+                                              t-att-data-domain="line.get('domain_str', '[]')">
                                             <t t-esc="line['name']"/>
                                         </span>
                                     </td>
@@ -94,9 +92,29 @@
                         </tbody>
                     </table>
                     
-                    <div style="margin-top: 50px; border-top: 1px dashed #e2e8f0; padding-top: 20px; color: #94a3b8; font-size: 0.75rem;">
-                        <p>Generated on <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M:%S')"/></p>
-                    </div>
+                    <script type="text/javascript">
+                        (function() {
+                            var container = document.getElementById('financial_report_container');
+                            if (!container) return;
+                            
+                            var links = container.getElementsByClassName('js_drill_down');
+                            var baseUrl = '<t t-esc="actual_base_url"/>' || window.location.origin;
+                            
+                            for (var i = 0; i < links.length; i++) {
+                                links[i].addEventListener('click', function(e) {
+                                    e.preventDefault();
+                                    e.stopImmediatePropagation();
+                                    e.stopPropagation();
+                                    
+                                    var domain = this.getAttribute('data-domain');
+                                    var url = baseUrl + '/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=' + encodeURIComponent(domain) + '&amp;context=%7B%22search_default_posted%22%3A1%7D';
+                                    
+                                    window.open(url, '_blank');
+                                    return false;
+                                }, true); // Use capture phase to intercept before Odoo
+                            }
+                        })();
+                    </script>
                 </div>
             </t>
         </t>

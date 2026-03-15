@@ -81,7 +81,7 @@ class FinancialStatementReport(models.AbstractModel):
         ]
         import json
         for r in res:
-            r['domain_str'] = json.dumps(r.get('domain', [])).replace("'", "\\'")
+            r['domain_str'] = json.dumps(r.get('domain', []))
         return res
 
     def _get_balance_sheet_data(self, date_to, target_move):
@@ -107,7 +107,8 @@ class FinancialStatementReport(models.AbstractModel):
         ]
         import json
         for r in res:
-            r['domain_str'] = json.dumps(r.get('domain', [])).replace("'", "\\'")
+            # Use urllib.parse to quote the domain for the URL
+            r['domain_str'] = json.dumps(r.get('domain', []))
         return res
 
     def _get_trial_balance_data(self, date_from, date_to, target_move):
@@ -135,7 +136,7 @@ class FinancialStatementReport(models.AbstractModel):
                 })
         import json
         for r in res:
-            r['domain_str'] = json.dumps(r.get('domain', [])).replace("'", "\\'")
+            r['domain_str'] = json.dumps(r.get('domain', []))
         return res
 
     def _get_cash_flow_data(self, date_from, date_to, target_move):
@@ -209,7 +210,7 @@ class FinancialStatementReport(models.AbstractModel):
                 else:
                     b_90_plus += amount
             
-            total = b_0_30 + b_31_60 + b_61_90 + b_90_plus
+            total = float(b_0_30) + float(b_31_60) + float(b_61_90) + float(b_90_plus)
             if total != 0:
                 res.append({
                     'name': partner.name,

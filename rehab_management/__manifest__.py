@@ -1,12 +1,12 @@
 {
     'name': 'Rehab Management',
-    'version': '1.6',
+    'version': '1.9',
     'summary': 'Odoo customization for Rehab and Dormitory Management',
     'description': """
         Customization for Rehab and Dormitory Management, 
-        mirroring features from Somtherapy system.
+    
     """,
-    'author': 'Antigravity',
+    'author': 'YOS ERP',
     'depends': ['base', 'mail', 'account', 'stock', 'purchase', 'payment'],
     'license': 'LGPL-3',
     'data': [

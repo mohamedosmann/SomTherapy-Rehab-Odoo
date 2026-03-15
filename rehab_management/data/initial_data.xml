@@ -6,14 +6,14 @@
         
         <!-- Receivable/Payable -->
         <record id="rehab_account_students_receivable" model="account.account">
-            <field name="code">101209</field>
+            <field name="code">101299</field>
             <field name="name">Students Receivable (Rehab)</field>
             <field name="account_type">asset_receivable</field>
             <field name="reconcile" eval="True"/>
         </record>
         
         <record id="rehab_account_staff_payable" model="account.account">
-            <field name="code">201209</field>
+            <field name="code">201299</field>
             <field name="name">Staff Payable (Rehab)</field>
             <field name="account_type">liability_payable</field>
             <field name="reconcile" eval="True"/>
@@ -21,14 +21,14 @@
 
         <!-- Advance Payment Accounts (Liability/Asset) -->
         <record id="rehab_account_customer_advance" model="account.account">
-            <field name="code">201409</field>
+            <field name="code">201499</field>
             <field name="name">Customer Credit/Advance (Liability)</field>
             <field name="account_type">liability_current</field>
             <field name="reconcile" eval="True"/>
         </record>
 
         <record id="rehab_account_vendor_advance" model="account.account">
-            <field name="code">101309</field>
+            <field name="code">101399</field>
             <field name="name">Vendor Advance Payments (Asset)</field>
             <field name="account_type">asset_current</field>
             <field name="reconcile" eval="True"/>
@@ -36,38 +36,38 @@
 
         <!-- Liquidity Accounts (Ready to Use / Renameable) -->
         <record id="rehab_account_cash_on_hand" model="account.account">
-            <field name="code">101109</field>
+            <field name="code">101199</field>
             <field name="name">Cash on Hand - Rename Me</field>
             <field name="account_type">asset_cash</field>
         </record>
 
         <record id="rehab_account_bank_account" model="account.account">
-            <field name="code">101409</field>
+            <field name="code">101499</field>
             <field name="name">General Bank Account - Rename Me</field>
             <field name="account_type">asset_cash</field>
         </record>
         
         <record id="rehab_account_evc_account" model="account.account">
-            <field name="code">101509</field>
+            <field name="code">101599</field>
             <field name="name">EVC Plus Account - Rename Me</field>
             <field name="account_type">asset_cash</field>
         </record>
 
         <record id="rehab_account_edahab_account" model="account.account">
-            <field name="code">101510</field>
+            <field name="code">101598</field>
             <field name="name">e-Dahab Account - Rename Me</field>
             <field name="account_type">asset_cash</field>
         </record>
 
         <record id="rehab_account_salaam_account" model="account.account">
-            <field name="code">101609</field>
+            <field name="code">101699</field>
             <field name="name">Salaam Bank Account - Rename Me</field>
             <field name="account_type">asset_cash</field>
         </record>
 
         <!-- Suspense/Clearing -->
         <record id="rehab_account_bank_suspense" model="account.account">
-            <field name="code">101403</field>
+            <field name="code">101493</field>
             <field name="name">Rehab Bank Suspense</field>
             <field name="account_type">asset_current</field>
         </record>

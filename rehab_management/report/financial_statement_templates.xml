@@ -25,69 +25,78 @@
                         text-decoration: underline !important; 
                         cursor: pointer !important;
                         font-weight: 500;
+                        display: inline-block;
                     }
-                    .drill-down-link:hover { color: #1e40af !important; }
+                    .drill-down-link:hover { color: #1e40af !important; background-color: #f1f5f9; border-radius: 4px; }
                     .table-reports { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                    .table-reports th { background: #f8fafc; padding: 10px; border-bottom: 2px solid #e2e8f0; text-align: left; }
-                    .table-reports td { padding: 10px; border-bottom: 1px solid #f1f5f9; }
+                    .table-reports th { background: #f8fafc; padding: 12px 10px; border-bottom: 2px solid #e2e8f0; text-align: left; color: #475569; font-size: 0.875rem; }
+                    .table-reports td { padding: 12px 10px; border-bottom: 1px solid #f1f5f9; color: #1e293b; font-size: 0.9375rem; }
                     .text-end { text-align: right !important; }
+                    .report-header { margin-bottom: 40px; border-bottom: 2px solid #3b82f6; padding-bottom: 20px; }
                 </style>
                 <div class="page">
-                    <!-- Base URL passed from Python to ensure correct redirection -->
-                    <t t-set="actual_base_url" t-value="base_url or ''"/>
-                    
-                    <div class="text-center" style="margin-bottom: 30px;">
-                        <h2 style="font-weight: 700; color: #1e293b;">
+                    <div class="text-center report-header">
+                        <h1 style="font-weight: 800; color: #1e293b; margin-bottom: 8px;">
                             <t t-if="report_type == 'pl'">Profit &amp; Loss Statement</t>
                             <t t-if="report_type == 'bs'">Balance Sheet</t>
                             <t t-if="report_type == 'tb'">Trial Balance</t>
-                        </h2>
-                        <h4 style="color: #64748b;"><t t-esc="res_company.name"/></h4>
-                        <p style="color: #94a3b8;">Period: <t t-esc="date_from"/> to <t t-esc="date_to"/></p>
+                        </h1>
+                        <h3 style="color: #3b82f6; margin-bottom: 4px;"><t t-esc="res_company.name"/></h3>
+                        <p style="color: #64748b; font-weight: 500;">
+                            Period: <span style="color: #1e293b;"><t t-esc="date_from"/></span> to <span style="color: #1e293b;"><t t-esc="date_to"/></span>
+                        </p>
                     </div>
 
                     <table class="table-reports">
                         <thead>
                             <tr t-if="report_type != 'tb'">
-                                <th>Description</th>
-                                <th class="text-end">Balance (<t t-esc="res_company.currency_id.symbol"/>)</th>
+                                <th>DESCRIPTION</th>
+                                <th class="text-end">BALANCE (<t t-esc="res_company.currency_id.symbol"/>)</th>
                             </tr>
                             <tr t-if="report_type == 'tb'">
-                                <th>Code</th>
-                                <th>Account</th>
-                                <th class="text-end">Debit</th>
-                                <th class="text-end">Credit</th>
-                                <th class="text-end">Net Balance</th>
+                                <th>CODE</th>
+                                <th>ACCOUNT</th>
+                                <th class="text-end">DEBIT</th>
+                                <th class="text-end">CREDIT</th>
+                                <th class="text-end">NET BALANCE</th>
                             </tr>
                         </thead>
                         <tbody>
                             <t t-foreach="lines" t-as="line">
                                 <tr t-if="report_type != 'tb'">
                                     <td>
-                                        <a t-att-href="'%s/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=%s&amp;context={\"search_default_posted\":1}' % (actual_base_url, line.get('domain_str', '[]'))" 
-                                           class="drill-down-link" target="_blank">
+                                        <span class="drill-down-link o_ignore_navigation" 
+                                              role="button"
+                                              t-att-data-domain="line.get('domain_str', '[]')"
+                                              onclick="event.preventDefault(); event.stopPropagation(); var d = this.getAttribute('data-domain'); var url = window.location.origin + '/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=' + encodeURIComponent(d) + '&amp;context=%7B%22search_default_posted%22%3A1%7D'; window.open(url, '_blank'); return false;">
                                             <t t-esc="line['name']"/>
-                                        </a>
+                                        </span>
                                     </td>
-                                    <td class="text-end">
+                                    <td class="text-end" style="font-weight: 600;">
                                         <t t-esc="line['balance']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/>
                                     </td>
                                 </tr>
                                 <tr t-if="report_type == 'tb'">
                                     <td><t t-esc="line['code']"/></td>
                                     <td>
-                                        <a t-att-href="'%s/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=%s&amp;context={\"search_default_posted\":1}' % (actual_base_url, line.get('domain_str', '[]'))" 
-                                           class="drill-down-link" target="_blank">
+                                        <span class="drill-down-link o_ignore_navigation" 
+                                              role="button"
+                                              t-att-data-domain="line.get('domain_str', '[]')"
+                                              onclick="event.preventDefault(); event.stopPropagation(); var d = this.getAttribute('data-domain'); var url = window.location.origin + '/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=' + encodeURIComponent(d) + '&amp;context=%7B%22search_default_posted%22%3A1%7D'; window.open(url, '_blank'); return false;">
                                             <t t-esc="line['name']"/>
-                                        </a>
+                                        </span>
                                     </td>
                                     <td class="text-end"><t t-esc="line['debit']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
                                     <td class="text-end"><t t-esc="line['credit']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
-                                    <td class="text-end"><t t-esc="line['balance']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                    <td class="text-end" style="font-weight: 600;"><t t-esc="line['balance']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
                                 </tr>
                             </t>
                         </tbody>
                     </table>
+                    
+                    <div style="margin-top: 50px; border-top: 1px dashed #e2e8f0; padding-top: 20px; color: #94a3b8; font-size: 0.75rem;">
+                        <p>Generated on <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M:%S')"/></p>
+                    </div>
                 </div>
             </t>
         </t>

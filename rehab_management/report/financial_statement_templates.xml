@@ -18,6 +18,10 @@
     <template id="report_financial_statement">
         <t t-call="web.html_container">
             <t t-call="web.external_layout">
+                <style>
+                    .page { font-family: sans-serif; }
+                    .drill-down-link { color: #007bff; text-decoration: underline; cursor: pointer; }
+                </style>
                 <div class="page">
                     <div class="text-center">
                         <h2>
@@ -47,7 +51,7 @@
                             <t t-foreach="lines" t-as="line">
                                 <tr t-if="report_type != 'tb'">
                                     <td>
-                                        <a t-att-href="'/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=%s' % (line.get('domain') or [])" target="_blank">
+                                        <a class="drill-down-link" t-att-href="'/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=%s' % line.get('domain_str', '[]')" target="_blank" rel="noopener noreferrer">
                                             <t t-esc="line['name']"/>
                                         </a>
                                     </td>
@@ -58,7 +62,7 @@
                                 <tr t-if="report_type == 'tb'">
                                     <td><t t-esc="line['code']"/></td>
                                     <td>
-                                        <a t-att-href="'/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=%s' % (line.get('domain') or [])" target="_blank">
+                                        <a class="drill-down-link" t-att-href="'/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=%s' % line.get('domain_str', '[]')" target="_blank" rel="noopener noreferrer">
                                             <t t-esc="line['name']"/>
                                         </a>
                                     </td>

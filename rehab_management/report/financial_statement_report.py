@@ -72,13 +72,17 @@ class FinancialStatementReport(models.AbstractModel):
         gross_profit = income_total - cogs_total
         net_profit = gross_profit - expense_total
         
-        return [
+        res = [
             {'name': _('Total Revenue'), 'balance': income_total, 'notes': [], 'domain': [('account_id.account_type', 'in', ('income', 'income_other')), ('date', '>=', date_from), ('date', '<=', date_to)]},
             {'name': _('Cost of Revenue (COGS)'), 'balance': cogs_total, 'notes': [], 'domain': [('account_id.account_type', '=', 'expense_direct_cost'), ('date', '>=', date_from), ('date', '<=', date_to)]},
             {'name': _('Gross Profit'), 'balance': gross_profit, 'notes': [], 'domain': [('account_id.account_type', 'in', ('income', 'income_other', 'expense_direct_cost')), ('date', '>=', date_from), ('date', '<=', date_to)]},
             {'name': _('Operating Expenses'), 'balance': expense_total, 'notes': [], 'domain': [('account_id.account_type', 'in', ('expense', 'expense_depreciation')), ('date', '>=', date_from), ('date', '<=', date_to)]},
             {'name': _('Net Profit / (Loss)'), 'balance': net_profit, 'notes': [], 'domain': [('account_id.account_type', 'in', ('income', 'income_other', 'expense', 'expense_depreciation', 'expense_direct_cost')), ('date', '>=', date_from), ('date', '<=', date_to)]},
         ]
+        import json
+        for r in res:
+            r['domain_str'] = json.dumps(r['domain'])
+        return res
 
     def _get_balance_sheet_data(self, date_to, target_move):
         """
@@ -96,11 +100,15 @@ class FinancialStatementReport(models.AbstractModel):
         pl_net = -sum(move_lines.filtered(lambda l: l.account_id.account_type in ('income', 'income_other', 'expense', 'expense_depreciation', 'expense_direct_cost')).mapped('balance'))
         equity += pl_net
 
-        return [
+        res = [
             {'name': _('Total Assets'), 'balance': assets, 'notes': [], 'domain': [('account_id.account_type', 'in', ('asset_receivable', 'asset_cash', 'asset_current', 'asset_non_current', 'asset_fixed', 'asset_prepayments')), ('date', '<=', date_to)]},
             {'name': _('Total Liabilities'), 'balance': liabilities, 'notes': [], 'domain': [('account_id.account_type', 'in', ('liability_payable', 'liability_current', 'liability_non_current')), ('date', '<=', date_to)]},
             {'name': _('Total Equity (incl. Retained Earnings)'), 'balance': equity, 'notes': [], 'domain': [('account_id.account_type', 'in', ('equity', 'income', 'income_other', 'expense', 'expense_depreciation', 'expense_direct_cost')), ('date', '<=', date_to)]},
         ]
+        import json
+        for r in res:
+            r['domain_str'] = json.dumps(r['domain'])
+        return res
 
     def _get_trial_balance_data(self, date_from, date_to, target_move):
         """
@@ -125,6 +133,9 @@ class FinancialStatementReport(models.AbstractModel):
                     'notes': [],
                     'domain': [('account_id', '=', account.id), ('date', '>=', date_from), ('date', '<=', date_to)]
                 })
+        import json
+        for r in res:
+            r['domain_str'] = json.dumps(r['domain'])
         return res
 
     def _get_cash_flow_data(self, date_from, date_to, target_move):

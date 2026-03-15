@@ -17,104 +17,58 @@
 
     <template id="report_financial_statement">
         <t t-call="web.html_container">
-            <t t-call="web.external_layout">
+            <t t-call="web.basic_layout">
                 <style>
-                    .page { font-family: 'Inter', sans-serif; color: #333; }
-                    .drill-down-link { 
-                        color: #1d4ed8 !important; 
-                        text-decoration: underline !important; 
-                        cursor: pointer !important;
-                        font-weight: 500;
-                        display: inline-block;
-                    }
-                    .drill-down-link:hover { color: #1e40af !important; background-color: #f1f5f9; border-radius: 4px; }
-                    .table-reports { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                    .table-reports th { background: #f8fafc; padding: 12px 10px; border-bottom: 2px solid #e2e8f0; text-align: left; color: #475569; font-size: 0.875rem; }
-                    .table-reports td { padding: 12px 10px; border-bottom: 1px solid #f1f5f9; color: #1e293b; font-size: 0.9375rem; }
-                    .text-end { text-align: right !important; }
-                    .report-header { margin-bottom: 40px; border-bottom: 2px solid #3b82f6; padding-bottom: 20px; }
+                    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f3f4f6; padding: 20px; }
+                    .report-card { background: white; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); padding: 30px; max-width: 1000px; margin: 0 auto; }
+                    .report-header { text-align: center; border-bottom: 3px solid #10b981; padding-bottom: 20px; margin-bottom: 30px; }
+                    .report-title { color: #064e3b; font-size: 28px; font-weight: bold; margin: 0; }
+                    .report-subtitle { color: #059669; font-size: 18px; margin: 5px 0; }
+                    .data-row { display: flex; justify-content: space-between; padding: 12px 15px; border-bottom: 1px solid #e5e7eb; align-items: center; }
+                    .data-row:hover { background-color: #f9fafb; }
+                    .label-cell { flex: 2; font-weight: 500; color: #374151; }
+                    .value-cell { flex: 1; text-align: right; font-weight: 600; color: #111827; }
+                    .drill-link { color: #2563eb !important; text-decoration: none !important; }
+                    .drill-link:hover { text-decoration: underline !important; color: #1d4ed8 !important; }
+                    .header-row { display: flex; justify-content: space-between; padding: 10px 15px; background: #f8fafc; border-bottom: 2px solid #cbd5e1; font-weight: bold; color: #475569; text-transform: uppercase; font-size: 12px; }
                 </style>
-                <div class="page" id="financial_report_container">
-                    <t t-set="actual_base_url" t-value="base_url or ''"/>
-                    
-                    <div class="text-center report-header">
-                        <h1 style="font-weight: 800; color: #1e293b; margin-bottom: 8px;">
+                <div class="report-card">
+                    <div class="report-header">
+                        <p style="color:red; font-weight:bold;">SYSTEM UPDATE VERIFIED v1.6</p>
+                        <h1 class="report-title">
                             <t t-if="report_type == 'pl'">Profit &amp; Loss Statement</t>
                             <t t-if="report_type == 'bs'">Balance Sheet</t>
                             <t t-if="report_type == 'tb'">Trial Balance</t>
                         </h1>
-                        <h3 style="color: #3b82f6; margin-bottom: 4px;"><t t-esc="res_company.name"/></h3>
-                        <p style="color: #64748b; font-weight: 500;">
-                            Period: <span style="color: #1e293b;"><t t-esc="date_from"/></span> to <span style="color: #1e293b;"><t t-esc="date_to"/></span>
-                        </p>
+                        <h2 class="report-subtitle"><t t-esc="res_company.name"/></h2>
+                        <p style="color: #6b7280;">Period: <t t-esc="date_from"/> to <t t-esc="date_to"/></p>
                     </div>
 
-                    <table class="table-reports">
-                        <thead>
-                            <tr t-if="report_type != 'tb'">
-                                <th>DESCRIPTION</th>
-                                <th class="text-end">BALANCE (<t t-esc="res_company.currency_id.symbol"/>)</th>
-                            </tr>
-                            <tr t-if="report_type == 'tb'">
-                                <th>CODE</th>
-                                <th>ACCOUNT</th>
-                                <th class="text-end">DEBIT</th>
-                                <th class="text-end">CREDIT</th>
-                                <th class="text-end">NET BALANCE</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <t t-foreach="lines" t-as="line">
-                                <tr t-if="report_type != 'tb'">
-                                    <td>
-                                        <span class="drill-down-link js_drill_down" 
-                                              t-att-data-domain="line.get('domain_str', '[]')">
-                                            <t t-esc="line['name']"/>
-                                        </span>
-                                    </td>
-                                    <td class="text-end" style="font-weight: 600;">
-                                        <t t-esc="line['balance']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/>
-                                    </td>
-                                </tr>
-                                <tr t-if="report_type == 'tb'">
-                                    <td><t t-esc="line['code']"/></td>
-                                    <td>
-                                        <span class="drill-down-link js_drill_down" 
-                                              t-att-data-domain="line.get('domain_str', '[]')">
-                                            <t t-esc="line['name']"/>
-                                        </span>
-                                    </td>
-                                    <td class="text-end"><t t-esc="line['debit']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
-                                    <td class="text-end"><t t-esc="line['credit']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
-                                    <td class="text-end" style="font-weight: 600;"><t t-esc="line['balance']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
-                                </tr>
-                            </t>
-                        </tbody>
-                    </table>
-                    
-                    <script type="text/javascript">
-                        (function() {
-                            var container = document.getElementById('financial_report_container');
-                            if (!container) return;
-                            
-                            var links = container.getElementsByClassName('js_drill_down');
-                            var baseUrl = '<t t-esc="actual_base_url"/>' || window.location.origin;
-                            
-                            for (var i = 0; i < links.length; i++) {
-                                links[i].addEventListener('click', function(e) {
-                                    e.preventDefault();
-                                    e.stopImmediatePropagation();
-                                    e.stopPropagation();
-                                    
-                                    var domain = this.getAttribute('data-domain');
-                                    var url = baseUrl + '/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=' + encodeURIComponent(domain) + '&amp;context=%7B%22search_default_posted%22%3A1%7D';
-                                    
-                                    window.open(url, '_blank');
-                                    return false;
-                                }, true); // Use capture phase to intercept before Odoo
-                            }
-                        })();
-                    </script>
+                    <div class="header-row">
+                        <span>Description</span>
+                        <span>Balance</span>
+                    </div>
+
+                    <!-- DIV BASED LAYOUT TO AVOID ODOO TABLE ENRICHMENT CRASH -->
+                    <div class="report-body">
+                        <t t-foreach="lines" t-as="line">
+                            <div class="data-row">
+                                <div class="label-cell">
+                                    <a t-att-href="'%s/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=%s&amp;context={\"search_default_posted\":1}' % (base_url or '', line.get('domain_str', '[]'))" 
+                                       target="_blank" class="drill-link o_ignore_navigation" rel="noopener">
+                                        <t t-esc="line['name']"/>
+                                    </a>
+                                </div>
+                                <div class="value-cell">
+                                    <t t-esc="line['balance']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+
+                    <div style="margin-top: 40px; text-align: center; color: #9ca3af; font-size: 11px;">
+                        Generated on <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M:%S')"/>
+                    </div>
                 </div>
             </t>
         </t>

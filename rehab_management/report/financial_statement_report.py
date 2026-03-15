@@ -29,6 +29,15 @@ class FinancialStatementReport(models.AbstractModel):
         report_type = form.get('report_type')
         target_move = form.get('target_move', 'posted')
 
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url') or ''
+        if '142.93.121.232' in base_url and ':8069' not in base_url:
+            if 'http' in base_url:
+                base_url = base_url.replace('142.93.121.232', '142.93.121.232:8069')
+            else:
+                base_url = 'http://142.93.121.232:8069'
+        elif not base_url:
+            base_url = 'http://142.93.121.232:8069'
+
         lines = []
         if report_type == 'pl':
             lines = self._get_profit_loss_data(date_from, date_to, target_move)

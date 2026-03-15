@@ -18,150 +18,57 @@
     <template id="report_financial_statement">
         <t t-call="web.html_container">
             <t t-call="web.external_layout">
-                <style>
-                    .page {
-                        font-family: 'Inter', sans-serif;
-                        color: #111827;
-                    }
-                    .table-reports thead th, .table-striped thead th {
-                        background-color: #f9fafb;
-                        text-transform: uppercase;
-                        font-size: 0.75rem;
-                        letter-spacing: 0.05em;
-                        border-bottom: 2px solid #e5e7eb;
-                        padding: 12px 8px;
-                    }
-                    .table-reports tbody tr:hover, .table-striped tbody tr:hover {
-                        background-color: #f3f4f6 !important;
-                        transition: background-color 0.2s ease;
-                    }
-                    .table-reports td, .table-striped td {
-                        padding: 12px 8px;
-                        vertical-align: middle;
-                        border-bottom: 1px solid #f3f4f6;
-                    }
-                    .page a {
-                        color: #2563eb;
-                        text-decoration: none;
-                        font-weight: 500;
-                    }
-                    .page a:hover {
-                        color: #1d4ed8;
-                        text-decoration: underline;
-                    }
-                    h2 {
-                        color: #111827;
-                        font-weight: 700;
-                        margin-bottom: 0.5rem;
-                    }
-                    h4 {
-                        color: #4b5563;
-                        font-weight: 500;
-                    }
-                    .text-muted {
-                        color: #6b7280 !important;
-                    }
-                    .text-end {
-                        font-family: 'Roboto Mono', monospace;
-                        font-weight: 600;
-                    }
-                </style>
                 <div class="page">
                     <div class="text-center">
                         <h2>
-                            <t t-if="report_type == 'pl'">Statement of Profit or Loss (IFRS)</t>
-                            <t t-if="report_type == 'bs'">Statement of Financial Position (Balance Sheet)</t>
-                            <t t-if="report_type == 'cf'">Statement of Cash Flows</t>
-                            <t t-if="report_type == 'summary'">Executive Summary</t>
-                            <t t-if="report_type == 'tax'">Tax Return (VAT/Sales Tax)</t>
+                            <t t-if="report_type == 'pl'">Profit &amp; Loss</t>
+                            <t t-if="report_type == 'bs'">Balance Sheet</t>
                             <t t-if="report_type == 'tb'">Trial Balance</t>
                         </h2>
                         <h4><t t-esc="res_company.name"/></h4>
-                        <p>
-                            Period: <t t-esc="date_from"/> to <t t-esc="date_to"/>
-                        </p>
+                        <p>Period: <t t-esc="date_from"/> to <t t-esc="date_to"/></p>
                     </div>
 
-                    <t t-if="report_type != 'tb'">
-                        <table class="table table-sm table-reports">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        <t t-if="report_type in ('aged_receivable', 'aged_payable')">Partner / Customer Name</t>
-                                        <t t-else="">Description</t>
-                                    </th>
-                                    <th class="text-end">
-                                        <t t-if="report_type in ('aged_receivable', 'aged_payable')">Total Outstanding</t>
-                                        <t t-else="">Balance</t>
-                                        (<t t-esc="res_company.currency_id.symbol"/>)
-                                    </th>
+                    <table class="table table-sm">
+                        <thead>
+                            <tr t-if="report_type != 'tb'">
+                                <th>Description</th>
+                                <th class="text-end">Balance (<t t-esc="res_company.currency_id.symbol"/>)</th>
+                            </tr>
+                            <tr t-if="report_type == 'tb'">
+                                <th>Code</th>
+                                <th>Account</th>
+                                <th class="text-end">Debit</th>
+                                <th class="text-end">Credit</th>
+                                <th class="text-end">Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="lines" t-as="line">
+                                <tr t-if="report_type != 'tb'">
+                                    <td>
+                                        <a t-att-href="'/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=%s' % (line.get('domain') or [])" target="_blank">
+                                            <t t-esc="line['name']"/>
+                                        </a>
+                                    </td>
+                                    <td class="text-end">
+                                        <t t-esc="line['balance']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                <t t-foreach="lines" t-as="line">
-                                    <tr>
-                                        <td>
-                                            <a href="#" t-attf-onclick="window.open('/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=#{str(line.get('domain', [])).replace('&', '&amp;')}&amp;context={\'search_default_posted\':1}', '_blank'); return false;" class="o_ignore_navigation">
-                                                <t t-esc="line['name']"/>
-                                            </a>
-                                        </td>
-                                        <td class="text-end">
-                                            <t t-esc="line['balance']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/>
-                                        </td>
-                                    </tr>
-                                </t>
-                            </tbody>
-                        </table>
-                    </t>
-
-                    <t t-if="report_type == 'tb'">
-                        <table class="table table-sm table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Code</th>
-                                    <th>Account</th>
-                                    <th class="text-end">Debit</th>
-                                    <th class="text-end">Credit</th>
-                                    <th class="text-end">Net Balance</th>
+                                <tr t-if="report_type == 'tb'">
+                                    <td><t t-esc="line['code']"/></td>
+                                    <td>
+                                        <a t-att-href="'/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=%s' % (line.get('domain') or [])" target="_blank">
+                                            <t t-esc="line['name']"/>
+                                        </a>
+                                    </td>
+                                    <td class="text-end"><t t-esc="line['debit']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                    <td class="text-end"><t t-esc="line['credit']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                    <td class="text-end"><t t-esc="line['balance']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                <t t-foreach="lines" t-as="line">
-                                    <tr>
-                                        <td><t t-esc="line['code']"/></td>
-                                        <td>
-                                            <a href="#" t-attf-onclick="window.open('/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=#{str(line.get('domain', [])).replace('&', '&amp;')}&amp;context={\'search_default_posted\':1}', '_blank'); return false;" class="o_ignore_navigation">
-                                                <t t-esc="line['name']"/>
-                                            </a>
-                                        </td>
-                                        <td class="text-end"><t t-esc="line['debit']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
-                                        <td class="text-end"><t t-esc="line['credit']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
-                                        <td class="text-end"><t t-esc="line['balance']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
-                                    </tr>
-                                </t>
-                            </tbody>
-                        </table>
-                    </t>
-
-                    <div class="mt-5">
-                        <h3>Notes to the Financial Statements</h3>
-                        <t t-foreach="lines" t-as="line">
-                            <t t-if="line['notes']">
-                                <div class="mb-3">
-                                    <strong>Note - <t t-esc="line['name']"/>:</strong>
-                                    <ul>
-                                        <t t-foreach="line['notes']" t-as="note">
-                                            <li><t t-esc="note"/></li>
-                                        </t>
-                                    </ul>
-                                </div>
                             </t>
-                        </t>
-                    </div>
-                    
-                    <div class="mt-4 small text-muted">
-                        <p>Report prepared in accordance with IFRS standards as implemented by YOS ERP.</p>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
             </t>
         </t>

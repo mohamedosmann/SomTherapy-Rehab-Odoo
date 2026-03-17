@@ -141,7 +141,7 @@
                     <div class="o_account_reports_header">
                         <div>
                             <h2>
-                                <t t-if="report_type == 'pl'">Profit &amp; Loss</t>
+                                <t t-if="report_type == 'pl'">Profit and Loss</t>
                                 <t t-if="report_type == 'bs'">Balance Sheet</t>
                                 <t t-if="report_type == 'tb'">Trial Balance</t>
                                 <t t-if="report_type == 'customer_ledger'">Customer Ledger</t>
@@ -174,7 +174,7 @@
                                     <tr t-attf-class="lvl-{{line.get('level', 1)}} {{'o_account_report_total' if line.get('is_total') else ''}}">
                                         <td>
                                             <t t-if="line.get('domain_str')">
-                                                <a t-attf-href="{{base_url}}/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain={{line.get('domain_str')}}&amp;context={'search_default_posted':1}" 
+                                                <a t-att-href="'%s/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=%s&amp;context=%%7B\'search_default_posted\':1%%7D' % (base_url, line.get('domain_str'))"
                                                    target="_blank" class="o_account_reports_web_action o_ignore_navigation" rel="noopener">
                                                     <t t-esc="line['name']"/><span class="drill_arrow">↗</span>
                                                 </a>
@@ -223,7 +223,7 @@
                                             <td style="color: #666;"><t t-esc="tx['date']"/></td>
                                             <td><strong><t t-esc="tx['ref']"/></strong></td>
                                             <td>
-                                                <a t-attf-href="{{base_url}}/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain={{tx.get('domain_str')}}&amp;context={'search_default_posted':1}" 
+                                                <a t-att-href="'%s/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=%s&amp;context=%%7B\'search_default_posted\':1%%7D' % (base_url, tx.get('domain_str'))"
                                                    target="_blank" class="o_account_reports_web_action o_ignore_navigation" rel="noopener">
                                                     <t t-esc="tx['desc']"/>
                                                 </a>
@@ -254,7 +254,7 @@
                                     <tr>
                                         <td>
                                             <span style="color: #999; width: 70px; display: inline-block;"><t t-esc="line['code']"/></span>
-                                            <a t-attf-href="{{base_url}}/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain={{line.get('domain_str')}}&amp;context={'search_default_posted':1}" 
+                                            <a t-att-href="'%s/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=%s&amp;context=%%7B\'search_default_posted\':1%%7D' % (base_url, line.get('domain_str'))"
                                                target="_blank" class="o_account_reports_web_action o_ignore_navigation" rel="noopener" style="display:inline-flex;">
                                                 <strong><t t-esc="line['name']"/></strong>
                                             </a>

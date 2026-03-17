@@ -1,6 +1,6 @@
 {
     'name': 'Rehab Management',
-    'version': '1.20',
+    'version': '1.22',
     'summary': 'Odoo customization for Rehab and Dormitory Management',
     'description': """
         Customization for Rehab and Dormitory Management, 

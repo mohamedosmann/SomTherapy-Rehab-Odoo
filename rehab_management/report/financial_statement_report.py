@@ -86,7 +86,7 @@ class FinancialStatementReport(models.AbstractModel):
 
     def _get_profit_loss_data(self, date_from, date_to, target_move):
         """
-        IFRS Profit & Loss with Categorization
+        IFRS Profit & Loss with Full Transparency
         """
         domain = [('date', '>=', date_from), ('date', '<=', date_to), ('parent_state', '=', target_move)]
         move_lines = self.env['account.move.line'].search(domain)
@@ -101,39 +101,64 @@ class FinancialStatementReport(models.AbstractModel):
 
         gross_profit = income_total - cogs_total
 
-        # 3. Categorized Operating Expenses
-        staff_total = sum(move_lines.filtered(lambda l: '6011' in l.account_id.code).mapped('balance'))
-        rent_total = sum(move_lines.filtered(lambda l: '6012' in l.account_id.code).mapped('balance'))
-        utils_total = sum(move_lines.filtered(lambda l: '6013' in l.account_id.code).mapped('balance'))
-        office_total = sum(move_lines.filtered(lambda l: '6014' in l.account_id.code).mapped('balance'))
-        maint_total = sum(move_lines.filtered(lambda l: '6015' in l.account_id.code).mapped('balance'))
-        trans_total = sum(move_lines.filtered(lambda l: '6016' in l.account_id.code).mapped('balance'))
-        
-        # Other Operating Expenses
-        other_exp_lines = move_lines.filtered(lambda l: l.account_id.account_type in ('expense', 'expense_depreciation') and not any(c in l.account_id.code for c in ['6011','6012','6013','6014','6015','6016']))
-        other_exp_total = sum(other_exp_lines.mapped('balance'))
-        
-        total_operating_expenses = staff_total + rent_total + utils_total + office_total + maint_total + trans_total + other_exp_total
-        net_profit = gross_profit - total_operating_expenses
+        # 3. Major Operating Categories (Grouped)
+        categories = [
+            {'name': _('Staff Expenses'), 'code_prefix': '6011', 'level': 2},
+            {'name': _('Rent & Lease'), 'code_prefix': '6012', 'level': 2},
+            {'name': _('Utilities'), 'code_prefix': '6013', 'level': 2},
+            {'name': _('Office & Stationery'), 'code_prefix': '6014', 'level': 2},
+            {'name': _('Maintenance & Repairs'), 'code_prefix': '6015', 'level': 2},
+            {'name': _('Transport & Fuel'), 'code_prefix': '6016', 'level': 2},
+        ]
         
         res = [
             {'name': _('Total Revenue'), 'balance': income_total, 'level': 1, 'domain': [('account_id.account_type', 'in', ('income', 'income_other')), ('date', '>=', date_from), ('date', '<=', date_to)]},
             {'name': _('Cost of Goods Sold (COGS)'), 'balance': cogs_total, 'level': 1, 'domain': [('account_id.account_type', '=', 'expense_direct_cost'), ('date', '>=', date_from), ('date', '<=', date_to)]},
             {'name': _('GROSS PROFIT'), 'balance': gross_profit, 'level': 0, 'is_total': True},
-            
-            {'name': _('Staff Expenses'), 'balance': staff_total, 'level': 2, 'domain': [('account_id.code', 'like', '6011%'), ('date', '>=', date_from), ('date', '<=', date_to)]},
-            {'name': _('Rent & Lease'), 'balance': rent_total, 'level': 2, 'domain': [('account_id.code', 'like', '6012%'), ('date', '>=', date_from), ('date', '<=', date_to)]},
-            {'name': _('Utilities'), 'balance': utils_total, 'level': 2, 'domain': [('account_id.code', 'like', '6013%'), ('date', '>=', date_from), ('date', '<=', date_to)]},
-            {'name': _('Office & Stationery'), 'balance': office_total, 'level': 2, 'domain': [('account_id.code', 'like', '6014%'), ('date', '>=', date_from), ('date', '<=', date_to)]},
-            {'name': _('Maintenance & Repairs'), 'balance': maint_total, 'level': 2, 'domain': [('account_id.code', 'like', '6015%'), ('date', '>=', date_from), ('date', '<=', date_to)]},
-            {'name': _('Transport & Fuel'), 'balance': trans_total, 'level': 2, 'domain': [('account_id.code', 'like', '6016%'), ('date', '>=', date_from), ('date', '<=', date_to)]},
-            {'name': _('Other Expenses'), 'balance': other_exp_total, 'level': 2, 'domain': [('account_id.account_type', 'in', ('expense', 'expense_depreciation')), ('account_id.code', 'not like', '6011%'), ('account_id.code', 'not like', '6012%'), ('account_id.code', 'not like', '6013%'), ('account_id.code', 'not like', '6014%'), ('account_id.code', 'not like', '6015%'), ('account_id.code', 'not like', '6016%'), ('date', '>=', date_from), ('date', '<=', date_to)]},
-            
-            {'name': _('TOTAL OPERATING EXPENSES'), 'balance': total_operating_expenses, 'level': 0, 'is_total': True},
-            {'name': _('NET PROFIT / (LOSS)'), 'balance': net_profit, 'level': 0, 'is_total': True, 'is_final': True},
         ]
+
+        total_operating_expenses = 0.0
+        applied_prefixes = [c['code_prefix'] for c in categories]
+
+        for cat in categories:
+            prefix = str(cat['code_prefix'])
+            cat_lines = move_lines.filtered(lambda l: prefix in l.account_id.code)
+            bal = sum(cat_lines.mapped('balance'))
+            if bal != 0:
+                res.append({
+                    'name': cat['name'],
+                    'balance': bal,
+                    'level': cat['level'],
+                    'domain': [('account_id.code', 'like', prefix + '%'), ('date', '>=', date_from), ('date', '<=', date_to)]
+                })
+                total_operating_expenses += bal
+
+        # 4. Detailed "Other" Expenses (LISTED INDIVIDUALLY)
+        # This picks up anything from Expense module, Assets, or manual entries not in main buckets
+        other_exp_lines = move_lines.filtered(
+            lambda l: l.account_id.account_type in ('expense', 'expense_depreciation') and 
+            not any(str(p) in l.account_id.code for p in applied_prefixes)
+        )
+        
+        other_accounts = other_exp_lines.mapped('account_id')
+        for acc in other_accounts:
+            acc_bal = sum(other_exp_lines.filtered(lambda l: l.account_id == acc).mapped('balance'))
+            if acc_bal != 0:
+                res.append({
+                    'name': acc.name, # No longer says "Other", says the ACTUAL account name
+                    'balance': acc_bal,
+                    'level': 2,
+                    'domain': [('account_id', '=', acc.id), ('date', '>=', date_from), ('date', '<=', date_to)]
+                })
+                total_operating_expenses += acc_bal
+        
+        net_profit = gross_profit - total_operating_expenses
+        
+        res.append({'name': _('TOTAL OPERATING EXPENSES'), 'balance': total_operating_expenses, 'level': 0, 'is_total': True})
+        res.append({'name': _('NET PROFIT / (LOSS)'), 'balance': net_profit, 'level': 0, 'is_total': True, 'is_final': True})
+
         for r in res:
-            r['domain_str'] = json.dumps(r.get('domain', []))
+            r.update({'domain_str': json.dumps(r.get('domain', []))})
         return res
 
     def _get_balance_sheet_data(self, date_to, target_move):

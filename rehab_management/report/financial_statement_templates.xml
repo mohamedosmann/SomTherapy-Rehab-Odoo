@@ -174,8 +174,7 @@
                                     <tr t-attf-class="lvl-{{line.get('level', 1)}} {{'o_account_report_total' if line.get('is_total') else ''}}">
                                         <td>
                                             <t t-if="line.get('domain_str')">
-                                                <a t-att-href="'%s/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=%s&amp;context=%%7B\'search_default_posted\':1%%7D' % (base_url, line.get('domain_str'))"
-                                                   target="_blank" class="o_account_reports_web_action o_ignore_navigation" rel="noopener">
+                                                <a href="#" class="o_account_reports_web_action o_ignore_navigation">
                                                     <t t-esc="line['name']"/><span class="drill_arrow">↗</span>
                                                 </a>
                                             </t>
@@ -223,8 +222,7 @@
                                             <td style="color: #666;"><t t-esc="tx['date']"/></td>
                                             <td><strong><t t-esc="tx['ref']"/></strong></td>
                                             <td>
-                                                <a t-att-href="'%s/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=%s&amp;context=%%7B\'search_default_posted\':1%%7D' % (base_url, tx.get('domain_str'))"
-                                                   target="_blank" class="o_account_reports_web_action o_ignore_navigation" rel="noopener">
+                                                <a href="#" class="o_account_reports_web_action o_ignore_navigation">
                                                     <t t-esc="tx['desc']"/>
                                                 </a>
                                             </td>
@@ -254,8 +252,7 @@
                                     <tr>
                                         <td>
                                             <span style="color: #999; width: 70px; display: inline-block;"><t t-esc="line['code']"/></span>
-                                            <a t-att-href="'%s/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain=%s&amp;context=%%7B\'search_default_posted\':1%%7D' % (base_url, line.get('domain_str'))"
-                                               target="_blank" class="o_account_reports_web_action o_ignore_navigation" rel="noopener" style="display:inline-flex;">
+                                            <a href="#" class="o_account_reports_web_action o_ignore_navigation" style="display:inline-flex;">
                                                 <strong><t t-esc="line['name']"/></strong>
                                             </a>
                                         </td>

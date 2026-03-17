@@ -53,6 +53,9 @@ class RehabFinancialReportWizard(models.TransientModel):
         """
         Creates a dummy wizard and returns the report action.
         """
+        import logging
+        _logger = logging.getLogger(__name__)
+        _logger.error("DEBUG: action_direct_open called on database: %s", self.env.cr.dbname)
         wizard = self.create({'report_type': report_type})
         return wizard.action_view_report_html()
 

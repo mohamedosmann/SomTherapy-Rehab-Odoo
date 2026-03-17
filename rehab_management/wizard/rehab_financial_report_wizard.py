@@ -34,12 +34,12 @@ class RehabFinancialReportWizard(models.TransientModel):
     def action_generate_report(self):
         self.ensure_one()
         data = self._get_report_data()
-        return self.env.ref('rehab_management.action_report_financial_statement').report_action(self, data=data)
+        return self.env.ref('rehab_management.action_report_financial_statement_v2').report_action(self, data=data)
 
     def action_view_report_html(self):
         self.ensure_one()
         data = self._get_report_data()
-        return self.env.ref('rehab_management.action_report_financial_statement_html').report_action(self, data=data)
+        return self.env.ref('rehab_management.action_report_financial_statement_html_v2').report_action(self, data=data)
 
     def auto_open_report(self):
         """

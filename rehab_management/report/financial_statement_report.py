@@ -133,24 +133,46 @@ class FinancialStatementReport(models.AbstractModel):
                 })
                 total_operating_expenses += bal
 
-        # 4. Detailed "Other" Expenses (LISTED INDIVIDUALLY)
-        # This picks up anything from Expense module, Assets, or manual entries not in main buckets
+        # 4. Detailed Expenses (LISTED BY CATEGORY/PRODUCT)
+        # This groups entries by the "Expense Category" (Product) selected in the Expense module
         other_exp_lines = move_lines.filtered(
             lambda l: l.account_id.account_type in ('expense', 'expense_depreciation') and 
             not any(str(p) in l.account_id.code for p in applied_prefixes)
         )
         
-        other_accounts = other_exp_lines.mapped('account_id')
-        for acc in other_accounts:
-            acc_bal = sum(other_exp_lines.filtered(lambda l: l.account_id == acc).mapped('balance'))
-            if acc_bal != 0:
+        groups = {}
+        for l in other_exp_lines:
+            # Group by account and product to maintain drill-down accuracy
+            key = (l.account_id.id, l.product_id.id if l.product_id else False)
+            if key not in groups:
+                # If product exists, it's the "Expense Category" the user is looking for
+                name = l.product_id.name if l.product_id else l.account_id.name
+                groups[key] = {
+                    'name': name, 
+                    'balance': 0.0, 
+                    'account_id': l.account_id.id,
+                    'product_id': l.product_id.id if l.product_id else False
+                }
+            groups[key]['balance'] += l.balance
+
+        # Sort by name for a clean report
+        sorted_groups = sorted(groups.values(), key=lambda x: x['name'])
+        
+        for group in sorted_groups:
+            if group['balance'] != 0:
+                domain = [('account_id', '=', group['account_id']), ('date', '>=', date_from), ('date', '<=', date_to)]
+                if group['product_id']:
+                    domain.append(('product_id', '=', group['product_id']))
+                else:
+                    domain.append(('product_id', '=', False))
+
                 res.append({
-                    'name': acc.name, # No longer says "Other", says the ACTUAL account name
-                    'balance': acc_bal,
+                    'name': group['name'],
+                    'balance': group['balance'],
                     'level': 2,
-                    'domain': [('account_id', '=', acc.id), ('date', '>=', date_from), ('date', '<=', date_to)]
+                    'domain': domain
                 })
-                total_operating_expenses += acc_bal
+                total_operating_expenses += group['balance']
         
         net_profit = gross_profit - total_operating_expenses
         

@@ -80,8 +80,44 @@
         </record>
 
         <record id="rehab_account_staff_salaries" model="account.account">
-            <field name="code">601109</field>
+            <field name="code">601199</field>
             <field name="name">Staff Salaries (Expense)</field>
+            <field name="account_type">expense</field>
+        </record>
+
+        <record id="rehab_account_rent" model="account.account">
+            <field name="code">601299</field>
+            <field name="name">Rent &amp; Lease (Expense)</field>
+            <field name="account_type">expense</field>
+        </record>
+
+        <record id="rehab_account_utilities" model="account.account">
+            <field name="code">601399</field>
+            <field name="name">Utilities (Water &amp; Electricity)</field>
+            <field name="account_type">expense</field>
+        </record>
+
+        <record id="rehab_account_office" model="account.account">
+            <field name="code">601499</field>
+            <field name="name">Office &amp; Stationary</field>
+            <field name="account_type">expense</field>
+        </record>
+
+        <record id="rehab_account_maintenance" model="account.account">
+            <field name="code">601599</field>
+            <field name="name">Repairs &amp; Maintenance</field>
+            <field name="account_type">expense</field>
+        </record>
+
+        <record id="rehab_account_transport" model="account.account">
+            <field name="code">601699</field>
+            <field name="name">Transport &amp; Fuel</field>
+            <field name="account_type">expense</field>
+        </record>
+
+        <record id="rehab_account_other_expense" model="account.account">
+            <field name="code">601999</field>
+            <field name="name">Other Operating Expenses</field>
             <field name="account_type">expense</field>
         </record>
 

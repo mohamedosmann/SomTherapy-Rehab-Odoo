@@ -9,8 +9,10 @@
                     <group>
                         <field name="report_type"/>
                         <field name="target_move"/>
+                        <field name="enable_comparison"/>
                     </group>
                     <group>
+                        <field name="period_type"/>
                         <field name="date_from"/>
                         <field name="date_to"/>
                     </group>

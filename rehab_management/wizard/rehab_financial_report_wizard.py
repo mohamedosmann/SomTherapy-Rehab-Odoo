@@ -8,15 +8,24 @@ class RehabFinancialReportWizard(models.TransientModel):
     date_from = fields.Date(string='Start Date', required=True, default=lambda self: fields.Date.today().replace(day=1, month=1))
     date_to = fields.Date(string='End Date', required=True, default=fields.Date.today)
     report_type = fields.Selection([
-        ('pl', 'Statement of Profit or Loss (IFRS)'),
-        ('bs', 'Statement of Financial Position (Balance Sheet)'),
-        ('cf', 'Statement of Cash Flows'),
-        ('summary', 'Executive Summary'),
-        ('tax', 'Tax Return (VAT/Sales Tax)'),
+        ('pl', 'Profit & Loss Statement'),
+        ('bs', 'Balance Sheet (Financial Position)'),
         ('tb', 'Trial Balance'),
         ('aged_receivable', 'Aged Receivable (Customer Aging)'),
-        ('aged_payable', 'Aged Payable (Vendor Aging)')
+        ('aged_payable', 'Aged Payable (Vendor Aging)'),
+        ('customer_ledger', 'Customer Ledger (Transactions)'),
+        ('vendor_ledger', 'Vendor Ledger (Transactions)'),
+        ('cf', 'Cash Flow Statement'),
     ], string='Report Type', required=True, default='pl')
+    
+    period_type = fields.Selection([
+        ('monthly', 'Monthly'),
+        ('quarterly', 'Quarterly'),
+        ('yearly', 'Yearly'),
+        ('custom', 'Custom Range')
+    ], string='Period Type', default='custom')
+
+    enable_comparison = fields.Boolean(string='Compare with Previous Period', default=False)
     target_move = fields.Selection([
         ('posted', 'All Posted Entries'),
         ('all', 'All Entries')
@@ -56,5 +65,7 @@ class RehabFinancialReportWizard(models.TransientModel):
                 'date_to': str(self.date_to) if self.date_to else '',
                 'report_type': self.report_type,
                 'target_move': self.target_move,
+                'enable_comparison': self.enable_comparison,
+                'period_type': self.period_type,
             }
         }

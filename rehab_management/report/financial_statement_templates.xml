@@ -19,241 +19,254 @@
         <t t-call="web.html_container">
             <t t-call="web.internal_layout">
                 <style>
-                    /* Odoo Enterprise Style Reset */
+                    /* Odoo Enterprise Standard Styling */
                     .o_account_reports_page {
-                        font-family: "Inter", "Segoe UI", Roboto, sans-serif;
-                        color: #4c4c4c;
+                        background-color: #ffffff;
+                        color: #111111;
+                        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
                         font-size: 13px;
-                        background-color: white !important;
+                        padding: 20px 40px;
                     }
                     .o_account_reports_header {
-                        margin-bottom: 20px;
-                        border-bottom: 1px solid #dee2e6;
-                        padding-bottom: 10px;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: flex-start;
+                        margin-bottom: 30px;
+                        padding-bottom: 15px;
+                        border-bottom: 2px solid #dee2e6;
                     }
                     .o_account_reports_header h2 {
-                        color: #017e84;
+                        font-size: 28px;
                         font-weight: 700;
+                        text-transform: uppercase;
+                        color: #212529;
                         margin: 0;
-                        font-size: 24px;
+                    }
+                    .o_account_reports_header .company_name {
+                        font-size: 16px;
+                        color: #666666;
+                        margin-top: 5px;
                     }
                     
-                    /* Table Structure */
+                    /* Comparison/Period Badges */
+                    .o_reports_badge {
+                        padding: 4px 12px;
+                        border-radius: 100px;
+                        font-size: 11px;
+                        font-weight: 700;
+                        background-color: #e2f1f1;
+                        color: #017e84;
+                        margin-left: 10px;
+                    }
+
+                    /* Professional Table Layout */
                     .o_account_report_table {
                         width: 100%;
-                        border-collapse: separate;
-                        border-spacing: 0;
+                        border-collapse: collapse;
                     }
-                    .o_account_report_table thead tr th {
-                        border-bottom: 2px solid #017e84;
-                        color: #017e84;
-                        text-transform: uppercase;
+                    .o_account_report_table thead th {
+                        border-bottom: 2px solid #212529;
+                        padding: 10px;
                         font-weight: 700;
-                        padding: 8px 10px;
+                        color: #212529;
+                        text-transform: uppercase;
                         font-size: 11px;
                     }
                     .o_account_report_table tbody tr td {
-                        padding: 6px 10px;
-                        border-bottom: 1px solid #f0f0f0;
+                        padding: 8px 10px;
+                        border-bottom: 1px solid #e9ecef;
                         vertical-align: middle;
                     }
+
+                    /* Indentation Levels */
+                    .lvl-0 { font-weight: 700; font-size: 14px; background-color: #fcfcfc; border-top: 1px solid #dee2e6; }
+                    .lvl-1 { padding-left: 20px !important; }
+                    .lvl-2 { padding-left: 45px !important; color: #444; }
                     
-                    /* Row Levels & Hierarchy */
-                    .o_account_report_row_lvl0 { font-weight: 700; background-color: #f8f9fa; color: #111; border-top: 1px solid #dee2e6; }
-                    .o_account_report_row_lvl1 { font-weight: 500; padding-left: 20px !important; }
-                    .o_account_report_row_lvl2 { color: #666; padding-left: 40px !important; }
-                    
+                    /* Totals & Finishes */
                     .o_account_report_total { 
-                        font-weight: 800 !important; 
-                        background-color: #f1f8f8 !important;
+                        font-weight: 700 !important; 
+                        color: #000000;
                     }
-                    .o_account_report_final_line {
+                    .final_total_row {
                         border-bottom: 3px double #017e84 !important;
-                        color: #017e84 !important;
+                        font-weight: 700 !important;
                         font-size: 15px;
+                        color: #017e84 !important;
                     }
 
-                    /* Alignments */
-                    .number { text-align: right; font-family: 'JetBrains Mono', 'Courier New', monospace; font-weight: 600; white-space: nowrap; }
-                    .text-muted { color: #8f8f8f; }
-
-                    /* Interactivity / Drill-down */
+                    /* Alignments & Numbers */
+                    .number { 
+                        text-align: right; 
+                        font-variant-numeric: tabular-nums;
+                        font-weight: 600;
+                    }
+                    
+                    /* Drill-down Aesthetics */
                     .o_account_reports_web_action {
-                        color: #007bff;
+                        color: inherit;
                         text-decoration: none;
-                        cursor: pointer;
                         display: flex;
                         align-items: center;
                     }
                     .o_account_reports_web_action:hover {
-                        text-decoration: underline;
-                        color: #0056b3;
-                    }
-                    .drill_icon {
-                        font-size: 10px;
-                        margin-left: 5px;
-                        opacity: 0.5;
                         color: #017e84;
+                        text-decoration: underline;
                     }
-                    
-                    /* Comparison Styling */
-                    .o_account_report_comparison {
-                        color: #6c757d;
-                        border-left: 1px solid #e9ecef;
+                    .drill_arrow {
+                        font-size: 9px;
+                        margin-left: 6px;
+                        color: #017e84;
+                        opacity: 0.6;
                     }
 
-                    /* Partner Detail Box for Ledgers */
-                    .partner_header {
-                        background: #34495e;
-                        color: white !important;
-                        padding: 8px 15px !important;
-                        font-weight: bold;
-                        border-radius: 4px 4px 0 0;
-                        margin-top: 25px;
+                    /* Comparison Column */
+                    .comparison_column {
+                        color: #6c757d;
+                        font-weight: 400;
+                        background-color: #fafbfc;
                     }
-                    .partner_header strong { color: white; }
+
+                    /* Ledger Sections */
+                    .ledger_partner_row {
+                        background-color: #34495e;
+                        color: white !important;
+                        font-weight: 700;
+                        padding: 10px 15px !important;
+                    }
                 </style>
 
                 <div class="o_account_reports_page">
-                    <!-- Report Title Section -->
+                    <!-- Report Header: Clean & Standard -->
                     <div class="o_account_reports_header">
-                        <div class="row">
-                            <div class="col-8">
-                                <h2>
-                                    <t t-if="report_type == 'pl'">Profit &amp; Loss</t>
-                                    <t t-if="report_type == 'bs'">Balance Sheet</t>
-                                    <t t-if="report_type == 'tb'">Trial Balance</t>
-                                    <t t-if="report_type == 'customer_ledger'">Customer Ledger</t>
-                                    <t t-if="report_type == 'vendor_ledger'">Vendor Ledger</t>
-                                    <t t-if="report_type == 'cf'">Cash Flow</t>
-                                </h2>
-                                <div class="text-muted"><t t-esc="res_company.name"/></div>
-                            </div>
-                            <div class="col-4 text-right">
-                                <div class="text-muted" style="font-size: 11px;">
-                                    <strong>Period:</strong> <t t-esc="date_from"/> → <t t-esc="date_to"/><br/>
-                                    <strong>Printed:</strong> <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
-                                </div>
+                        <div>
+                            <h2>
+                                <t t-if="report_type == 'pl'">Profit &amp; Loss</t>
+                                <t t-if="report_type == 'bs'">Balance Sheet</t>
+                                <t t-if="report_type == 'tb'">Trial Balance</t>
+                                <t t-if="report_type == 'customer_ledger'">Customer Ledger</t>
+                                <t t-if="report_type == 'vendor_ledger'">Vendor Ledger</t>
+                            </h2>
+                            <div class="company_name"><t t-esc="res_company.name"/></div>
+                        </div>
+                        <div class="text-right">
+                            <span class="o_reports_badge">
+                                <t t-esc="date_from"/> → <t t-esc="date_to"/>
+                            </span>
+                            <div style="margin-top: 10px; font-size: 11px; color: #999;">
+                                Printed: <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Main Report Content -->
-                    <div class="o_account_reports_table">
-                        
-                        <!-- Financial Statements (P&L, BS, CF) -->
-                        <t t-if="report_type in ('pl', 'bs', 'cf')">
-                            <table class="o_account_report_table">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 50%;">Account / Category</th>
-                                        <th class="text-right">Balance</th>
-                                        <t t-if="enable_comparison"><th class="text-right o_account_report_comparison">Previous Period</th></t>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <t t-foreach="lines" t-as="line">
-                                        <tr t-attf-class="o_account_report_row_lvl{{line.get('level', 1)}} {{'o_account_report_total' if line.get('is_total') else ''}}">
-                                            <td t-attf-style="padding-left: {{line.get('level', 1)*20}}px !important;">
-                                                <t t-if="line.get('domain_str')">
-                                                    <a t-attf-href="{{base_url}}/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain={{line.get('domain_str')}}&amp;context={'search_default_posted':1}" 
-                                                       target="_blank" class="o_account_reports_web_action o_ignore_navigation" rel="noopener">
-                                                        <t t-esc="line['name']"/>
-                                                        <span class="drill_icon"> ↗</span>
-                                                    </a>
-                                                </t>
-                                                <t t-else="">
-                                                    <t t-esc="line['name']"/>
-                                                </t>
-                                            </td>
-                                            <td t-attf-class="number {{'o_account_report_final_line' if line.get('is_final') else ''}}">
-                                                <t t-esc="line['balance']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/>
-                                            </td>
-                                            <t t-if="enable_comparison">
-                                                <td class="number o_account_report_comparison">
-                                                    <t t-esc="comparison_lines[line_index]['balance']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/>
-                                                </td>
-                                            </t>
-                                        </tr>
-                                    </t>
-                                </tbody>
-                            </table>
-                        </t>
-
-                        <!-- Ledger Style (Transaction Detail) -->
-                        <t t-if="report_type in ('customer_ledger', 'vendor_ledger')">
-                            <t t-foreach="lines" t-as="partner">
-                                <table class="o_account_report_table" style="margin-bottom: 20px;">
-                                    <thead>
-                                        <tr>
-                                            <th colspan="4" class="partner_header">
-                                                <strong><t t-esc="partner['name']"/></strong>
-                                            </th>
-                                            <th colspan="2" class="partner_header text-right">
-                                                <t t-esc="partner['balance']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/>
-                                            </th>
-                                        </tr>
-                                        <tr style="background: #fdfdfd;">
-                                            <th style="width: 100px;">Date</th>
-                                            <th style="width: 150px;">Reference</th>
-                                            <th>Label</th>
-                                            <th class="text-right">Debit</th>
-                                            <th class="text-right">Credit</th>
-                                            <th class="text-right">Running</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <t t-foreach="partner['transactions']" t-as="tx">
-                                            <tr>
-                                                <td class="text-muted"><t t-esc="tx['date']"/></td>
-                                                <td><strong><t t-esc="tx['ref']"/></strong></td>
-                                                <td>
-                                                    <a t-attf-href="{{base_url}}/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain={{tx.get('domain_str')}}&amp;context={'search_default_posted':1}" 
-                                                       target="_blank" class="o_account_reports_web_action o_ignore_navigation" rel="noopener">
-                                                        <t t-esc="tx['desc']"/>
-                                                    </a>
-                                                </td>
-                                                <td class="number"><t t-esc="tx['debit']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
-                                                <td class="number" style="color: #999;"><t t-esc="tx['credit']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
-                                                <td class="number" style="color: #017e84;"><t t-esc="tx['balance']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
-                                            </tr>
-                                        </t>
-                                    </tbody>
-                                </table>
-                            </t>
-                        </t>
-
-                        <!-- Trial Balance Style -->
-                        <t t-if="report_type == 'tb'">
-                            <table class="o_account_report_table">
-                                <thead>
-                                    <tr>
-                                        <th>Account</th>
-                                        <th class="text-right">Debit</th>
-                                        <th class="text-right">Credit</th>
-                                        <th class="text-right">Balance</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <t t-foreach="lines" t-as="line">
-                                        <tr>
-                                            <td>
-                                                <span class="text-muted" style="width: 60px; display: inline-block;"><t t-esc="line['code']"/></span>
+                    <!-- Financial Statement Table -->
+                    <t t-if="report_type in ('pl', 'bs', 'cf')">
+                        <table class="o_account_report_table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 60%;">Description</th>
+                                    <th class="text-right">Balance</th>
+                                    <t t-if="enable_comparison"><th class="text-right comparison_column">Previous</th></t>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="lines" t-as="line">
+                                    <tr t-attf-class="lvl-{{line.get('level', 1)}} {{'o_account_report_total' if line.get('is_total') else ''}}">
+                                        <td>
+                                            <t t-if="line.get('domain_str')">
                                                 <a t-attf-href="{{base_url}}/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain={{line.get('domain_str')}}&amp;context={'search_default_posted':1}" 
-                                                   target="_blank" class="o_account_reports_web_action o_ignore_navigation" rel="noopener" style="display:inline-flex;">
-                                                    <strong><t t-esc="line['name']"/></strong>
+                                                   target="_blank" class="o_account_reports_web_action o_ignore_navigation" rel="noopener">
+                                                    <t t-esc="line['name']"/><span class="drill_arrow">↗</span>
+                                                </a>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-esc="line['name']"/>
+                                            </t>
+                                        </td>
+                                        <td t-attf-class="number {{'final_total_row' if line.get('is_final') else ''}}">
+                                            <t t-esc="line['balance']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/>
+                                        </td>
+                                        <t t-if="enable_comparison">
+                                            <td class="number comparison_column">
+                                                <t t-esc="comparison_lines[line_index]['balance']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </t>
+
+                    <!-- Ledger Table -->
+                    <t t-if="report_type in ('customer_ledger', 'vendor_ledger')">
+                        <t t-foreach="lines" t-as="partner">
+                            <table class="o_account_report_table" style="margin-top: 25px;">
+                                <thead>
+                                    <tr class="ledger_partner_row">
+                                        <th colspan="4" style="color: white;"><t t-esc="partner['name']"/></th>
+                                        <th colspan="2" class="text-right" style="color: white;">
+                                            <t t-esc="partner['balance']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/>
+                                        </th>
+                                    </tr>
+                                    <tr style="background: #f8f9fa;">
+                                        <th style="width: 12%;">Date</th>
+                                        <th style="width: 18%;">Ref</th>
+                                        <th>Label</th>
+                                        <th class="text-right" style="width: 15%;">Debit</th>
+                                        <th class="text-right" style="width: 15%;">Credit</th>
+                                        <th class="text-right" style="width: 15%;">Cumul.</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="partner['transactions']" t-as="tx">
+                                        <tr>
+                                            <td style="color: #666;"><t t-esc="tx['date']"/></td>
+                                            <td><strong><t t-esc="tx['ref']"/></strong></td>
+                                            <td>
+                                                <a t-attf-href="{{base_url}}/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain={{tx.get('domain_str')}}&amp;context={'search_default_posted':1}" 
+                                                   target="_blank" class="o_account_reports_web_action o_ignore_navigation" rel="noopener">
+                                                    <t t-esc="tx['desc']"/>
                                                 </a>
                                             </td>
-                                            <td class="number"><t t-esc="line['debit']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
-                                            <td class="number"><t t-esc="line['credit']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
-                                            <td class="number"><strong><t t-esc="line['balance']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></strong></td>
+                                            <td class="number"><t t-esc="tx['debit']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                            <td class="number" style="color: #bbb;"><t t-esc="tx['credit']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                            <td class="number" style="color: #017e84;"><t t-esc="tx['balance']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
                                         </tr>
                                     </t>
                                 </tbody>
                             </table>
                         </t>
+                    </t>
 
-                    </div>
+                    <!-- Trial Balance Table -->
+                    <t t-if="report_type == 'tb'">
+                        <table class="o_account_report_table">
+                            <thead>
+                                <tr>
+                                    <th>Account</th>
+                                    <th class="text-right">Debit</th>
+                                    <th class="text-right">Credit</th>
+                                    <th class="text-right">Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="lines" t-as="line">
+                                    <tr>
+                                        <td>
+                                            <span style="color: #999; width: 70px; display: inline-block;"><t t-esc="line['code']"/></span>
+                                            <a t-attf-href="{{base_url}}/web#action=account.action_account_moves_all&amp;model=account.move.line&amp;domain={{line.get('domain_str')}}&amp;context={'search_default_posted':1}" 
+                                               target="_blank" class="o_account_reports_web_action o_ignore_navigation" rel="noopener" style="display:inline-flex;">
+                                                <strong><t t-esc="line['name']"/></strong>
+                                            </a>
+                                        </td>
+                                        <td class="number"><t t-esc="line['debit']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                        <td class="number"><t t-esc="line['credit']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></td>
+                                        <td class="number"><strong><t t-esc="line['balance']" t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'/></strong></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </t>
                 </div>
             </t>
         </t>

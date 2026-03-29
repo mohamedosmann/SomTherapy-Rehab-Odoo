@@ -4,7 +4,7 @@ import datetime
 import json
 
 class FinancialStatementReport(models.AbstractModel):
-    _name = 'report.rehab_management.report_financial_statement'
+    _name = 'report.rehab_management.report_financial_statement_v2'
     _description = 'Financial Statement Report Logic'
 
     @api.model

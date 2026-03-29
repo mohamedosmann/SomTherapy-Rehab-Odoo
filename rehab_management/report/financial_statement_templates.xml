@@ -95,7 +95,7 @@
                         color: #017e84 !important;
                     }
 
-                    /* Alignments & Numbers */
+                    /* Alignments and Numbers */
                     .number { 
                         text-align: right; 
                         font-variant-numeric: tabular-nums;

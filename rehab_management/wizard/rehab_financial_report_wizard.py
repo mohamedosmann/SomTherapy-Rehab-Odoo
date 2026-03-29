@@ -16,6 +16,8 @@ class RehabFinancialReportWizard(models.TransientModel):
         ('customer_ledger', 'Customer Ledger (Transactions)'),
         ('vendor_ledger', 'Vendor Ledger (Transactions)'),
         ('cf', 'Cash Flow Statement'),
+        ('summary', 'Executive Summary'),
+        ('tax', 'Tax Return'),
     ], string='Report Type', required=True, default='pl')
     
     period_type = fields.Selection([

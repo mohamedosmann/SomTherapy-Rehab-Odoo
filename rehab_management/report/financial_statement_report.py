@@ -198,7 +198,7 @@ class FinancialStatementReport(models.AbstractModel):
                 'balance': sum(other_exp_lines.mapped('balance')), 
                 'level': 2, 
                 'is_group': True,
-                'drill_url': f"/web#model=account.move.line&view_type=list&domain={urllib.parse.quote(json.dumps(other_domain))}"
+                'drill_url': f"/odoo/action-account.action_account_moves_all?domain={urllib.parse.quote(json.dumps(other_domain))}"
             })
             
             groups = {}
@@ -214,8 +214,10 @@ class FinancialStatementReport(models.AbstractModel):
                     'name': group['name'],
                     'balance': group['balance'],
                     'level': 3,
-                    'domain': grp_domain,
-                    'drill_url': f"/web#model=account.move.line&view_type=list&domain={urllib.parse.quote(json.dumps(grp_domain))}",
+                    'account_id': group['account_id'],
+                    'date_from': date_from,
+                    'date_to': date_to,
+                    'drill_url': f"/odoo/action-account.action_account_moves_all?domain={urllib.parse.quote(json.dumps(grp_domain))}",
                     'parent_group': _('Other Operating Expenses'),
                 })
                 total_operating_expenses += group['balance']

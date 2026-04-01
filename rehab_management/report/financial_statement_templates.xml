@@ -147,6 +147,61 @@
                         padding: 10px 15px !important;
                     }
                 </style>
+                <script type="text/javascript">
+                    document.addEventListener('DOMContentLoaded', function () {
+                        // Toggle Group Handler
+                        document.querySelectorAll('.o_account_report_caret').forEach(function(caret) {
+                            caret.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                const row = this.closest('tr');
+                                const groupName = row.getAttribute('data-group-name');
+                                this.classList.toggle('caret_open');
+                                
+                                document.querySelectorAll('tr[data-parent-group="' + groupName + '"]').forEach(function(subRow) {
+                                    subRow.classList.toggle('row_hidden');
+                                });
+                            });
+                        });
+
+                        // Drill-down Handler (Custom for Odoo Backend)
+                        document.querySelectorAll('.o_account_reports_web_action').forEach(function(link) {
+                            link.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                const domainStr = this.getAttribute('data-domain');
+                                if (!domainStr) return;
+                                
+                                const domain = JSON.parse(domainStr);
+                                if (window.parent &amp;&amp; window.parent.odoo &amp;&amp; window.parent.odoo.__session_info__) {
+                                    // We are in an iframe, reach out to parent's action service
+                                    window.parent.postMessage({
+                                        type: 'ir.actions.act_window',
+                                        name: this.innerText.trim(),
+                                        res_model: this.getAttribute('data-res-model') || 'account.move.line',
+                                        domain: domain,
+                                        views: [[false, 'list'], [false, 'form']],
+                                        view_mode: 'list,form',
+                                        target: 'current',
+                                    }, '*');
+                                } else {
+                                   console.warn("Odoo Action Service not found. This link works best within the Odoo backend.");
+                                }
+                            });
+                        });
+                    });
+
+                    // Handle messages from the iframe (Standard for Odoo Reports)
+                    if (window.parent &amp;&amp; !window.odoo_drilling_set) {
+                        window.odoo_drilling_set = true;
+                        window.addEventListener('message', function(event) {
+                           if (event.data &amp;&amp; event.data.type === 'ir.actions.act_window') {
+                               if (window.parent.odoo &amp;&amp; window.parent.odoo.actionService) {
+                                   window.parent.odoo.actionService.doAction(event.data);
+                               }
+                           }
+                        });
+                    }
+                </script>
 
                 <div class="o_account_reports_page">
                     <!-- Report Header: Clean & Standard -->

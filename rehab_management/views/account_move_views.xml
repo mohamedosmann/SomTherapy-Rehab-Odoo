@@ -9,12 +9,16 @@
                 <button name="action_apply_advance" string="Apply Advance" type="object" class="btn-info" invisible="not has_advance or state != 'posted'"/>
             </xpath>
             <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="rehab_id" placeholder="Select Rehab Student..."/>
+                <field name="rehab_program_id" groups="base.group_no_one"/>
                 <field name="has_advance" invisible="1"/>
                 <div class="alert alert-success mt-2" role="alert" invisible="not has_advance">
                     Available Advance Balance: <field name="advance_balance" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                 </div>
             </xpath>
             <xpath expr="//field[@name='invoice_line_ids']/list/field[@name='account_id']" position="after">
+                <field name="rehab_id" column_invisible="1"/>
+                <field name="rehab_program_id" column_invisible="1"/>
                 <field name="is_deferred" optional="show"/>
                 <field name="deferral_duration" invisible="not is_deferred" optional="show"/>
                 <field name="deferral_start_date" invisible="not is_deferred" optional="show"/>

@@ -17,6 +17,15 @@
                         <field name="date_to"/>
                     </group>
                 </group>
+                <group string="Rehab Specific Filters">
+                    <group>
+                        <field name="student_id" placeholder="Specific Patient..."/>
+                        <field name="program_id" placeholder="Specific Program..."/>
+                    </group>
+                    <group>
+                        <field name="branch_id" options="{'no_create': True}"/>
+                    </group>
+                </group>
                 <footer>
                     <button name="action_view_report_html" string="View in Browser (HTML/No Download)" type="object" class="btn-primary"/>
                     <button name="action_generate_report" string="Download PDF" type="object" class="btn-secondary"/>

@@ -7,9 +7,30 @@ class AccountMoveLine(models.Model):
     is_deferred = fields.Boolean(string='Deferred Revenue', default=False)
     deferral_duration = fields.Integer(string='Duration (Months)', default=1)
     deferral_start_date = fields.Date(string='Recognition Start')
+    
+    # Rehab Specific
+    rehab_id = fields.Many2one('rehab.student', string='Rehab Patient')
+    rehab_program_id = fields.Many2one('rehab.student.type', string='Rehab Program')
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
+
+    rehab_id = fields.Many2one('rehab.student', string='Rehab Patient')
+    rehab_program_id = fields.Many2one('rehab.student.type', string='Rehab Program')
+
+    @api.onchange('rehab_id')
+    def _onchange_rehab_id(self):
+        if self.rehab_id:
+            self.rehab_program_id = self.rehab_id.type_id
+            self.partner_id = self.rehab_id.partner_id
+
+    def _prepare_move_line_vals(self, line, name, amount, currency_id, account_id):
+        res = super()._prepare_move_line_vals(line, name, amount, currency_id, account_id)
+        res.update({
+            'rehab_id': self.rehab_id.id,
+            'rehab_program_id': self.rehab_program_id.id,
+        })
+        return res
 
     advance_balance = fields.Monetary(
         string='Advance Balance Available',

@@ -35,4 +35,9 @@
     ],
     'installable': True,
     'application': True,
+    'assets': {
+        'web.assets_backend': [
+            'rehab_management/static/src/js/rehab_report_drilldown.js',
+        ],
+    },
 }

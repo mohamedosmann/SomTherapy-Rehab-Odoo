@@ -82,6 +82,18 @@
                     .lvl-0 { font-weight: 700; font-size: 14px; background-color: #fcfcfc; border-top: 1px solid #dee2e6; }
                     .lvl-1 { padding-left: 20px !important; }
                     .lvl-2 { padding-left: 45px !important; color: #444; }
+                    .lvl-3 { padding-left: 70px !important; font-style: italic; color: #666; font-size: 12px; }
+                    
+                    /* Group Toggle Caret */
+                    .o_account_report_caret {
+                        cursor: pointer;
+                        margin-right: 8px;
+                        display: inline-block;
+                        width: 12px;
+                        transition: transform 0.2s;
+                    }
+                    .row_hidden { display: none; }
+                    .caret_open { transform: rotate(90deg); }
                     
                     /* Totals and Finishes */
                     .o_account_report_total { 
@@ -171,10 +183,15 @@
                             </thead>
                             <tbody>
                                 <t t-foreach="lines" t-as="line">
-                                    <tr t-attf-class="lvl-{{line.get('level', 1)}} {{'o_account_report_total' if line.get('is_total') else ''}}">
+                                    <tr t-attf-class="lvl-{{line.get('level', 1)}} {{'o_account_report_total' if line.get('is_total') else ''}} {{'o_js_account_report_group' if line.get('is_group') else ''}} {{'row_hidden' if line.get('parent_group') else ''}}" 
+                                        t-att-data-group-name="line['name']" 
+                                        t-att-data-parent-group="line.get('parent_group')">
                                         <td>
+                                            <t t-if="line.get('is_group')">
+                                                <span class="o_account_report_caret">▶</span>
+                                            </t>
                                             <t t-if="line.get('domain_str')">
-                                                <a href="#" class="o_account_reports_web_action o_ignore_navigation">
+                                                <a href="#" class="o_account_reports_web_action o_ignore_navigation" t-att-data-domain="line['domain_str']" t-att-data-res-model="'account.move.line'">
                                                     <t t-esc="line['name']"/><span class="drill_arrow">↗</span>
                                                 </a>
                                             </t>
@@ -222,7 +239,7 @@
                                             <td style="color: #666;"><t t-esc="tx['date']"/></td>
                                             <td><strong><t t-esc="tx['ref']"/></strong></td>
                                             <td>
-                                                <a href="#" class="o_account_reports_web_action o_ignore_navigation">
+                                                <a href="#" class="o_account_reports_web_action o_ignore_navigation" t-att-data-domain="tx['domain_str']" t-att-data-res-model="'account.move.line'">
                                                     <t t-esc="tx['desc']"/>
                                                 </a>
                                             </td>
@@ -252,7 +269,7 @@
                                     <tr>
                                         <td>
                                             <span style="color: #999; width: 70px; display: inline-block;"><t t-esc="line['code']"/></span>
-                                            <a href="#" class="o_account_reports_web_action o_ignore_navigation" style="display:inline-flex;">
+                                            <a href="#" class="o_account_reports_web_action o_ignore_navigation" t-att-data-domain="line['domain_str']" t-att-data-res-model="'account.move.line'" style="display:inline-flex;">
                                                 <strong><t t-esc="line['name']"/></strong>
                                             </a>
                                         </td>

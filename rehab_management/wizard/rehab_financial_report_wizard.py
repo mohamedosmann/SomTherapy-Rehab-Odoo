@@ -27,6 +27,10 @@ class RehabFinancialReportWizard(models.TransientModel):
         ('custom', 'Custom Range')
     ], string='Period Type', default='custom')
 
+    student_id = fields.Many2one('rehab.student', string='Patient / Student')
+    program_id = fields.Many2one('rehab.student.type', string='Rehab Program')
+    branch_id = fields.Many2one('res.company', string='Branch', default=lambda self: self.env.company)
+
     enable_comparison = fields.Boolean(string='Compare with Previous Period', default=False)
     target_move = fields.Selection([
         ('posted', 'All Posted Entries'),
@@ -69,5 +73,8 @@ class RehabFinancialReportWizard(models.TransientModel):
                 'target_move': self.target_move,
                 'enable_comparison': self.enable_comparison,
                 'period_type': self.period_type,
+                'student_id': self.student_id.id if self.student_id else False,
+                'program_id': self.program_id.id if self.program_id else False,
+                'branch_id': self.branch_id.id if self.branch_id else self.env.company.id,
             }
         }

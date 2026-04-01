@@ -146,16 +146,21 @@ class FinancialStatementReport(models.AbstractModel):
             bal = sum(cat_lines.mapped('balance'))
             if bal != 0 or cat.get('rehab_only'):
                 cat_domain = [('account_id.code', 'like', prefix + '%')] + base_drill_domain
+                # URL GENERATION (Native Fix)
+                import urllib.parse
+                cat_url = f"/web#model=account.move.line&view_type=list&domain={urllib.parse.quote(json.dumps(cat_domain))}"
+                
                 res.append({
                     'name': cat['name'],
                     'balance': bal,
                     'level': cat['level'],
                     'domain': cat_domain,
+                    'drill_url': cat_url,
                     'is_group': True,
-                    'is_open': False,
+                    'is_open': True,
                 })
                 
-                # ACCOUNT BREAKDOWN (Detailed Level)
+                # ACCOUNT BREAKDOWN
                 acc_groups = {}
                 for l in cat_lines:
                     if l.account_id.id not in acc_groups:
@@ -163,11 +168,13 @@ class FinancialStatementReport(models.AbstractModel):
                     acc_groups[l.account_id.id]['balance'] += l.balance
                 
                 for acc_id, acc_data in acc_groups.items():
+                    acc_domain = [('account_id', '=', acc_id)] + base_drill_domain
                     res.append({
                         'name': acc_data['name'],
                         'balance': acc_data['balance'],
                         'level': 3,
-                        'domain': [('account_id', '=', acc_id)] + base_drill_domain,
+                        'domain': acc_domain,
+                        'drill_url': f"/web#model=account.move.line&view_type=list&domain={urllib.parse.quote(json.dumps(acc_domain))}",
                         'parent_group': cat['name'],
                     })
 
@@ -177,11 +184,19 @@ class FinancialStatementReport(models.AbstractModel):
         other_exp_lines = move_lines.filtered(
             lambda l: l.account_id.account_type in ('expense', 'expense_depreciation', 'expense_direct_cost') and 
             not any(str(p) in l.account_id.code for p in applied_prefixes) and
-            l.account_id.account_type != 'expense_direct_cost' # COGS is already handled
+            l.account_id.account_type != 'expense_direct_cost'
         )
         
         if other_exp_lines:
-            res.append({'name': _('Other Operating Expenses'), 'balance': sum(other_exp_lines.mapped('balance')), 'level': 2, 'is_group': True})
+            import urllib.parse
+            other_domain = [('account_id.account_type', 'in', ('expense', 'expense_depreciation'))] + base_drill_domain
+            res.append({
+                'name': _('Other Operating Expenses'), 
+                'balance': sum(other_exp_lines.mapped('balance')), 
+                'level': 2, 
+                'is_group': True,
+                'drill_url': f"/web#model=account.move.line&view_type=list&domain={urllib.parse.quote(json.dumps(other_domain))}"
+            })
             
             groups = {}
             for l in other_exp_lines:
@@ -191,11 +206,13 @@ class FinancialStatementReport(models.AbstractModel):
                 groups[key]['balance'] += l.balance
 
             for group in sorted(groups.values(), key=lambda x: x['name']):
+                grp_domain = [('account_id', '=', group['account_id'])] + base_drill_domain
                 res.append({
                     'name': group['name'],
                     'balance': group['balance'],
                     'level': 3,
-                    'domain': [('account_id', '=', group['account_id'])] + base_drill_domain,
+                    'domain': grp_domain,
+                    'drill_url': f"/web#model=account.move.line&view_type=list&domain={urllib.parse.quote(json.dumps(grp_domain))}",
                     'parent_group': _('Other Operating Expenses'),
                 })
                 total_operating_expenses += group['balance']
@@ -239,6 +256,7 @@ class FinancialStatementReport(models.AbstractModel):
         if program_id: base_drill_domain.append(('rehab_program_id', '=', program_id))
         if branch_id: base_drill_domain.append(('company_id', '=', branch_id))
 
+        import urllib.parse
         def get_account_lines(lines_filtered, parent_name):
             acc_groups = {}
             for l in lines_filtered:
@@ -250,25 +268,26 @@ class FinancialStatementReport(models.AbstractModel):
                 'balance': d['balance'], 
                 'level': 3, 
                 'domain': [('account_id', '=', d['account_id'])] + base_drill_domain,
-                'parent_group': parent_name
+                'parent_group': parent_name,
+                'drill_url': f"/web#model=account.move.line&view_type=list&domain={urllib.parse.quote(json.dumps([('account_id', '=', d['account_id'])] + base_drill_domain))}"
             } for d in acc_groups.values()]
 
         res = [
-            {'name': _('Current Assets'), 'balance': curr_assets, 'level': 1, 'is_group': True, 'domain': [('account_id.account_type', 'in', ('asset_receivable', 'asset_cash', 'asset_current', 'asset_prepayments'))] + base_drill_domain},
+            {'name': _('Current Assets'), 'balance': curr_assets, 'level': 1, 'is_group': True, 'drill_url': f"/web#model=account.move.line&view_type=list&domain={urllib.parse.quote(json.dumps([('account_id.account_type', 'in', ('asset_receivable', 'asset_cash', 'asset_current', 'asset_prepayments'))] + base_drill_domain))}"},
         ] + get_account_lines(curr_asset_lines, _('Current Assets')) + [
-            {'name': _('Fixed Assets'), 'balance': fixed_assets, 'level': 1, 'is_group': True, 'domain': [('account_id.account_type', '=', 'asset_fixed')] + base_drill_domain},
+            {'name': _('Fixed Assets'), 'balance': fixed_assets, 'level': 1, 'is_group': True, 'drill_url': f"/web#model=account.move.line&view_type=list&domain={urllib.parse.quote(json.dumps([('account_id.account_type', '=', 'asset_fixed')] + base_drill_domain))}"},
         ] + get_account_lines(move_lines.filtered(lambda l: l.account_id.account_type == 'asset_fixed'), _('Fixed Assets')) + [
             {'name': _('TOTAL ASSETS'), 'balance': total_assets, 'level': 0, 'is_total': True},
             
-            {'name': _('Current Liabilities'), 'balance': curr_liabilities, 'level': 1, 'is_group': True, 'domain': [('account_id.account_type', 'in', ('liability_payable', 'liability_current'))] + base_drill_domain},
+            {'name': _('Current Liabilities'), 'balance': curr_liabilities, 'level': 1, 'is_group': True, 'drill_url': f"/web#model=account.move.line&view_type=list&domain={urllib.parse.quote(json.dumps([('account_id.account_type', 'in', ('liability_payable', 'liability_current'))] + base_drill_domain))}"},
         ] + get_account_lines(move_lines.filtered(lambda l: l.account_id.account_type in ('liability_payable', 'liability_current')), _('Current Liabilities')) + [
-            {'name': _('Long-term Liabilities'), 'balance': long_liabilities, 'level': 1, 'is_group': True, 'domain': [('account_id.account_type', '=', 'liability_non_current')] + base_drill_domain},
+            {'name': _('Long-term Liabilities'), 'balance': long_liabilities, 'level': 1, 'is_group': True, 'drill_url': f"/web#model=account.move.line&view_type=list&domain={urllib.parse.quote(json.dumps([('account_id.account_type', '=', 'liability_non_current')] + base_drill_domain))}"},
         ] + get_account_lines(move_lines.filtered(lambda l: l.account_id.account_type == 'liability_non_current'), _('Long-term Liabilities')) + [
             {'name': _('TOTAL LIABILITIES'), 'balance': total_liabilities, 'level': 0, 'is_total': True},
             
-            {'name': _('Owner Equity'), 'balance': base_equity, 'level': 1, 'is_group': True, 'domain': [('account_id.account_type', '=', 'equity')] + base_drill_domain},
+            {'name': _('Owner Equity'), 'balance': base_equity, 'level': 1, 'is_group': True, 'drill_url': f"/web#model=account.move.line&view_type=list&domain={urllib.parse.quote(json.dumps([('account_id.account_type', '=', 'equity')] + base_drill_domain))}"},
         ] + get_account_lines(move_lines.filtered(lambda l: l.account_id.account_type == 'equity'), _('Owner Equity')) + [
-            {'name': _('Retained Earnings (PL)'), 'balance': pl_net, 'level': 1, 'is_group': True, 'domain': [('account_id.account_type', 'in', ('income', 'income_other', 'expense', 'expense_depreciation', 'expense_direct_cost'))] + base_drill_domain},
+            {'name': _('Retained Earnings (PL)'), 'balance': pl_net, 'level': 1, 'is_group': True, 'drill_url': f"/web#model=account.move.line&view_type=list&domain={urllib.parse.quote(json.dumps([('account_id.account_type', 'in', ('income', 'income_other', 'expense', 'expense_depreciation', 'expense_direct_cost'))] + base_drill_domain))}"},
         ] + get_account_lines(move_lines.filtered(lambda l: l.account_id.account_type in ('income', 'income_other', 'expense', 'expense_depreciation', 'expense_direct_cost')), _('Retained Earnings (PL)')) + [
             {'name': _('TOTAL EQUITY'), 'balance': total_equity, 'level': 0, 'is_total': True},
             

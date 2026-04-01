@@ -148,59 +148,63 @@
                     }
                 </style>
                 <script type="text/javascript">
-                    document.addEventListener('DOMContentLoaded', function () {
-                        // Toggle Group Handler
-                        document.querySelectorAll('.o_account_report_caret').forEach(function(caret) {
-                            caret.addEventListener('click', function(e) {
+                    (function() {
+                        // Use a global click listener for dynamic content
+                        document.addEventListener('click', function(e) {
+                            // 1. Handle Expand/Collapse
+                            const caret = e.target.closest('.o_account_report_caret');
+                            if (caret) {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                const row = this.closest('tr');
+                                const row = caret.closest('tr');
                                 const groupName = row.getAttribute('data-group-name');
-                                this.classList.toggle('caret_open');
-                                
+                                caret.classList.toggle('caret_open');
                                 document.querySelectorAll('tr[data-parent-group="' + groupName + '"]').forEach(function(subRow) {
                                     subRow.classList.toggle('row_hidden');
                                 });
-                            });
-                        });
+                                return;
+                            }
 
-                        // Drill-down Handler (Custom for Odoo Backend)
-                        document.querySelectorAll('.o_account_reports_web_action').forEach(function(link) {
-                            link.addEventListener('click', function(e) {
+                            // 2. Handle Drill-down Click
+                            const link = e.target.closest('.o_account_reports_web_action');
+                            if (link) {
                                 e.preventDefault();
-                                const domainStr = this.getAttribute('data-domain');
+                                e.stopPropagation();
+                                const domainStr = link.getAttribute('data-domain');
                                 if (!domainStr) return;
                                 
-                                const domain = JSON.parse(domainStr);
-                                if (window.parent &amp;&amp; window.parent.odoo &amp;&amp; window.parent.odoo.__session_info__) {
-                                    // We are in an iframe, reach out to parent's action service
-                                    window.parent.postMessage({
+                                try {
+                                    const domain = JSON.parse(domainStr);
+                                    const action = {
                                         type: 'ir.actions.act_window',
-                                        name: this.innerText.trim(),
-                                        res_model: this.getAttribute('data-res-model') || 'account.move.line',
+                                        name: link.innerText.trim() || 'Drill-down',
+                                        res_model: link.getAttribute('data-res-model') || 'account.move.line',
                                         domain: domain,
                                         views: [[false, 'list'], [false, 'form']],
                                         view_mode: 'list,form',
                                         target: 'current',
-                                    }, '*');
-                                } else {
-                                   console.warn("Odoo Action Service not found. This link works best within the Odoo backend.");
-                                }
-                            });
-                        });
-                    });
+                                        context: { 'active_test': false }
+                                    };
 
-                    // Handle messages from the iframe (Standard for Odoo Reports)
-                    if (window.parent &amp;&amp; !window.odoo_drilling_set) {
-                        window.odoo_drilling_set = true;
-                        window.addEventListener('message', function(event) {
-                           if (event.data &amp;&amp; event.data.type === 'ir.actions.act_window') {
-                               if (window.parent.odoo &amp;&amp; window.parent.odoo.actionService) {
-                                   window.parent.odoo.actionService.doAction(event.data);
-                               }
-                           }
+                                    // Reach the Odoo action service in the parent window
+                                    if (window.parent &amp;&amp; window.parent.odoo &amp;&amp; window.parent.odoo.__WOWL_DEBUG__ &amp;&amp; window.parent.odoo.__WOWL_DEBUG__.root) {
+                                        // Modern Odoo (16/17+)
+                                        const actionService = window.parent.odoo.__WOWL_DEBUG__.root.env.services.action;
+                                        actionService.doAction(action);
+                                    } else if (window.parent &amp;&amp; window.parent.odoo &amp;&amp; window.parent.odoo.actionService) {
+                                        // Variant
+                                        window.parent.odoo.actionService.doAction(action);
+                                    } else {
+                                        console.error("Odoo Action Service not found in parent window.");
+                                        // Fallback: postMessage
+                                        window.parent.postMessage(action, "*");
+                                    }
+                                } catch (err) {
+                                    console.error("Drill-down error:", err);
+                                }
+                            }
                         });
-                    }
+                    })();
                 </script>
 
                 <div class="o_account_reports_page">
@@ -241,12 +245,12 @@
                                     <tr t-attf-class="lvl-{{line.get('level', 1)}} {{'o_account_report_total' if line.get('is_total') else ''}} {{'o_js_account_report_group' if line.get('is_group') else ''}} {{'row_hidden' if line.get('parent_group') else ''}}" 
                                         t-att-data-group-name="line['name']" 
                                         t-att-data-parent-group="line.get('parent_group')">
-                                        <td>
+                                        <td class="account_name_cell">
                                             <t t-if="line.get('is_group')">
-                                                <span class="o_account_report_caret">▶</span>
+                                                <span class="o_account_report_caret">▼</span>
                                             </t>
-                                            <t t-if="line.get('domain_str')">
-                                                <a href="#" class="o_account_reports_web_action o_ignore_navigation" t-att-data-domain="line['domain_str']" t-att-data-res-model="'account.move.line'">
+                                            <t t-if="line.get('drill_url')">
+                                                <a t-att-href="line['drill_url']" target="_parent" class="o_account_reports_web_action o_ignore_navigation">
                                                     <t t-esc="line['name']"/><span class="drill_arrow">↗</span>
                                                 </a>
                                             </t>

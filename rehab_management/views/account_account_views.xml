@@ -13,4 +13,52 @@
             </xpath>
         </field>
     </record>
-</odoo>
+    <record id="view_account_tree_rehab_quickbooks" model="ir.ui.view">
+        <field name="name">account.account.tree.rehab.quickbooks</field>
+        <field name="model">account.account</field>
+        <field name="arch" type="xml">
+            <tree string="Simplified Chart of Accounts" decoration-info="ifrs_category in ('asset','income')" decoration-danger="ifrs_category in ('liability','expense')" create="0">
+                <header>
+                    <button name="action_quickbooks_transform" string="Clean &amp; Re-organize (QuickBooks Style)" type="object" class="btn-primary" confirm="This will rename accounts to plain English and group them by (1000, 2000, etc.). Continue?"/>
+                </header>
+                <field name="code" decoration-bf="1"/>
+                <field name="name" string="Account Purpose" decoration-bf="1"/>
+                <field name="account_type" invisible="1"/>
+                <field name="ifrs_category" string="Natural Group"/>
+                <field name="qb_debit" string="Money In (+)" sum="Total Debit"/>
+                <field name="qb_credit" string="Money Out (-)" sum="Total Credit"/>
+                <field name="qb_balance" string="Remaining Balance" decoration-bf="1" widget="monetary" sum="Net Total"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_account_form_simplified" model="ir.actions.act_window">
+        <field name="name">Chart of Accounts (QuickBooks Style)</field>
+        <field name="res_model">account.account</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_account_tree_rehab_quickbooks"/>
+        <field name="context">{'search_default_group_by_category': 1}</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Everything looks clean! Your business finances are organized by natural groups.
+          </p>
+        </field>
+    </record>
+
+    <!-- Search view for grouping -->
+    <record id="view_account_search_rehab" model="ir.ui.view">
+        <field name="name">account.account.search.rehab</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='account_type']" position="after">
+                <filter string="QuickBooks Grouping" name="group_by_category" context="{'group_by': 'ifrs_category'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <menuitem id="menu_action_account_form_simplified" 
+              name="Chart of Accounts (QuickBooks)" 
+              parent="account.menu_finance_entries_management" 
+              action="action_account_form_simplified" 
+              sequence="1"/>

@@ -70,7 +70,7 @@
 
     <menuitem id="menu_action_account_form_simplified"
               name="Chart of Accounts (QuickBooks)"
-              parent="account.menu_finance_entries_management"
+              parent="rehab_management.menu_rehab_acconuting_config_cat"
               action="action_account_form_simplified"
               sequence="1"/>
 </odoo>

@@ -1,5 +1,6 @@
 from odoo import models, fields, api, _
 
+
 class AccountAccount(models.Model):
     _inherit = 'account.account'
 
@@ -11,11 +12,13 @@ class AccountAccount(models.Model):
         ('income', '4000 - Income (Sales & Revenue)'),
         ('expense', '5000 - Expenses (Business Spending)')
     ], string='QuickBooks Category', help="Simplified category for non-accountants")
-    
-    qb_balance = fields.Monetary(string='Current Balance', compute='_compute_qb_balance')
-    qb_debit = fields.Monetary(string='Debit Volume', compute='_compute_qb_balance')
-    qb_credit = fields.Monetary(string='Credit Volume', compute='_compute_qb_balance')
-    currency_id = fields.Many2one('res.currency', related='company_id.currency_id')
+
+    # Use Float instead of Monetary to avoid company_id/currency_id
+    # dependency which was removed in Odoo 18 (account.account no longer
+    # has company_id — it uses company_ids Many2many instead).
+    qb_balance = fields.Float(string='Current Balance', compute='_compute_qb_balance', digits=(16, 2))
+    qb_debit = fields.Float(string='Debit Volume', compute='_compute_qb_balance', digits=(16, 2))
+    qb_credit = fields.Float(string='Credit Volume', compute='_compute_qb_balance', digits=(16, 2))
 
     def _compute_qb_balance(self):
         for account in self:
@@ -35,7 +38,6 @@ class AccountAccount(models.Model):
 
     def _quickbooks_transform(self):
         """ Automatically renames and archives accounts to match QuickBooks UX """
-        # 1. Plain English Renaming
         translations = {
             'Accounts Receivable': 'Money You Will Receive (Patients)',
             'Accounts Payable': 'Money You Owe (Suppliers)',
@@ -46,54 +48,60 @@ class AccountAccount(models.Model):
             'Revenue': 'Income from Services',
             'Expense': 'Business Spending',
         }
-        
-        # 2. Archive list (unnecessary for non-accountants)
         to_archive_search = [
-            'Cash Difference', 'Exchange Difference', 'Write-off', 
+            'Cash Difference', 'Exchange Difference', 'Write-off',
             'Interim', 'Suspense', 'Discount', 'Rounding'
         ]
 
-        for acc in self.search([('company_id', '=', self.env.company.id)]):
-            # Apply names
+        # Odoo 18: account.account uses company_ids (Many2many), not company_id
+        company = self.env.company
+        domain = ['|', ('company_ids', '=', False), ('company_ids', 'in', company.id)]
+        for acc in self.search(domain):
             for tech_name, plain_name in translations.items():
                 if tech_name.lower() in acc.name.lower():
                     acc.name = plain_name
-            
-            # Apply Codes logic
-            if not acc.code.startswith(('1','2','3','4','5')):
+
+            if not acc.code.startswith(('1', '2', '3', '4', '5')):
                 if acc.account_type in ('asset_receivable', 'asset_cash', 'asset_current', 'asset_prepayments'):
-                     acc.code = '1' + acc.code.lstrip('0')[:3]
+                    acc.code = '1' + acc.code.lstrip('0')[:3]
                 elif acc.account_type in ('liability_payable', 'liability_current', 'liability_non_current'):
-                     acc.code = '2' + acc.code.lstrip('0')[:3]
+                    acc.code = '2' + acc.code.lstrip('0')[:3]
                 elif acc.account_type == 'equity':
-                     acc.code = '3' + acc.code.lstrip('0')[:3]
+                    acc.code = '3' + acc.code.lstrip('0')[:3]
                 elif acc.account_type in ('income', 'income_other'):
-                     acc.code = '4' + acc.code.lstrip('0')[:3]
+                    acc.code = '4' + acc.code.lstrip('0')[:3]
                 elif acc.account_type in ('expense', 'expense_depreciation', 'expense_direct_cost'):
-                     acc.code = '5' + acc.code.lstrip('0')[:3]
-            
-            # Archive technical noise
+                    acc.code = '5' + acc.code.lstrip('0')[:3]
+
             if any(term.lower() in acc.name.lower() for term in to_archive_search):
                 acc.active = False
-            
-            # Auto-set the Natural Group
-            if acc.code.startswith('1'): acc.ifrs_category = 'asset'
-            elif acc.code.startswith('2'): acc.ifrs_category = 'liability'
-            elif acc.code.startswith('3'): acc.ifrs_category = 'equity'
-            elif acc.code.startswith('4'): acc.ifrs_category = 'income'
-            elif acc.code.startswith('5'): acc.ifrs_category = 'expense'
+
+            if acc.code.startswith('1'):
+                acc.ifrs_category = 'asset'
+            elif acc.code.startswith('2'):
+                acc.ifrs_category = 'liability'
+            elif acc.code.startswith('3'):
+                acc.ifrs_category = 'equity'
+            elif acc.code.startswith('4'):
+                acc.ifrs_category = 'income'
+            elif acc.code.startswith('5'):
+                acc.ifrs_category = 'expense'
 
     @api.model_create_multi
     def create(self, vals_list):
-        # Auto-category assignment based on code
         for vals in vals_list:
             if 'code' in vals and not vals.get('ifrs_category'):
                 code = vals['code']
-                if code.startswith('1'): vals['ifrs_category'] = 'asset'
-                elif code.startswith('2'): vals['ifrs_category'] = 'liability'
-                elif code.startswith('3'): vals['ifrs_category'] = 'equity'
-                elif code.startswith('4'): vals['ifrs_category'] = 'income'
-                elif code.startswith('5'): vals['ifrs_category'] = 'expense'
+                if code.startswith('1'):
+                    vals['ifrs_category'] = 'asset'
+                elif code.startswith('2'):
+                    vals['ifrs_category'] = 'liability'
+                elif code.startswith('3'):
+                    vals['ifrs_category'] = 'equity'
+                elif code.startswith('4'):
+                    vals['ifrs_category'] = 'income'
+                elif code.startswith('5'):
+                    vals['ifrs_category'] = 'expense'
         return super().create(vals_list)
 
     def action_quickbooks_transform(self):

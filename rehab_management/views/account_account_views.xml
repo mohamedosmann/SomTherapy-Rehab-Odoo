@@ -37,7 +37,7 @@
                 <field name="ifrs_category" string="Natural Group"/>
                 <field name="qb_debit" string="Money In (+)" sum="Total Debit"/>
                 <field name="qb_credit" string="Money Out (-)" sum="Total Credit"/>
-                <field name="qb_balance" string="Balance" decoration-bf="1" widget="monetary" sum="Net Total"/>
+                <field name="qb_balance" string="Remaining Balance" decoration-bf="1" widget="float" sum="Net Total"/>
             </list>
         </field>
     </record>

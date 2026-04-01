@@ -23,18 +23,26 @@ class StudentStatementReport(models.AbstractModel):
             amls = self.env['account.move.line'].search(domain, order='date asc, id asc')
             
             lines = []
+            total_debit = 0.0
+            total_credit = 0.0
             running_balance = 0.0
-            
-            # Initial balance if needed (optional)
             
             for aml in amls:
                 # Debit = Invoice amount, Credit = Payment amount
+                total_debit += aml.debit
+                total_credit += aml.credit
                 running_balance += (aml.debit - aml.credit)
+                
+                # Descriptive label
+                label = aml.name or ''
+                if not label or label == '/':
+                    label = aml.move_id.ref or aml.move_id.name
                 
                 lines.append({
                     'date': aml.date,
                     'ref': aml.move_id.name,
-                    'label': aml.name or aml.move_id.ref or '',
+                    'label': label,
+                    'type': _('Invoice') if aml.debit > 0 else _('Payment/Credit'),
                     'debit': aml.debit,
                     'credit': aml.credit,
                     'balance': running_balance,
@@ -43,6 +51,8 @@ class StudentStatementReport(models.AbstractModel):
             doc_data.append({
                 'student': student,
                 'lines': lines,
+                'total_debit': total_debit,
+                'total_credit': total_credit,
                 'final_balance': running_balance,
             })
 

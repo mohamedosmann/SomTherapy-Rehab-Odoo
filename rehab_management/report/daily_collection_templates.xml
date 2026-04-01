@@ -13,63 +13,98 @@
     <template id="report_daily_collection">
         <t t-call="web.html_container">
             <t t-call="web.external_layout">
-                <div class="page">
-                    <div class="text-center">
-                        <h2>Daily Cash Collection Report</h2>
-                        <h4>Date: <span t-out="date"/></h4>
-                    </div>
-                    <br/>
+                    <div class="page" t-attf-style="font-family: 'Inter', sans-serif; color: #2c3e50;">
+                        <!-- Report Header -->
+                        <div class="row mb-4 border-bottom pb-3">
+                            <div class="col-6">
+                                <h3 style="color: #017e84; font-weight: bold;">DAILY CASH COLLECTION</h3>
+                                <div class="text-muted small mt-1">Transaction Date: <span t-out="date" t-options='{"widget": "date"}'/></div>
+                            </div>
+                            <div class="col-6 text-end">
+                                <div t-if="company.logo" class="mb-2">
+                                    <img t-att-src="image_data_uri(company.logo)" style="max-height: 50px;" alt="Logo"/>
+                                </div>
+                                <div class="small text-muted"><t t-esc="company.name"/></div>
+                            </div>
+                        </div>
 
-                    <t t-foreach="journal_data" t-as="j">
-                        <h4 style="background-color: #f2f2f2; padding: 5px;">
-                            Journal: <t t-out="j['journal_name']"/>
-                        </h4>
-                        <table class="table table-sm o_main_table">
-                            <thead>
-                                <tr>
-                                    <th>Customer/Student</th>
-                                    <th>Reference</th>
-                                    <th class="text-end">Amount</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <t t-foreach="j['lines']" t-as="line">
-                                    <tr>
-                                        <td><span t-out="line['name']"/></td>
-                                        <td><span t-out="line['ref']"/></td>
-                                        <td class="text-end">
-                                            <span t-out="line['amount']" t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
-                                        </td>
-                                    </tr>
-                                </t>
-                                <tr class="border-black o_total">
-                                    <td colspan="2"><strong>Total for <t t-out="j['journal_name']"/></strong></td>
-                                    <td class="text-end">
-                                        <strong>
+                        <!-- Payment Method Summary (Top) -->
+                        <div class="row mb-5">
+                            <t t-foreach="journal_data" t-as="j">
+                                <div class="col-3 mb-3">
+                                    <div class="card p-3 shadow-sm border-0" style="background: #e6f3f3;">
+                                        <div class="text-uppercase text-muted" style="font-size: 0.7em; font-weight: bold; letter-spacing: 1px;"><t t-esc="j['journal_name']"/></div>
+                                        <div style="font-size: 1.25em; font-weight: bold; color: #017e84;">
                                             <span t-out="j['total']" t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
-                                        </strong>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <br/>
-                    </t>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                            <div class="col-3 mb-3">
+                                <div class="card p-3 shadow-sm border-0" style="background: #017e84; color: white;">
+                                    <div class="text-uppercase" style="font-size: 0.7em; font-weight: bold; opacity: 0.8;">Total Collected</div>
+                                    <div style="font-size: 1.25em; font-weight: bold;">
+                                        <span t-out="grand_total" t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                    <div class="row justify-content-end">
-                        <div class="col-4">
-                            <table class="table table-sm">
-                                <tr class="border-black o_total">
-                                    <td><strong>GRAND TOTAL</strong></td>
-                                    <td class="text-end">
-                                        <strong>
-                                            <span t-out="grand_total" t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
-                                        </strong>
-                                    </td>
-                                </tr>
-                            </table>
+                        <!-- Detailed Breakdown -->
+                        <t t-foreach="journal_data" t-as="j">
+                            <div class="mb-4">
+                                <h6 class="border-bottom pb-1" style="color: #34495e; font-weight: bold;">
+                                    Journal Details: <t t-out="j['journal_name']"/>
+                                </h6>
+                                <table class="table table-sm table-borderless">
+                                    <thead style="border-bottom: 1px solid #dee2e6; color: #7f8c8d; font-size: 0.85em;">
+                                        <tr>
+                                            <th class="py-2 px-3">CUSTOMER / STUDENT NAME</th>
+                                            <th class="py-2">REFERENCE</th>
+                                            <th class="py-2 text-end">AMOUNT COLLECTED</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="border-bottom: 1px solid #f2f2f2;">
+                                        <t t-foreach="j['lines']" t-as="line">
+                                            <tr style="border-bottom: 1px solid #f9f9f9;">
+                                                <td class="px-3 py-2"><span t-out="line['name']"/></td>
+                                                <td class="py-2 text-muted"><span t-out="line['ref']"/></td>
+                                                <td class="text-end py-2" style="font-weight: 500;">
+                                                    <span t-out="line['amount']" t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="fw-bold" style="background: #fdfdfd;">
+                                            <td colspan="2" class="px-3 py-2">Subtotal for <t t-out="j['journal_name']"/></td>
+                                            <td class="text-end py-2">
+                                                <span t-out="j['total']" t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </t>
+
+                        <!-- Final Reconciliation Footer -->
+                        <div class="row justify-content-end mt-5">
+                            <div class="col-4">
+                                <div class="p-3 bg-light rounded text-end border">
+                                    <div class="text-muted small text-uppercase fw-bold">Combined Grand Total</div>
+                                    <div class="h3 mb-0" style="color: #017e84; font-weight: 900;">
+                                        <span t-out="grand_total" t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-5 pt-5 row">
+                            <div class="col-4 border-top text-center pt-2 small">Cashier Signature</div>
+                            <div class="col-4"></div>
+                            <div class="col-4 border-top text-center pt-2 small">Manager Approval</div>
                         </div>
                     </div>
-                </div>
             </t>
         </t>
     </template>

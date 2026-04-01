@@ -239,17 +239,37 @@ class FinancialStatementReport(models.AbstractModel):
         if program_id: base_drill_domain.append(('rehab_program_id', '=', program_id))
         if branch_id: base_drill_domain.append(('company_id', '=', branch_id))
 
+        def get_account_lines(lines_filtered, parent_name):
+            acc_groups = {}
+            for l in lines_filtered:
+                if l.account_id.id not in acc_groups:
+                    acc_groups[l.account_id.id] = {'name': f"{l.account_id.code} {l.account_id.name}", 'balance': 0.0, 'account_id': l.account_id.id}
+                acc_groups[l.account_id.id]['balance'] += l.balance
+            return [{
+                'name': d['name'], 
+                'balance': d['balance'], 
+                'level': 3, 
+                'domain': [('account_id', '=', d['account_id'])] + base_drill_domain,
+                'parent_group': parent_name
+            } for d in acc_groups.values()]
+
         res = [
-            {'name': _('Current Assets'), 'balance': curr_assets, 'level': 1, 'domain': [('account_id.account_type', 'in', ('asset_receivable', 'asset_cash', 'asset_current', 'asset_prepayments'))] + base_drill_domain},
-            {'name': _('Fixed Assets'), 'balance': fixed_assets, 'level': 1, 'domain': [('account_id.account_type', '=', 'asset_fixed')] + base_drill_domain},
+            {'name': _('Current Assets'), 'balance': curr_assets, 'level': 1, 'is_group': True, 'domain': [('account_id.account_type', 'in', ('asset_receivable', 'asset_cash', 'asset_current', 'asset_prepayments'))] + base_drill_domain},
+        ] + get_account_lines(curr_asset_lines, _('Current Assets')) + [
+            {'name': _('Fixed Assets'), 'balance': fixed_assets, 'level': 1, 'is_group': True, 'domain': [('account_id.account_type', '=', 'asset_fixed')] + base_drill_domain},
+        ] + get_account_lines(move_lines.filtered(lambda l: l.account_id.account_type == 'asset_fixed'), _('Fixed Assets')) + [
             {'name': _('TOTAL ASSETS'), 'balance': total_assets, 'level': 0, 'is_total': True},
             
-            {'name': _('Current Liabilities'), 'balance': curr_liabilities, 'level': 1, 'domain': [('account_id.account_type', 'in', ('liability_payable', 'liability_current'))] + base_drill_domain},
-            {'name': _('Long-term Liabilities'), 'balance': long_liabilities, 'level': 1, 'domain': [('account_id.account_type', '=', 'liability_non_current')] + base_drill_domain},
+            {'name': _('Current Liabilities'), 'balance': curr_liabilities, 'level': 1, 'is_group': True, 'domain': [('account_id.account_type', 'in', ('liability_payable', 'liability_current'))] + base_drill_domain},
+        ] + get_account_lines(move_lines.filtered(lambda l: l.account_id.account_type in ('liability_payable', 'liability_current')), _('Current Liabilities')) + [
+            {'name': _('Long-term Liabilities'), 'balance': long_liabilities, 'level': 1, 'is_group': True, 'domain': [('account_id.account_type', '=', 'liability_non_current')] + base_drill_domain},
+        ] + get_account_lines(move_lines.filtered(lambda l: l.account_id.account_type == 'liability_non_current'), _('Long-term Liabilities')) + [
             {'name': _('TOTAL LIABILITIES'), 'balance': total_liabilities, 'level': 0, 'is_total': True},
             
-            {'name': _('Owner Equity'), 'balance': base_equity, 'level': 1, 'domain': [('account_id.account_type', '=', 'equity')] + base_drill_domain},
-            {'name': _('Retained Earnings'), 'balance': pl_net, 'level': 1, 'domain': [('account_id.account_type', 'in', ('income', 'income_other', 'expense', 'expense_depreciation', 'expense_direct_cost'))] + base_drill_domain},
+            {'name': _('Owner Equity'), 'balance': base_equity, 'level': 1, 'is_group': True, 'domain': [('account_id.account_type', '=', 'equity')] + base_drill_domain},
+        ] + get_account_lines(move_lines.filtered(lambda l: l.account_id.account_type == 'equity'), _('Owner Equity')) + [
+            {'name': _('Retained Earnings (PL)'), 'balance': pl_net, 'level': 1, 'is_group': True, 'domain': [('account_id.account_type', 'in', ('income', 'income_other', 'expense', 'expense_depreciation', 'expense_direct_cost'))] + base_drill_domain},
+        ] + get_account_lines(move_lines.filtered(lambda l: l.account_id.account_type in ('income', 'income_other', 'expense', 'expense_depreciation', 'expense_direct_cost')), _('Retained Earnings (PL)')) + [
             {'name': _('TOTAL EQUITY'), 'balance': total_equity, 'level': 0, 'is_total': True},
             
             {'name': _('TOTAL LIABILITIES & EQUITY'), 'balance': total_liabilities + total_equity, 'level': 0, 'is_total': True, 'is_final': True},

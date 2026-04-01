@@ -116,20 +116,19 @@
                     
                     /* Drill-down Aesthetics */
                     .o_account_reports_web_action {
-                        color: inherit;
+                        color: #1f77b4 !important;
                         text-decoration: none;
-                        display: flex;
-                        align-items: center;
+                        font-weight: 500;
+                        transition: color 0.3s;
                     }
                     .o_account_reports_web_action:hover {
-                        color: #017e84;
+                        color: #155a8a !important;
                         text-decoration: underline;
                     }
                     .drill_arrow {
-                        font-size: 9px;
-                        margin-left: 6px;
-                        color: #017e84;
-                        opacity: 0.6;
+                        font-size: 14px;
+                        margin-left: 5px;
+                        color: #7f8c8d;
                     }
 
                     /* Comparison Column */

@@ -32,7 +32,7 @@
     </record>
 
     <record id="rehab_dormitory_menu_cat" model="ir.ui.menu">
-        <field name="name">6. Dormitory</field>
+        <field name="name">6. Staff</field>
         <field name="parent_id" ref="rehab_root_menu"/>
         <field name="sequence">50</field>
     </record>

@@ -61,7 +61,8 @@
         <field name="model">account.account</field>
         <field name="inherit_id" ref="account.view_account_search"/>
         <field name="arch" type="xml">
-            <xpath expr="//filter[@name='account_type']" position="after">
+            <xpath expr="//search" position="inside">
+                <separator/>
                 <filter string="QuickBooks Grouping" name="group_by_category" context="{'group_by': 'ifrs_category'}"/>
             </xpath>
         </field>

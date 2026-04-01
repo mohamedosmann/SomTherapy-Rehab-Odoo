@@ -148,9 +148,8 @@
                 </style>
                 <script type="text/javascript">
                     (function() {
-                        // Use a global click listener for dynamic content
+                        // Use a global click listener ONLY for expand/collapse (Caret)
                         document.addEventListener('click', function(e) {
-                            // 1. Handle Expand/Collapse
                             const caret = e.target.closest('.o_account_report_caret');
                             if (caret) {
                                 e.preventDefault();
@@ -161,46 +160,6 @@
                                 document.querySelectorAll('tr[data-parent-group="' + groupName + '"]').forEach(function(subRow) {
                                     subRow.classList.toggle('row_hidden');
                                 });
-                                return;
-                            }
-
-                            // 2. Handle Drill-down Click
-                            const link = e.target.closest('.o_account_reports_web_action');
-                            if (link) {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                const domainStr = link.getAttribute('data-domain');
-                                if (!domainStr) return;
-                                
-                                try {
-                                    const domain = JSON.parse(domainStr);
-                                    const action = {
-                                        type: 'ir.actions.act_window',
-                                        name: link.innerText.trim() || 'Drill-down',
-                                        res_model: link.getAttribute('data-res-model') || 'account.move.line',
-                                        domain: domain,
-                                        views: [[false, 'list'], [false, 'form']],
-                                        view_mode: 'list,form',
-                                        target: 'current',
-                                        context: { 'active_test': false }
-                                    };
-
-                                    // Reach the Odoo action service in the parent window
-                                    if (window.parent &amp;&amp; window.parent.odoo &amp;&amp; window.parent.odoo.__WOWL_DEBUG__ &amp;&amp; window.parent.odoo.__WOWL_DEBUG__.root) {
-                                        // Modern Odoo (16/17+)
-                                        const actionService = window.parent.odoo.__WOWL_DEBUG__.root.env.services.action;
-                                        actionService.doAction(action);
-                                    } else if (window.parent &amp;&amp; window.parent.odoo &amp;&amp; window.parent.odoo.actionService) {
-                                        // Variant
-                                        window.parent.odoo.actionService.doAction(action);
-                                    } else {
-                                        console.error("Odoo Action Service not found in parent window.");
-                                        // Fallback: postMessage
-                                        window.parent.postMessage(action, "*");
-                                    }
-                                } catch (err) {
-                                    console.error("Drill-down error:", err);
-                                }
                             }
                         });
                     })();

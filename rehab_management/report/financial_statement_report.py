@@ -146,9 +146,9 @@ class FinancialStatementReport(models.AbstractModel):
             bal = sum(cat_lines.mapped('balance'))
             if bal != 0 or cat.get('rehab_only'):
                 cat_domain = [('account_id.code', 'like', prefix + '%')] + base_drill_domain
-                # URL GENERATION (Native Fix)
+                # URL GENERATION (Odoo 17 Native Action Fix)
                 import urllib.parse
-                cat_url = f"/web#model=account.move.line&view_type=list&domain={urllib.parse.quote(json.dumps(cat_domain))}"
+                cat_url = f"/odoo/action-account.action_account_moves_all?domain={urllib.parse.quote(json.dumps(cat_domain))}"
                 
                 res.append({
                     'name': cat['name'],
@@ -174,7 +174,7 @@ class FinancialStatementReport(models.AbstractModel):
                         'balance': acc_data['balance'],
                         'level': 3,
                         'domain': acc_domain,
-                        'drill_url': f"/web#model=account.move.line&view_type=list&domain={urllib.parse.quote(json.dumps(acc_domain))}",
+                        'drill_url': f"/odoo/action-account.action_account_moves_all?domain={urllib.parse.quote(json.dumps(acc_domain))}",
                         'parent_group': cat['name'],
                     })
 
@@ -269,25 +269,25 @@ class FinancialStatementReport(models.AbstractModel):
                 'level': 3, 
                 'domain': [('account_id', '=', d['account_id'])] + base_drill_domain,
                 'parent_group': parent_name,
-                'drill_url': f"/web#model=account.move.line&view_type=list&domain={urllib.parse.quote(json.dumps([('account_id', '=', d['account_id'])] + base_drill_domain))}"
+                'drill_url': f"/odoo/action-account.action_account_moves_all?domain={urllib.parse.quote(json.dumps([('account_id', '=', d['account_id'])] + base_drill_domain))}"
             } for d in acc_groups.values()]
 
         res = [
-            {'name': _('Current Assets'), 'balance': curr_assets, 'level': 1, 'is_group': True, 'drill_url': f"/web#model=account.move.line&view_type=list&domain={urllib.parse.quote(json.dumps([('account_id.account_type', 'in', ('asset_receivable', 'asset_cash', 'asset_current', 'asset_prepayments'))] + base_drill_domain))}"},
+            {'name': _('Current Assets'), 'balance': curr_assets, 'level': 1, 'is_group': True, 'drill_url': f"/odoo/action-account.action_account_moves_all?domain={urllib.parse.quote(json.dumps([('account_id.account_type', 'in', ('asset_receivable', 'asset_cash', 'asset_current', 'asset_prepayments'))] + base_drill_domain))}"},
         ] + get_account_lines(curr_asset_lines, _('Current Assets')) + [
-            {'name': _('Fixed Assets'), 'balance': fixed_assets, 'level': 1, 'is_group': True, 'drill_url': f"/web#model=account.move.line&view_type=list&domain={urllib.parse.quote(json.dumps([('account_id.account_type', '=', 'asset_fixed')] + base_drill_domain))}"},
+            {'name': _('Fixed Assets'), 'balance': fixed_assets, 'level': 1, 'is_group': True, 'drill_url': f"/odoo/action-account.action_account_moves_all?domain={urllib.parse.quote(json.dumps([('account_id.account_type', '=', 'asset_fixed')] + base_drill_domain))}"},
         ] + get_account_lines(move_lines.filtered(lambda l: l.account_id.account_type == 'asset_fixed'), _('Fixed Assets')) + [
             {'name': _('TOTAL ASSETS'), 'balance': total_assets, 'level': 0, 'is_total': True},
             
-            {'name': _('Current Liabilities'), 'balance': curr_liabilities, 'level': 1, 'is_group': True, 'drill_url': f"/web#model=account.move.line&view_type=list&domain={urllib.parse.quote(json.dumps([('account_id.account_type', 'in', ('liability_payable', 'liability_current'))] + base_drill_domain))}"},
+            {'name': _('Current Liabilities'), 'balance': curr_liabilities, 'level': 1, 'is_group': True, 'drill_url': f"/odoo/action-account.action_account_moves_all?domain={urllib.parse.quote(json.dumps([('account_id.account_type', 'in', ('liability_payable', 'liability_current'))] + base_drill_domain))}"},
         ] + get_account_lines(move_lines.filtered(lambda l: l.account_id.account_type in ('liability_payable', 'liability_current')), _('Current Liabilities')) + [
-            {'name': _('Long-term Liabilities'), 'balance': long_liabilities, 'level': 1, 'is_group': True, 'drill_url': f"/web#model=account.move.line&view_type=list&domain={urllib.parse.quote(json.dumps([('account_id.account_type', '=', 'liability_non_current')] + base_drill_domain))}"},
+            {'name': _('Long-term Liabilities'), 'balance': long_liabilities, 'level': 1, 'is_group': True, 'drill_url': f"/odoo/action-account.action_account_moves_all?domain={urllib.parse.quote(json.dumps([('account_id.account_type', '=', 'liability_non_current')] + base_drill_domain))}"},
         ] + get_account_lines(move_lines.filtered(lambda l: l.account_id.account_type == 'liability_non_current'), _('Long-term Liabilities')) + [
             {'name': _('TOTAL LIABILITIES'), 'balance': total_liabilities, 'level': 0, 'is_total': True},
             
-            {'name': _('Owner Equity'), 'balance': base_equity, 'level': 1, 'is_group': True, 'drill_url': f"/web#model=account.move.line&view_type=list&domain={urllib.parse.quote(json.dumps([('account_id.account_type', '=', 'equity')] + base_drill_domain))}"},
+            {'name': _('Owner Equity'), 'balance': base_equity, 'level': 1, 'is_group': True, 'drill_url': f"/odoo/action-account.action_account_moves_all?domain={urllib.parse.quote(json.dumps([('account_id.account_type', '=', 'equity')] + base_drill_domain))}"},
         ] + get_account_lines(move_lines.filtered(lambda l: l.account_id.account_type == 'equity'), _('Owner Equity')) + [
-            {'name': _('Retained Earnings (PL)'), 'balance': pl_net, 'level': 1, 'is_group': True, 'drill_url': f"/web#model=account.move.line&view_type=list&domain={urllib.parse.quote(json.dumps([('account_id.account_type', 'in', ('income', 'income_other', 'expense', 'expense_depreciation', 'expense_direct_cost'))] + base_drill_domain))}"},
+            {'name': _('Retained Earnings (PL)'), 'balance': pl_net, 'level': 1, 'is_group': True, 'drill_url': f"/odoo/action-account.action_account_moves_all?domain={urllib.parse.quote(json.dumps([('account_id.account_type', 'in', ('income', 'income_other', 'expense', 'expense_depreciation', 'expense_direct_cost'))] + base_drill_domain))}"},
         ] + get_account_lines(move_lines.filtered(lambda l: l.account_id.account_type in ('income', 'income_other', 'expense', 'expense_depreciation', 'expense_direct_cost')), _('Retained Earnings (PL)')) + [
             {'name': _('TOTAL EQUITY'), 'balance': total_equity, 'level': 0, 'is_total': True},
             

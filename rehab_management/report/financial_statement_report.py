@@ -172,8 +172,11 @@ class FinancialStatementReport(models.AbstractModel):
                     res.append({
                         'name': acc_data['name'],
                         'balance': acc_data['balance'],
+                        'account_id': acc_id,
                         'level': 3,
                         'domain': acc_domain,
+                        'date_from': date_from,
+                        'date_to': date_to,
                         'drill_url': f"/odoo/action-account.action_account_moves_all?domain={urllib.parse.quote(json.dumps(acc_domain))}",
                         'parent_group': cat['name'],
                     })
@@ -265,9 +268,12 @@ class FinancialStatementReport(models.AbstractModel):
                 acc_groups[l.account_id.id]['balance'] += l.balance
             return [{
                 'name': d['name'], 
-                'balance': d['balance'], 
+                'balance': d['balance'],
+                'account_id': d['account_id'],
                 'level': 3, 
                 'domain': [('account_id', '=', d['account_id'])] + base_drill_domain,
+                'date_from': None,
+                'date_to': date_to,
                 'parent_group': parent_name,
                 'drill_url': f"/odoo/action-account.action_account_moves_all?domain={urllib.parse.quote(json.dumps([('account_id', '=', d['account_id'])] + base_drill_domain))}"
             } for d in acc_groups.values()]

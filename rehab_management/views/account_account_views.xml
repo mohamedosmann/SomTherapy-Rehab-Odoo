@@ -12,6 +12,15 @@
                 </group>
             </xpath>
         </field>
+    <record id="view_account_list_rehab_inherit" model="ir.ui.view">
+        <field name="name">account.account.list.rehab.inherit</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='account_type']" position="after">
+                <field name="qb_balance" string="Balance" widget="monetary" decoration-bf="1" sum="Total"/>
+            </xpath>
+        </field>
     </record>
     <record id="view_account_tree_rehab_quickbooks" model="ir.ui.view">
         <field name="name">account.account.tree.rehab.quickbooks</field>
